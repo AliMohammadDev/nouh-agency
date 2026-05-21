@@ -26,9 +26,10 @@ export default function Navbar() {
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-10">
         <Link
           to="/"
-          className="text-xl font-bold tracking-tight"
+          className="text-xl font-bold tracking-tight flex items-center gap-2"
           style={{ letterSpacing: isRTL ? '0' : '0.08em' }}
         >
+        <img src="./../../assets/images/png/logo/logo-agency.png" alt="img" className="h-8 w-auto" />
           {t('nav.logo')}
         </Link>
 

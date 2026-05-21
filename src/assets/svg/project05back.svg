@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="410.184" height="1013.669" viewBox="0 0 410.184 1013.669">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Path_4" data-name="Path 4" d="M0,0H410.184V-1013.669H0Z" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_6" data-name="Group 6" transform="translate(0 1013.669)">
+    <g id="Group_5" data-name="Group 5" clip-path="url(#clip-path)">
+      <g id="Group_4" data-name="Group 4" transform="translate(0.5 -1013.169)">
+        <path id="Path_3" data-name="Path 3" d="M0,0V90.364l68.2,67.774V359.492L0,427.265v585.4M68.2,0V90.364l56.831,67.774V359.492L68.2,427.265V585.4L56.831,653.177V854.531L68.2,922.3v90.365M136.394,0V90.364l45.465,67.774V359.492l-45.465,67.773V585.4l-22.732,67.774V854.531L136.394,922.3v90.365M204.591,0V90.364l34.1,67.774V359.492l-34.1,67.773V585.4l-34.1,67.774V854.531l34.1,67.773v90.365M272.789,0V90.364l22.732,67.774V359.492l-22.732,67.773V585.4l-45.465,67.774V854.531L272.789,922.3v90.365M340.987,0V90.364l11.366,67.774V359.492l-11.366,67.773V585.4l-56.832,67.774V854.531L340.987,922.3v90.365m68.2,0V922.3l-68.2-67.773V653.177l68.2-67.774V0" fill="none" stroke="#47494f" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>
