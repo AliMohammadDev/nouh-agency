@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 interface FeatureItem {
   number: string;
@@ -8,7 +8,7 @@ interface FeatureItem {
 
 export default function Features() {
   const { t } = useTranslation();
-  const items = t("features.items", { returnObjects: true }) as FeatureItem[];
+  const items = t('features.items', { returnObjects: true }) as FeatureItem[];
 
   return (
     <section id="services" className="bg-background py-24 lg:py-32">
@@ -16,10 +16,10 @@ export default function Features() {
         <div className="mb-16 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <span className="mb-3 block text-xs font-semibold uppercase tracking-widest text-accent">
-              {t("features.label")}
+              {t('features.label')}
             </span>
             <h2 className="text-4xl font-bold lg:text-5xl">
-              {t("features.heading")}
+              {t('features.heading')}
             </h2>
           </div>
           <div className="hidden h-px w-40 self-center bg-border lg:block" />
@@ -31,9 +31,15 @@ export default function Features() {
               key={item.number}
               className="group flex flex-col gap-4 bg-background p-8 transition hover:bg-secondary"
             >
-              <span className="font-mono text-xs text-accent">{item.number}</span>
-              <h3 className="text-lg font-semibold leading-snug">{item.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+              <span className="font-mono text-xs text-accent">
+                {item.number}
+              </span>
+              <h3 className="text-lg font-semibold leading-snug">
+                {item.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {item.body}
+              </p>
             </div>
           ))}
         </div>

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
-import { Menu, X, Globe } from "lucide-react";
-import { useDirection } from "../../hooks/useDirection";
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
+import { Menu, X, Globe } from 'lucide-react';
+import { useDirection } from '../../hooks/useDirection';
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
@@ -10,15 +10,15 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
-    { key: "home", to: "/" },
-    { key: "about", to: "/about" },
-    { key: "services", to: "/services" },
-    { key: "work", to: "/work" },
-    { key: "contact", to: "/contact" },
+    { key: 'home', to: '/' },
+    { key: 'about', to: '/about' },
+    { key: 'services', to: '/services' },
+    { key: 'work', to: '/work' },
+    { key: 'contact', to: '/contact' },
   ];
 
   const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === "en" ? "ar" : "en");
+    i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en');
   };
 
   return (
@@ -27,9 +27,9 @@ export default function Navbar() {
         <Link
           to="/"
           className="text-xl font-bold tracking-tight"
-          style={{ letterSpacing: isRTL ? "0" : "0.08em" }}
+          style={{ letterSpacing: isRTL ? '0' : '0.08em' }}
         >
-          {t("nav.logo")}
+          {t('nav.logo')}
         </Link>
 
         <ul className="hidden items-center gap-8 lg:flex">
@@ -52,14 +52,14 @@ export default function Navbar() {
             aria-label="Switch language"
           >
             <Globe size={13} />
-            {i18n.language === "en" ? "عربي" : "English"}
+            {i18n.language === 'en' ? 'عربي' : 'English'}
           </button>
 
           <Link
             to="/contact"
             className="hidden rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-80 lg:block"
           >
-            {t("nav.cta")}
+            {t('nav.cta')}
           </Link>
 
           <button
@@ -92,7 +92,7 @@ export default function Navbar() {
                 className="mt-2 block rounded-full bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground"
                 onClick={() => setMenuOpen(false)}
               >
-                {t("nav.cta")}
+                {t('nav.cta')}
               </Link>
             </li>
           </ul>
