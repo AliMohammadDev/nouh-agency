@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "logo": "BRAND",
+    "links": {
+      "home": "Home",
+      "about": "About",
+      "services": "Services",
+      "work": "Work",
+      "contact": "Contact"
+    },
+    "cta": "Get Started"
+  },
+  "hero": {
+    "eyebrow": "Welcome to our platform",
+    "heading": "Build something\nremarkable.",
+    "sub": "A clean, modern foundation for your next digital experience. Crafted with intention, built for scale.",
+    "cta": "Explore Our Work",
+    "secondary": "Learn More"
+  },
+  "features": {
+    "label": "What we offer",
+    "heading": "Built for every audience",
+    "items": [
+      {
+        "number": "01",
+        "title": "Bilingual First",
+        "body": "Seamlessly switch between Arabic and English. Every layout, every component, every word — designed for both directions."
+      },
+      {
+        "number": "02",
+        "title": "Precision Design",
+        "body": "Swiss grid discipline applied to every screen. Strict alignment, generous whitespace, and a palette that respects the content."
+      },
+      {
+        "number": "03",
+        "title": "Accessible Core",
+        "body": "WCAG AA compliant from the start. Keyboard navigable, screen-reader friendly, and contrast-tested at every breakpoint."
+      },
+      {
+        "number": "04",
+        "title": "Scalable System",
+        "body": "A design token architecture that scales from a landing page to a full product suite without accumulating visual debt."
+      }
+    ]
+  },
+  "stats": {
+    "label": "By the numbers",
+    "items": [
+      { "value": "12+", "label": "Languages supported" },
+      { "value": "99%", "label": "Accessibility score" },
+      { "value": "40ms", "label": "First render time" },
+      { "value": "2", "label": "Script directions" }
+    ]
+  },
+  "cta": {
+    "heading": "Ready to begin?",
+    "sub": "Start building your bilingual experience today.",
+    "button": "Contact Us"
+  },
+  "footer": {
+    "copy": "© 2026 Brand. All rights reserved.",
+    "links": {
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "sitemap": "Sitemap"
+    }
+  }
+}
