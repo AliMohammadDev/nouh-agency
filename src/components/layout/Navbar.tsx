@@ -29,7 +29,11 @@ export default function Navbar() {
           className="text-xl font-bold tracking-tight flex items-center gap-2"
           style={{ letterSpacing: isRTL ? '0' : '0.08em' }}
         >
-        <img src="./../../assets/images/png/logo/logo-agency.png" alt="img" className="h-8 w-auto" />
+          <img
+            src="./../../assets/images/png/logo/logo-agency.png"
+            alt="img"
+            className="h-8 w-auto"
+          />
           {t('nav.logo')}
         </Link>
 

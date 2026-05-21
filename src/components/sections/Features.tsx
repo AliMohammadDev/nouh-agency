@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
+// 1. تعريف واجهة البيانات للـ Feature Item بناءً على ملف الـ JSON لديك
 interface FeatureItem {
   number: string;
   title: string;
@@ -8,36 +9,33 @@ interface FeatureItem {
 
 export default function Features() {
   const { t } = useTranslation();
-  const items = t('features.items', { returnObjects: true }) as FeatureItem[];
+
+  // 2. جلب البيانات واستخدام الفحص الآمن لمنع الـ Crash
+  const rawItems = t('features.items', { returnObjects: true });
+  const items = Array.isArray(rawItems) ? (rawItems as FeatureItem[]) : [];
 
   return (
-    <section id="services" className="bg-background py-24 lg:py-32">
+    <section className="py-20 bg-background text-foreground">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="mb-16 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <span className="mb-3 block text-xs font-semibold uppercase tracking-widest text-accent">
-              {t('features.label')}
-            </span>
-            <h2 className="text-4xl font-bold lg:text-5xl">
-              {t('features.heading')}
-            </h2>
-          </div>
-          <div className="hidden h-px w-40 self-center bg-border lg:block" />
-        </div>
+        <span className="mb-4 block text-xs font-semibold uppercase tracking-widest text-accent">
+          {t('features.label')}
+        </span>
+        <h2 className="text-3xl font-bold tracking-tight mb-12">
+          {t('features.heading')}
+        </h2>
 
-        <div className="grid grid-cols-1 gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((item) => (
+        <div className="grid grid-cols-1 gap-y-12 lg:grid-cols-2 lg:gap-x-12 lg:gap-y-16">
+          {/* الخريطة الآمنة التي لن تسبب شاشة بيضاء بعد الآن */}
+          {items.map((item, index) => (
             <div
-              key={item.number}
-              className="group flex flex-col gap-4 bg-background p-8 transition hover:bg-secondary"
+              key={item.number || index}
+              className="flex flex-col gap-4 border-t border-muted/30 pt-6"
             >
-              <span className="font-mono text-xs text-accent">
+              <span className="text-sm font-mono text-accent">
                 {item.number}
               </span>
-              <h3 className="text-lg font-semibold leading-snug">
-                {item.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <h3 className="text-xl font-semibold">{item.title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 {item.body}
               </p>
             </div>

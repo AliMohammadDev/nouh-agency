@@ -7,7 +7,12 @@ interface StatItem {
 
 export default function Stats() {
   const { t } = useTranslation();
-  const items = t('stats.items', { returnObjects: true }) as StatItem[];
+
+  // 1. جلب الكائن الخام من الترجمة
+  const rawItems = t('stats.items', { returnObjects: true });
+
+  // 2. صمام الأمان: إذا كانت مصفوفة نستخدمها، وإذا رجعت String أو undefined نضع مصفوفة فارغة []
+  const items = Array.isArray(rawItems) ? (rawItems as StatItem[]) : [];
 
   return (
     <section className="bg-primary py-20">
@@ -16,9 +21,10 @@ export default function Stats() {
           {t('stats.label')}
         </span>
         <div className="grid grid-cols-2 gap-px border border-primary-foreground/10 bg-primary-foreground/10 lg:grid-cols-4">
-          {items.map((s) => (
+          {/* 3. الآن الكود آمن تماماً ولن ينهار أبداً حتى لو تأخرت الترجمة أجزاء من الثانية */}
+          {items.map((s, index) => (
             <div
-              key={s.label}
+              key={s.label || index} // كأمان إضافي في حال كانت البيانات فارغة مؤقتاً
               className="flex flex-col items-center gap-2 bg-primary px-6 py-12 text-center"
             >
               <span className="text-5xl font-bold text-primary-foreground">

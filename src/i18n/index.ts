@@ -15,12 +15,15 @@ i18n
     },
     fallbackLng: "en",
     supportedLngs: ["en", "ar"],
+    load: "languageOnly", // 💡 تجبر i18next على تنظيف الرموز مثل en-US لتصبح en فقط
+    returnObjects: true,  // تفعيل جلب المصفوفات والكائنات في التطبيق بالكامل
     interpolation: {
       escapeValue: false,
     },
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"],
+      lookupLocalStorage: "i18nextLng",
     },
   });
 
