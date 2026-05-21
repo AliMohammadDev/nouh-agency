@@ -1,7 +1,6 @@
-import "../i18n";
-import { RouterProvider } from "react-router";
-import { router } from "../utils/router";
+import '../i18n';
+import { RouterProvider } from 'react-router';
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return <div>App</div>;
 }
