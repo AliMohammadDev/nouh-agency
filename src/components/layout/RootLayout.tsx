@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet } from 'react-router-dom';
 import I18nProvider from '../../providers/I18nProvider';
 import Navbar from './Navbar';
 import Footer from './Footer';
