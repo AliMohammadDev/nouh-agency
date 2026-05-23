@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Globe, ArrowUpRight, ChevronDown } from 'lucide-react';
 import { useDirection } from '../../hooks/useDirection';
 import { motion, AnimatePresence } from 'motion/react';
-import logo from '../../assets/images/logoblack.png';
 import { useGetMajors } from '../../api/major';
 interface Category {
   id: number;
@@ -26,7 +25,6 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
 
-  // 🔥 جلب البيانات بناءً على هيكل الـ JSON الخاص بك
   const { data: majors } = useGetMajors() as { data: Major[] | undefined };
 
   const navLinks = [
@@ -36,7 +34,7 @@ export default function Navbar() {
     { key: 'contact', to: '/contact' },
   ];
 
-  // دالة ذكية لتحويل اسم الـ Major إلى الرابط المطلوب تماماً
+  //
   const getMajorSlugPath = (major: Major) => {
     const nameLower = major.name.toLowerCase();
     if (nameLower.includes('عمار') || nameLower.includes('arch'))
@@ -45,7 +43,7 @@ export default function Navbar() {
       return '/work/graphic-design';
     if (nameLower.includes('ويب') || nameLower.includes('web'))
       return '/work/web-development';
-    return `/work/${major.id}`; // خطة بديلة لأي تخصص مستقبلي
+    return `/work/${major.id}`;
   };
 
   const toggleLanguage = () => {
@@ -101,7 +99,6 @@ export default function Navbar() {
                   />
                 )}
 
-                {/* القائمة المنسدلة الديناميكية بناءً على الـ Majors */}
                 {hasDropdown && (
                   <AnimatePresence>
                     {dropdownOpen && majors && majors.length > 0 && (
@@ -131,7 +128,6 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* الأزرار الجانبية (اللغة وزر الاتصال) */}
         <div className="flex items-center gap-4">
           <button
             onClick={toggleLanguage}
