@@ -6,6 +6,7 @@ import {
   MapPin,
   Youtube,
   MessageCircle,
+  Facebook,
 } from 'lucide-react';
 import { useDirection } from '../../hooks/useDirection';
 
@@ -70,14 +71,16 @@ export default function Footer() {
       href: 'https://wa.me/message/BVUKQNAFX5FJP1',
       label: 'WhatsApp',
     },
+    {
+      type: 'lucide',
+      Icon: Facebook,
+      href: 'https://www.facebook.com/nouharchitects',
+      label: 'Facebook',
+    },
   ];
 
   return (
     <footer className="border-t border-border/40 bg-[#1c1c1c] backdrop-blur-md pt-24 pb-12 text-foreground relative overflow-hidden font-cairo">
-      <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
-      </div>
-
       <div className="absolute top-0 left-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
       <div className="absolute top-0 right-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
 
@@ -86,7 +89,6 @@ export default function Footer() {
           <div className="flex flex-col gap-6">
             <span className="text-3xl font-extrabold tracking-tight text-white md:text-4xl font-cairo">
               {t('nav.logo', 'نوح')}
-              <span className="text-accent">.</span>
             </span>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm font-cairo">
               {t(
@@ -103,7 +105,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={account.label}
-                  className="w-10 h-10 bg-secondary/30 border border-border/50 text-muted-foreground transition duration-300 hover:bg-accent hover:text-black hover:border-accent rounded-xl shadow-sm cursor-pointer flex items-center justify-center"
+                  className="w-10 h-10 bg-zinc-900/50 border border-zinc-800 text-zinc-400 transition duration-300 hover:bg-accent hover:text-black hover:border-accent rounded-xl shadow-sm cursor-pointer flex items-center justify-center"
                 >
                   {account.type === 'lucide' && account.Icon ? (
                     <account.Icon size={16} />

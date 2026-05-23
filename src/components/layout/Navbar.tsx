@@ -140,7 +140,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <button
             onClick={toggleLanguage}
-            className="flex items-center gap-2 rounded-full border border-border/80 px-4 py-2 text-sm font-bold text-foreground/80 transition-all duration-300 hover:border-accent"
+            className="flex items-center gap-2 rounded-full border border-border/80 px-4 py-2 text-sm font-bold text-white transition-all duration-300 hover:border-accent"
           >
             <Globe size={15} className="text-accent" />
             <span>{i18n.language === 'en' ? 'عربي' : 'English'}</span>
@@ -148,7 +148,7 @@ export default function Navbar() {
 
           <Link
             to="/contact"
-            className="hidden lg:flex items-center gap-1.5 rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground transition-all"
+            className="hidden lg:flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-black hover:bg-accent hover:text-accent-foreground transition-all"
           >
             <span>{t('nav.cta', 'ابدأ مشروعك')}</span>
             <ArrowUpRight size={14} />
