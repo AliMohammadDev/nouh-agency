@@ -4,7 +4,6 @@ import {
   Instagram,
   Linkedin,
   Twitter,
-  ArrowUp,
   Mail,
   MapPin,
 } from 'lucide-react';
@@ -16,12 +15,8 @@ export default function Footer() {
 
   const currentYear = new Date().getFullYear();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <footer className="border-t border-accent/10 bg-zinc-950 pt-24 pb-12 text-white relative overflow-hidden font-cairo">
+    <footer className="border-t border-border/40 bg-background/80 backdrop-blur-md pt-24 pb-12 text-foreground relative overflow-hidden font-cairo">
       <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
       </div>
@@ -30,13 +25,13 @@ export default function Footer() {
       <div className="absolute top-0 right-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-16">
-        <div className="grid grid-cols-1 gap-16 pb-20 border-b border-accent/10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-16 pb-20 border-b border-border/40 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-6">
-            <span className="text-3xl font-extrabold tracking-tight text-white md:text-4xl font-cairo">
+            <span className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl font-cairo">
               {t('nav.logo')}
               <span className="text-accent">.</span>
             </span>
-            <p className="text-sm text-zinc-400 leading-relaxed max-w-sm font-cairo">
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-sm font-cairo">
               {t(
                 'footer.about_text',
                 'استوديو إبداعي متكامل يدمج بين أصالة التصميم المعماري والداخلي، وقوة الحلول الرقمية في الجرافيك وتطوير الويب.'
@@ -52,7 +47,7 @@ export default function Footer() {
                 <a
                   key={index}
                   href={href}
-                  className="p-3 bg-zinc-900 border border-accent/10 text-zinc-400 transition hover:bg-accent hover:text-white rounded-xl shadow-sm"
+                  className="p-3 bg-secondary/30 border border-border/50 text-muted-foreground transition hover:bg-accent hover:text-black rounded-xl shadow-sm cursor-pointer"
                 >
                   <Icon size={18} />
                 </a>
@@ -77,7 +72,7 @@ export default function Footer() {
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-sm text-zinc-400 transition hover:text-accent hover:translate-x-1 inline-block duration-200 font-cairo"
+                    className="text-sm text-muted-foreground transition hover:text-accent hover:translate-x-1 inline-block duration-200 font-cairo"
                     style={{ transform: isRTL ? 'none' : undefined }}
                   >
                     {link.label}
@@ -91,7 +86,7 @@ export default function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-widest text-accent mb-8 font-cairo">
               {t('footer.titles.services', 'تخصصاتنا')}
             </h4>
-            <ul className="flex flex-col gap-4 text-sm text-zinc-400 font-cairo">
+            <ul className="flex flex-col gap-4 text-sm text-muted-foreground font-cairo">
               <li className="hover:text-accent transition-colors duration-200 cursor-default">
                 {t('footer.serv_list.arch', 'التصميم المعماري المستدام')}
               </li>
@@ -112,7 +107,7 @@ export default function Footer() {
               <h4 className="text-xs font-bold uppercase tracking-widest text-accent mb-8 font-cairo">
                 {t('footer.titles.contact', 'المقر الرئيسي')}
               </h4>
-              <ul className="flex flex-col gap-5 text-sm text-zinc-400 font-cairo">
+              <ul className="flex flex-col gap-5 text-sm text-muted-foreground font-cairo">
                 <li className="flex items-start gap-4">
                   <MapPin size={18} className="text-accent shrink-0 mt-0.5" />
                   <span>
@@ -133,7 +128,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-12 flex flex-col items-center justify-between gap-6 sm:flex-row text-xs text-zinc-500 font-cairo">
+        <div className="pt-12 flex flex-col items-center justify-between gap-6 sm:flex-row text-xs text-muted-foreground/60 font-cairo">
           <span>
             &copy; {currentYear} {t('nav.logo')} Studio.{' '}
             {t('footer.rights', 'جميع الحقوق محفوظة.')}
