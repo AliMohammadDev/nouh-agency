@@ -10,59 +10,159 @@
     },
     "cta": "Get Started"
   },
+
   "hero": {
-    "eyebrow": "Welcome to our platform",
-    "heading": "Build something\nremarkable.",
-    "sub": "A clean, modern foundation for your next digital experience. Crafted with intention, built for scale.",
-    "cta": "Explore Our Work",
-    "secondary": "Learn More"
+    "cta": "View Our Work",
+    "secondary": "Our Services",
+    "slides": {
+      "architecture": {
+        "eyebrow": "Sustainable Innovation",
+        "heading": "Architectural Spaces\nDesigned to Inspire",
+        "sub": "We merge luxury with function to create buildings that tell stories and endure for generations."
+      },
+      "interior": {
+        "eyebrow": "Elegant Details",
+        "heading": "Interior Designs\nThat Reflect Your Identity",
+        "sub": "We focus on the finest details and spatial workflows to create comfortable, modern spaces."
+      },
+      "digital": {
+        "eyebrow": "Integrated Digital Solutions",
+        "heading": "Captivating Graphic\n& Web Experiences",
+        "sub": "We build powerful brand identities and high-performing websites that elevate your digital presence."
+      }
+    }
   },
   "features": {
-    "label": "What we offer",
-    "heading": "Built for every audience",
+    "label": "Our Philosophy",
+    "heading": "How We Transform Complex Ideas Into Physical & Digital Realities",
     "items": [
       {
         "number": "01",
-        "title": "Bilingual First",
-        "body": "Seamlessly switch between Arabic and English. Every layout, every component, every word — designed for both directions."
+        "title": "Smart Architectural Planning",
+        "body": "We study physical space to craft intelligent architectural structures that merge environmental sustainability with geometric beauty."
       },
       {
         "number": "02",
-        "title": "Precision Design",
-        "body": "Swiss grid discipline applied to every screen. Strict alignment, generous whitespace, and a palette that respects the content."
+        "title": "Sensory Interior Design",
+        "body": "We design indoor spaces with a unique spirit, meticulously selecting materials and lighting to reflect comfort and identity."
       },
       {
         "number": "03",
-        "title": "Accessible Core",
-        "body": "WCAG AA compliant from the start. Keyboard navigable, screen-reader friendly, and contrast-tested at every breakpoint."
+        "title": "Unique Brand Identity",
+        "body": "We translate your project values into a powerful visual identity that resonates with audiences and sets you apart from competitors."
       },
       {
         "number": "04",
-        "title": "Scalable System",
-        "body": "A design token architecture that scales from a landing page to a full product suite without accumulating visual debt."
+        "title": "Luxury Digital Experience",
+        "body": "We build fast, responsive websites with sleek interactive interfaces that ensure your clients enjoy an immersive browsing experience."
       }
     ]
   },
   "stats": {
-    "label": "By the numbers",
+    "label": "Numbers That Define Us",
     "items": [
-      { "value": "12+", "label": "Languages supported" },
-      { "value": "99%", "label": "Accessibility score" },
-      { "value": "40ms", "label": "First render time" },
-      { "value": "2", "label": "Script directions" }
+      {
+        "value": "45+",
+        "label": "Architectural Projects"
+      },
+      {
+        "value": "120+",
+        "label": "Brand Identities Designed"
+      },
+      {
+        "value": "60+",
+        "label": "Websites & Platforms"
+      },
+      {
+        "value": "99%",
+        "label": "Client Satisfaction Rate"
+      }
     ]
   },
   "cta": {
-    "heading": "Ready to begin?",
-    "sub": "Start building your bilingual experience today.",
-    "button": "Contact Us"
+    "tagline": "LET'S BUILD THE FUTURE TOGETHER",
+    "heading": "Have a Vision Ready to Be Transformed Into a Masterpiece?",
+    "sub": "Whether it is an architectural project, a stunning interior, or an integrated website and brand identity; our team is ready to ignite the passion and make it real.",
+    "button": "Start Your Project Now"
   },
   "footer": {
-    "copy": "© 2026 Brand. All rights reserved.",
+    "about_text": "An integrated creative studio merging the authenticity of architecture & interior design with powerful digital branding & web experiences.",
+    "rights": "All rights reserved.",
+    "titles": {
+      "explore": "Explore",
+      "services": "Our Expertise",
+      "contact": "Headquarters"
+    },
+    "serv_list": {
+      "arch": "Sustainable Architecture",
+      "interior": "Interior Design & Styling",
+      "branding": "Visual Identity & Graphics",
+      "web": "Premium Web Development"
+    },
     "links": {
-      "privacy": "Privacy",
-      "terms": "Terms",
+      "privacy": "Privacy Policy",
+      "terms": "Terms & Conditions",
       "sitemap": "Sitemap"
     }
+  },
+
+  "about": {
+    "heading": "We Merge Art and Engineering to Craft Exceptional Spaces",
+    "sub": "Founded in 2018, Ammar Studio is a creative hub integrating authentic architecture and interior design with modern digital solutions. We believe physical spaces and digital experiences complement each other to build unforgettable brands.",
+    "feats": {
+      "design": {
+        "title": "Advanced Architecture",
+        "desc": "Meticulous planning down to millimeters"
+      },
+      "team": {
+        "title": "Cross-disciplinary Team",
+        "desc": "Experts merging building with coding"
+      }
+    },
+    "timeline": [
+      {
+        "year": "2018",
+        "title": "Studio Foundation",
+        "body": "We started as a small architectural team aiming to reshape traditional residential and commercial spaces."
+      },
+      {
+        "year": "2020",
+        "title": "Interior Design Expansion",
+        "body": "We introduced interior design and turn-key furnishing services to deliver complete spatial experiences."
+      },
+      {
+        "year": "2023",
+        "title": "Going Digital (Graphic & Web)",
+        "body": "We expanded our vision by incorporating premium branding and web development services to support corporate digital transformation."
+      },
+      {
+        "year": "2026",
+        "title": "Regional Leadership & Innovation",
+        "body": "Today, we stand as a premier creative studio delivering physical and digital design harmony under one roof."
+      }
+    ],
+    "map": {
+      "label": "Visit Us",
+      "heading": "Our Creative Headquarters",
+      "address": "Main Avenue, Creative & Design District"
+    }
+  },
+
+  "contact": {
+    "heading": "Let's Craft Something Great Together",
+    "sub": "Our architectural and digital team is thrilled to hear your vision and help guide you through a premium implementation process.",
+    "btn_send": "Send Message Now",
+    "info": {
+      "email": "Email Us Directly",
+      "phone": "Call Us",
+      "hours": "Official Hours",
+      "hours_val": "Sun - Thu: 9:00 AM - 6:00 PM"
+    }
+  },
+  "services": {
+    "heading": "Integrated Specialties That Define Your Space and Brand Identity"
+  },
+  "work": {
+    "sub_label": "EMBODIMENT OF PASSION & INNOVATION"
   }
 }
