@@ -52,7 +52,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-md font-cairo">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/40 bg-[#1c1c1c] backdrop-blur-md font-cairo">
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-16">
         <Link
           to="/"
@@ -66,7 +66,7 @@ export default function Navbar() {
               e.currentTarget.style.display = 'none';
             }}
           />
-          <span className="text-xl font-bold tracking-wide text-foreground sm:text-2xl">
+          <span className="text-xl font-bold tracking-wide text-white sm:text-2xl">
             {t('nav.logo', 'نوح')}
           </span>
         </Link>

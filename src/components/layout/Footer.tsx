@@ -73,7 +73,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-border/40 bg-background/80 backdrop-blur-md pt-24 pb-12 text-foreground relative overflow-hidden font-cairo">
+    <footer className="border-t border-border/40 bg-[#1c1c1c] backdrop-blur-md pt-24 pb-12 text-foreground relative overflow-hidden font-cairo">
       <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
       </div>
@@ -84,7 +84,7 @@ export default function Footer() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-16">
         <div className="grid grid-cols-1 gap-16 pb-20 border-b border-border/40 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-6">
-            <span className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl font-cairo">
+            <span className="text-3xl font-extrabold tracking-tight text-white md:text-4xl font-cairo">
               {t('nav.logo', 'نوح')}
               <span className="text-accent">.</span>
             </span>
