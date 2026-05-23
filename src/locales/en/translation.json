@@ -8,7 +8,13 @@
       "work": "Work",
       "contact": "Contact"
     },
-    "cta": "Get Started"
+    "cta": "Get Started",
+
+    "services": {
+      "arch": "Architecture & Interior Design",
+      "graphic": "Graphic Design & Digital Marketing",
+      "web": "Web & Software Development"
+    }
   },
 
   "hero": {
@@ -33,28 +39,47 @@
     }
   },
   "features": {
-    "label": "Our Philosophy",
-    "heading": "How We Transform Complex Ideas Into Physical & Digital Realities",
+    "tag": "// 01. SERVICES & PILLARS",
+    "heading": "Our Core Pillars",
+    "subheading": "Precision engineering meets visual excellence across three disciplines",
+    "deliverables_label": "Core Deliverables Include",
+    "explore_more": "Explore Details +",
     "items": [
       {
         "number": "01",
-        "title": "Smart Architectural Planning",
-        "body": "We study physical space to craft intelligent architectural structures that merge environmental sustainability with geometric beauty."
+        "title": "Architecture & Interior Design",
+        "body": "Professional architectural design is an art combining creativity, innovation, and technology to create vibrant, functional spaces that meet community needs.",
+        "code": "SEC // S40_A1",
+        "bullets": [
+          "Interior & Exterior Design",
+          "Executive Working Drawings (Shopdrawings)",
+          "Landscape & Green Spaces Design",
+          "3D Animation & Walkthrough Renderings"
+        ]
       },
       {
         "number": "02",
-        "title": "Sensory Interior Design",
-        "body": "We design indoor spaces with a unique spirit, meticulously selecting materials and lighting to reflect comfort and identity."
+        "title": "Graphic Design & Digital Marketing",
+        "body": "Professional graphic design is the foundation of marketing success, reflecting brand identity and engaging target audiences with innovative visual solutions.",
+        "code": "SEC // S40_A2",
+        "bullets": [
+          "Corporate Brand Identity & Logo Design",
+          "Motion Graphics & Visual Effects",
+          "Digital Marketing & Strategic Planning",
+          "Social Media Platforms Design Frameworks"
+        ]
       },
       {
         "number": "03",
-        "title": "Unique Brand Identity",
-        "body": "We translate your project values into a powerful visual identity that resonates with audiences and sets you apart from competitors."
-      },
-      {
-        "number": "04",
-        "title": "Luxury Digital Experience",
-        "body": "We build fast, responsive websites with sleek interactive interfaces that ensure your clients enjoy an immersive browsing experience."
+        "title": "Web & Software Development",
+        "body": "Professional web development blends aesthetics with efficient programming to build high-performance, secure, and fully responsive digital solutions.",
+        "code": "SEC // S40_A3",
+        "bullets": [
+          "UI/UX Design for Web & Mobile Apps",
+          "Front-End Engineering",
+          "Back-End Infrastructure & Services",
+          "Responsive Interactive Websites"
+        ]
       }
     ]
   },
