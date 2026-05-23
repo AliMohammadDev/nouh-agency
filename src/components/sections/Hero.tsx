@@ -99,7 +99,7 @@ export default function Hero() {
 
             <div className="flex flex-wrap gap-4">
               <a
-                href="#work"
+                href="work"
                 className="flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-accent-foreground transition hover:bg-accent/90 shadow-lg"
               >
                 {t('hero.cta')}

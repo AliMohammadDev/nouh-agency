@@ -120,7 +120,7 @@ export default function Footer() {
                     href="mailto:hello@noahagency.com"
                     className="hover:text-accent transition-colors duration-200"
                   >
-                    hello@noahagency.com
+                    nouh@noahagency.com
                   </a>
                 </li>
               </ul>
