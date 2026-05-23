@@ -14,18 +14,19 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
 
+  // تحديث الروابط: تفعيل الـ Dropdown على رابط أعمالنا (work) وحذف الخدمات
   const navLinks = [
     { key: 'home', to: '/' },
     { key: 'about', to: '/about' },
-    { key: 'services', to: '/services', hasDropdown: true },
-    { key: 'work', to: '/work' },
+    { key: 'work', to: '/work', hasDropdown: true }, // التفعيل هنا
     { key: 'contact', to: '/contact' },
   ];
 
-  const serviceItems = [
-    { key: 'arch', to: '/services/architecture' },
-    { key: 'graphic', to: '/services/graphic-design' },
-    { key: 'web', to: '/services/web-development' },
+  // تصنيفات الأعمال الفاخرة المنسدلة
+  const workItems = [
+    { key: 'arch', to: '/work/architecture' },
+    { key: 'graphic', to: '/work/graphic-design' },
+    { key: 'web', to: '/work/web-development' },
   ];
 
   const toggleLanguage = () => {
@@ -50,7 +51,6 @@ export default function Navbar() {
           />
           <span className="text-xl font-bold tracking-wide text-foreground sm:text-2xl">
             {t('nav.logo', 'نوح')}
-            <span className="text-accent">.</span>
           </span>
         </Link>
 
@@ -59,7 +59,7 @@ export default function Navbar() {
           {navLinks.map(({ key, to, hasDropdown }) => {
             const isActive =
               location.pathname === to ||
-              (hasDropdown && location.pathname.startsWith('/services'));
+              (hasDropdown && location.pathname.startsWith('/work'));
 
             return (
               <li
@@ -91,7 +91,7 @@ export default function Navbar() {
                   />
                 )}
 
-                {/* القائمة المنسدلة على طراز الوكالات العالمية الفاخرة */}
+                {/* القائمة المنسدلة الفاخرة مع هوفر الخلفية البيضاء الحرة والحدود العائمة */}
                 {hasDropdown && (
                   <AnimatePresence>
                     {dropdownOpen && (
@@ -99,17 +99,17 @@ export default function Navbar() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 12 }}
-                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }} // تأثير تنقلي ناعم جداً وجذاب
+                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                         className={`absolute top-full ${isRTL ? 'right-0' : 'left-0'} w-80 mt-2 rounded-2xl border border-white/[0.06] bg-background/95 p-2 shadow-2xl shadow-black/40 backdrop-blur-xl z-50`}
                       >
                         <div className="flex flex-col gap-0.5">
-                          {serviceItems.map((item) => (
+                          {workItems.map((item) => (
                             <Link
                               key={item.key}
                               to={item.to}
                               className="block p-3.5 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-white hover:text-black rounded-xl"
                             >
-                              {t(`nav.services.${item.key}`)}
+                              {t(`nav.work_categories.${item.key}`)}
                             </Link>
                           ))}
                         </div>
@@ -189,14 +189,14 @@ export default function Navbar() {
                       <div
                         className={`flex flex-col gap-1 ${isRTL ? 'pr-6 border-r' : 'pl-6 border-l'} border-border/60 mt-1 mb-2`}
                       >
-                        {serviceItems.map((item) => (
+                        {workItems.map((item) => (
                           <Link
                             key={item.key}
                             to={item.to}
                             className="text-sm font-medium py-2 text-muted-foreground hover:text-accent transition-colors"
                             onClick={() => setMenuOpen(false)}
                           >
-                            {t(`nav.services.${item.key}`)}
+                            {t(`nav.work_categories.${item.key}`)}
                           </Link>
                         ))}
                       </div>

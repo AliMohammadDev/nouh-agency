@@ -9,11 +9,10 @@
       "contact": "Contact"
     },
     "cta": "Get Started",
-
-    "services": {
-      "arch": "Architecture & Interior Design",
-      "graphic": "Graphic Design & Digital Marketing",
-      "web": "Web & Software Development"
+    "work_categories": {
+      "arch": "Architecture & Interiors",
+      "graphic": "Visual Identities & Marketing",
+      "web": "Websites & Software Platforms"
     }
   },
 

@@ -29,7 +29,6 @@ export default function Features() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
 
-  // استدعاء مصفوفة الركائز ديناميكياً من ملف الترجمة النشط
   const rawItems = t('features.items', { returnObjects: true });
   const pillarsData = Array.isArray(rawItems) ? (rawItems as PillarItem[]) : [];
 
@@ -141,7 +140,7 @@ export default function Features() {
 
                 <div className="mt-8 pt-4 flex items-center justify-between font-mono text-[9px] text-zinc-600 border-t border-dashed border-zinc-900 group-hover:text-accent/60 transition-colors duration-350 relative z-20">
                   <div className="text-accent/40 group-hover:text-accent transition-colors duration-300 flex items-center gap-1 font-cairo">
-                    <span className="text-[10px]">
+                    <span className="text-[10px] font-cairo">
                       {t('features.explore_more')}
                     </span>
                     <ArrowUpRight
