@@ -56,8 +56,9 @@ export default function Features() {
 
   return (
     <section className="py-28 bg-zinc-950 text-white relative overflow-hidden border-b border-accent/10 font-cairo">
-      <div className="absolute top-0 left-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
-      <div className="absolute top-0 right-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
         <div className="mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6">

@@ -239,8 +239,9 @@ export default function ArchShowcase() {
 
   return (
     <section className="py-28 bg-zinc-950 text-white relative overflow-hidden border-b border-accent/10 font-cairo">
-      <div className="absolute top-0 left-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
-      <div className="absolute top-0 right-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
         <div className="mb-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 border-b border-accent/10 pb-8">
@@ -270,7 +271,7 @@ export default function ArchShowcase() {
             style={{ perspective: 1200 }}
           >
             <div className="absolute top-4 left-4 text-[10px] text-white z-20 bg-black/80 py-1.5 px-3 border border-white/10 shadow-lg select-none flex items-center gap-1.5 backdrop-blur-sm font-mono">
-              <Eye className="h-3 w-3 text-accent font-cairo" />
+              <Eye className="h-3 w-3 text-accent font-ca" />
               <span>
                 {isRTL ? 'انقر لتكبير الشاشة' : 'CLICK TO FULLSCREEN'}
               </span>
