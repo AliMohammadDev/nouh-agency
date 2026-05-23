@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import {
-  Facebook,
   Instagram,
   Linkedin,
-  Twitter,
   Mail,
   MapPin,
+  Youtube,
+  MessageCircle,
 } from 'lucide-react';
 import { useDirection } from '../../hooks/useDirection';
 
@@ -14,6 +14,63 @@ export default function Footer() {
   const { isRTL } = useDirection();
 
   const currentYear = new Date().getFullYear();
+
+  const socialAccounts = [
+    {
+      type: 'lucide',
+      Icon: Instagram,
+      href: 'https://www.instagram.com/nouharchitects',
+      label: 'Instagram',
+    },
+    {
+      type: 'svg',
+      svgPath: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+          <path d="M22 13.833h-6c0 1.5.833 2.5 2.5 2.5 1.167 0 1.833-.5 2.167-1.167h1.666C21.833 17 20 19 18.5 19c-3 0-4.5-2.083-4.5-5s1.5-5 4.5-5c2.833 0 4 2.083 4 4.5v.333zM18.5 10.5c-1.333 0-2.167.833-2.333 2.167h4.5c0-1.334-.833-2.167-2.167-2.167zm-10 1c1 .333 1.5 1.167 1.5 2.333 0 2.167-1.5 3.167-4 3.167H1v-12h4.5c2.333 0 3.667.833 3.667 2.667 0 1.166-.667 1.833-1.667 2.166zm-5-3.333v2.166h2c.833 0 1.5-.333 1.5-1.083 0-.667-.5-1.083-1.5-1.083h-2zm0 4.166v2.5h2.167c1 0 1.666-.333 1.666-1.166 0-.917-.666-1.334-1.666-1.334H3.5zm11.333-6h6V8h-6V6.333z" />
+        </svg>
+      ),
+      href: 'https://www.behance.net/NouhArchitects',
+      label: 'Behance',
+    },
+    {
+      type: 'lucide',
+      Icon: Linkedin,
+      href: 'https://www.linkedin.com/in/nouharchitects',
+      label: 'LinkedIn',
+    },
+    {
+      type: 'svg',
+      svgPath: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+      ),
+      href: 'https://twitter.com/NouhArchitects',
+      label: 'X (Twitter)',
+    },
+    {
+      type: 'lucide',
+      Icon: Youtube,
+      href: 'https://www.youtube.com/@nouh.architects',
+      label: 'YouTube',
+    },
+    {
+      type: 'svg',
+      svgPath: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+          <path d="M12.017 0C5.396 0 0 5.396 0 12.017c0 5.082 3.158 9.388 7.618 11.116-.102-.949-.195-2.408.041-3.443.213-.932 1.373-5.819 1.373-5.819s-.351-.703-.351-1.744c0-1.633.948-2.853 2.125-2.853 1.002 0 1.486.753 1.486 1.656 0 1.008-.642 2.514-.974 3.908-.276 1.171.589 2.124 1.744 2.124 2.094 0 3.707-2.207 3.707-5.398 0-2.822-2.029-4.793-4.92-4.793-3.35 0-5.315 2.513-5.315 5.109 0 1.012.39 2.099.877 2.691.096.117.109.22.08.34-.088.366-.284 1.157-.323 1.316-.051.21-.17.254-.392.151-1.463-.68-2.378-2.815-2.378-4.532 0-3.69 2.684-7.082 7.734-7.082 4.059 0 7.213 2.893 7.213 6.762 0 4.034-2.544 7.281-6.077 7.281-1.188 0-2.304-.617-2.686-1.349 0 0-.587 2.234-.73 2.782-.266 1.023-.986 2.308-1.467 3.085 1.125.347 2.316.535 3.551.535 6.621 0 12.018-5.396 12.018-12.017C24.034 5.396 18.638 0 12.017 0z" />
+        </svg>
+      ),
+      href: 'https://www.pinterest.com/nouharchitects',
+      label: 'Pinterest',
+    },
+    {
+      type: 'lucide',
+      Icon: MessageCircle,
+      href: 'https://wa.me/message/BVUKQNAFX5FJP1',
+      label: 'WhatsApp',
+    },
+  ];
 
   return (
     <footer className="border-t border-border/40 bg-background/80 backdrop-blur-md pt-24 pb-12 text-foreground relative overflow-hidden font-cairo">
@@ -28,7 +85,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-16 pb-20 border-b border-border/40 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-6">
             <span className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl font-cairo">
-              {t('nav.logo')}
+              {t('nav.logo', 'نوح')}
               <span className="text-accent">.</span>
             </span>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm font-cairo">
@@ -37,19 +94,22 @@ export default function Footer() {
                 'استوديو إبداعي متكامل يدمج بين أصالة التصميم المعماري والداخلي، وقوة الحلول الرقمية في الجرافيك وتطوير الويب.'
               )}
             </p>
-            <div className="flex gap-4 mt-2">
-              {[
-                { Icon: Instagram, href: '#' },
-                { Icon: Linkedin, href: '#' },
-                { Icon: Facebook, href: '#' },
-                { Icon: Twitter, href: '#' },
-              ].map(({ Icon, href }, index) => (
+
+            <div className="flex flex-wrap gap-2 mt-2 max-w-xs">
+              {socialAccounts.map((account, index) => (
                 <a
                   key={index}
-                  href={href}
-                  className="p-3 bg-secondary/30 border border-border/50 text-muted-foreground transition hover:bg-accent hover:text-black rounded-xl shadow-sm cursor-pointer"
+                  href={account.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={account.label}
+                  className="w-10 h-10 bg-secondary/30 border border-border/50 text-muted-foreground transition duration-300 hover:bg-accent hover:text-black hover:border-accent rounded-xl shadow-sm cursor-pointer flex items-center justify-center"
                 >
-                  <Icon size={18} />
+                  {account.type === 'lucide' && account.Icon ? (
+                    <account.Icon size={16} />
+                  ) : (
+                    account.svgPath
+                  )}
                 </a>
               ))}
             </div>
@@ -117,10 +177,10 @@ export default function Footer() {
                 <li className="flex items-center gap-4">
                   <Mail size={18} className="text-accent shrink-0" />
                   <a
-                    href="mailto:hello@noahagency.com"
-                    className="hover:text-accent transition-colors duration-200"
+                    href="mailto:nouh.architects@gmail.com"
+                    className="hover:text-accent transition-colors duration-200 break-all"
                   >
-                    nouh@noahagency.com
+                    nouh.architects@gmail.com
                   </a>
                 </li>
               </ul>
@@ -130,7 +190,7 @@ export default function Footer() {
 
         <div className="pt-12 flex flex-col items-center justify-between gap-6 sm:flex-row text-xs text-muted-foreground/60 font-cairo">
           <span>
-            &copy; {currentYear} {t('nav.logo')} Studio.{' '}
+            &copy; {currentYear} {t('nav.logo', 'نوح')} Studio.{' '}
             {t('footer.rights', 'جميع الحقوق محفوظة.')}
           </span>
           <ul className="flex gap-8">
