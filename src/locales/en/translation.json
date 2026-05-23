@@ -184,5 +184,28 @@
   },
   "work": {
     "sub_label": "EMBODIMENT OF PASSION & INNOVATION"
+  },
+  "why": {
+    "tagline": "Stand Out With Us",
+    "title": "Why Creators Choose Us?",
+    "subtitle": "At Noah Agency, we merge art with technology to craft exceptional digital experiences that propel your business forward.",
+    "features": {
+      "strategy": {
+        "title": "Strategic Planning",
+        "desc": "We analyze the market precisely to create well-studied plans that ensure your project's success and uniqueness."
+      },
+      "speed": {
+        "title": "Speed & Efficiency",
+        "desc": "We strictly commit to deadlines while maintaining the highest standards of masterly execution."
+      },
+      "quality": {
+        "title": "Uncompromised Quality",
+        "desc": "We care about the finest coding and design details to present your identity in its absolute best form."
+      },
+      "support": {
+        "title": "Continuous Support",
+        "desc": "We are not just service providers; we are success partners who are always there for you."
+      }
+    }
   }
 }

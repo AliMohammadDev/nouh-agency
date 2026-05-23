@@ -6,6 +6,7 @@ import { useDirection } from '../../hooks/useDirection';
 import { motion, AnimatePresence } from 'motion/react';
 import { useGetMajors } from '../../api/major';
 import logoImg from '../../assets/images/png/logo/logo-agency.png';
+
 interface Category {
   id: number;
   name: string;
@@ -35,7 +36,6 @@ export default function Navbar() {
     { key: 'contact', to: '/contact' },
   ];
 
-  //
   const getMajorSlugPath = (major: Major) => {
     const nameLower = major.name.toLowerCase();
     if (nameLower.includes('عمار') || nameLower.includes('arch'))
@@ -56,7 +56,7 @@ export default function Navbar() {
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-16">
         <Link
           to="/"
-          className="text-xl font-bold tracking-tight flex items-center gap-3 group"
+          className="text-xl font-bold tracking-tight flex items-center gap-3 group no-underline hover:no-underline"
         >
           <img
             src={logoImg}
@@ -87,7 +87,7 @@ export default function Navbar() {
               >
                 <Link
                   to={to}
-                  className={`text-base font-semibold transition-colors duration-300 hover:text-accent flex items-center gap-1.5 ${
+                  className={`text-base font-semibold transition-colors duration-300 hover:text-accent flex items-center gap-1.5 no-underline hover:no-underline ${
                     isActive ? 'text-accent' : 'text-muted-foreground'
                   }`}
                 >
@@ -100,14 +100,6 @@ export default function Navbar() {
                   )}
                 </Link>
 
-                {isActive && (
-                  <motion.div
-                    layoutId="activeNavLine"
-                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent rounded-full"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-
                 {hasDropdown && (
                   <AnimatePresence>
                     {dropdownOpen && majors && majors.length > 0 && (
@@ -115,14 +107,14 @@ export default function Navbar() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 12 }}
-                        className={`absolute top-full ${isRTL ? 'right-0' : 'left-0'} w-80 mt-2 rounded-2xl border border-white/[0.06] bg-background/95 p-2 shadow-2xl z-50 backdrop-blur-xl`}
+                        className={`absolute top-full ${isRTL ? 'right-0' : 'left-0'} w-80 mt-2 rounded-2xl border border-white/[0.06] bg-[#1a1a1a] p-2 shadow-2xl z-50 backdrop-blur-xl`}
                       >
                         <div className="flex flex-col gap-0.5">
                           {majors.map((major) => (
                             <Link
                               key={major.id}
                               to={getMajorSlugPath(major)}
-                              className="block p-3.5 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-white hover:text-black rounded-xl"
+                              className="block p-3.5 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-accent hover:text-black rounded-xl no-underline hover:no-underline"
                             >
                               {major.name}
                             </Link>
@@ -148,7 +140,7 @@ export default function Navbar() {
 
           <Link
             to="/contact"
-            className="hidden lg:flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-black hover:bg-accent hover:text-accent-foreground transition-all"
+            className="hidden lg:flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-black hover:bg-accent hover:text-accent-foreground transition-all no-underline hover:no-underline"
           >
             <span>{t('nav.cta', 'ابدأ مشروعك')}</span>
             <ArrowUpRight size={14} />
