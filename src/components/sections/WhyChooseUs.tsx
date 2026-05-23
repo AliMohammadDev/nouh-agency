@@ -45,9 +45,9 @@ export default function WhyChooseUs() {
 
   return (
     <section className="py-24 bg-[#1c1c1c] text-white font-cairo overflow-hidden border-t border-border/20 relative">
-      <div
-        className={`absolute top-1/2 -translate-y-1/2 ${isRTL ? 'left-0' : 'right-0'} w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none z-0`}
-      />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
