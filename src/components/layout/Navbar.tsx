@@ -5,6 +5,7 @@ import { Menu, X, Globe, ArrowUpRight, ChevronDown } from 'lucide-react';
 import { useDirection } from '../../hooks/useDirection';
 import { motion, AnimatePresence } from 'motion/react';
 import { useGetMajors } from '../../api/major';
+import logoImg from '../../assets/images/png/logo/logo-agency.png';
 interface Category {
   id: number;
   name: string;
@@ -57,6 +58,14 @@ export default function Navbar() {
           to="/"
           className="text-xl font-bold tracking-tight flex items-center gap-3 group"
         >
+          <img
+            src={logoImg}
+            alt="Noah Agency Logo"
+            className="h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
           <span className="text-xl font-bold tracking-wide text-foreground sm:text-2xl">
             {t('nav.logo', 'نوح')}
           </span>
