@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUpRight, Layers, Layout } from 'lucide-react';
+import { ArrowUpRight, Layers, Layout, Search, X } from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
 import { useGetMajors } from '../api/major';
 
@@ -48,6 +48,9 @@ export default function Work() {
   const [currentMajor, setCurrentMajor] = useState<Major | null>(null);
   const [activeCategory, setActiveCategory] = useState<number | 'all'>('all');
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
   useEffect(() => {
     if (!majors || majors.length === 0) return;
 
@@ -76,6 +79,7 @@ export default function Work() {
     if (matched) {
       setCurrentMajor(matched);
       setActiveCategory('all');
+      setSearchQuery('');
     }
   }, [categorySlug, majors]);
 
@@ -90,6 +94,18 @@ export default function Work() {
       ? allProjectsOfMajor
       : currentMajor?.categories?.find((c) => c.id === activeCategory)
           ?.projects || [];
+
+  const filteredProjects = displayedProjects.filter((project) => {
+    const matchesSearch =
+      searchQuery.trim() === '' ||
+      project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.tags?.some((tag) =>
+        tag.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+    return matchesSearch;
+  });
 
   if (isLoading) {
     return (
@@ -131,37 +147,78 @@ export default function Work() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 border-b border-zinc-800 pb-5 mb-16">
-          <button
-            onClick={() => setActiveCategory('all')}
-            className={`relative px-5 py-2.5 text-xs font-bold transition-all duration-300 cursor-pointer rounded-md border backdrop-blur-md ${
-              activeCategory === 'all'
-                ? 'bg-accent text-black border-accent font-black shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.3)]'
-                : 'border-zinc-800 text-zinc-400 bg-zinc-950/40 hover:text-white hover:border-zinc-700'
-            }`}
-          >
-            <span className="flex items-center gap-2">
-              <Layers size={13} />
-              {isRTL ? 'كافة أعمال القسم' : 'ALL SECTIONS'}
-            </span>
-          </button>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800 pb-5 mb-16">
+          <div className="flex flex-wrap items-center gap-3 order-2 md:order-1">
+            <button
+              onClick={() => setActiveCategory('all')}
+              className={`relative px-5 py-2.5 text-xs font-bold transition-all duration-300 cursor-pointer rounded-md border backdrop-blur-md ${
+                activeCategory === 'all'
+                  ? 'bg-accent text-black border-accent font-black shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.3)]'
+                  : 'border-zinc-800 text-zinc-400 bg-zinc-950/40 hover:text-white hover:border-zinc-700'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <Layers size={13} />
+                {isRTL ? 'كافة أعمال القسم' : 'ALL SECTIONS'}
+              </span>
+            </button>
 
-          {currentMajor?.categories?.map((cat) => {
-            const isCurrent = activeCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`relative px-5 py-2.5 text-xs font-bold transition-all duration-300 cursor-pointer rounded-md border backdrop-blur-md ${
-                  isCurrent
-                    ? 'bg-accent text-black border-accent font-black shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.3)]'
-                    : 'border-zinc-800 text-zinc-400 bg-zinc-950/40 hover:text-white hover:border-zinc-700'
-                }`}
+            {currentMajor?.categories?.map((cat) => {
+              const isCurrent = activeCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`relative px-5 py-2.5 text-xs font-bold transition-all duration-300 cursor-pointer rounded-md border backdrop-blur-md ${
+                    isCurrent
+                      ? 'bg-accent text-black border-accent font-black shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.3)]'
+                      : 'border-zinc-800 text-zinc-400 bg-zinc-950/40 hover:text-white hover:border-zinc-700'
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="w-full md:w-80 order-1 md:order-2 relative group">
+            <div
+              className={`absolute inset-0 bg-accent/10 rounded-md blur-md transition-opacity duration-300 ${isSearchFocused ? 'opacity-100' : 'opacity-0'}`}
+            />
+            <div
+              className={`relative flex items-center bg-zinc-950/80 border rounded-md transition-all duration-300 ${isSearchFocused ? 'border-accent' : 'border-zinc-800 hover:border-zinc-700'}`}
+            >
+              <div
+                className={`p-3 ${isRTL ? 'pl-2' : 'pr-2'} text-zinc-500 transition-colors ${isSearchFocused ? 'text-accent' : 'group-hover:text-zinc-400'}`}
               >
-                {cat.name}
-              </button>
-            );
-          })}
+                <Search size={16} />
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setIsSearchFocused(false)}
+                placeholder={
+                  isRTL ? 'ابحث عن اسم المشروع...' : 'Search project name...'
+                }
+                className={`w-full bg-transparent py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none font-medium ${isRTL ? 'pl-10 font-cairo' : 'pr-10 font-sans'}`}
+              />
+              <AnimatePresence>
+                {searchQuery && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    onClick={() => setSearchQuery('')}
+                    className={`absolute p-2 text-zinc-500 hover:text-white transition-colors cursor-pointer ${isRTL ? 'left-2' : 'right-2'}`}
+                  >
+                    <X size={14} />
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
 
         <motion.div
@@ -169,7 +226,7 @@ export default function Work() {
           className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16 items-stretch"
         >
           <AnimatePresence mode="popLayout">
-            {displayedProjects.map((project) => {
+            {filteredProjects.map((project) => {
               const projectImg =
                 project.image_url ||
                 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200';
@@ -235,12 +292,16 @@ export default function Work() {
           </AnimatePresence>
         </motion.div>
 
-        {!isLoading && displayedProjects.length === 0 && (
+        {!isLoading && filteredProjects.length === 0 && (
           <div className="h-64 flex flex-col items-center justify-center text-center border border-dashed border-zinc-800 rounded-2xl p-8 mt-6 bg-zinc-950/20">
-            <span className="text-sm font-mono text-zinc-500 tracking-widest">
-              {isRTL
-                ? 'EMPTY_INDEX // لا توجد مشاريع مضافة هنا بعد'
-                : 'EMPTY_INDEX // NO PROJECTS IN THIS CATEGORY YET'}
+            <span className="text-sm font-mono text-zinc-500 tracking-widest uppercase">
+              {searchQuery
+                ? isRTL
+                  ? `NO_RESULTS // لم نجد نتائج لـ "${searchQuery}"`
+                  : `NO_RESULTS // NO MATCHES FOR "${searchQuery}"`
+                : isRTL
+                  ? 'EMPTY_INDEX // لا توجد مشاريع مضافة هنا بعد'
+                  : 'EMPTY_INDEX // NO PROJECTS IN THIS CATEGORY YET'}
             </span>
           </div>
         )}
