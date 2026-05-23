@@ -10,13 +10,13 @@ export default function NotFound() {
   return (
     <section className="flex min-h-screen items-center justify-center bg-background">
       <div className="text-center">
-        <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
+        <p className="mb-4 font-mono text-6xl uppercase tracking-widest text-accent">
           404
         </p>
         <h1 className="mb-4 text-6xl font-bold lg:text-8xl">
           {isRTL ? 'الصفحة غير موجودة' : 'Page not found'}
         </h1>
-        <p className="mb-10 text-base text-muted-foreground">
+        <p className="m-10 text-base text-muted-foreground">
           {isRTL
             ? 'الصفحة التي تبحث عنها غير موجودة أو تم نقلها.'
             : "The page you are looking for doesn't exist or has been moved."}
