@@ -130,16 +130,6 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-
-            <button
-              onClick={scrollToTop}
-              className="self-start mt-10 flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-accent transition-colors duration-300 group cursor-pointer font-cairo"
-            >
-              <span>{isRTL ? 'إلى الأعلى' : 'Back to top'}</span>
-              <div className="p-2 bg-zinc-900 border border-accent/10 rounded-full group-hover:border-accent group-hover:bg-accent group-hover:text-white transition-all duration-300">
-                <ArrowUp size={14} className="animate-pulse" />
-              </div>
-            </button>
           </div>
         </div>
 
