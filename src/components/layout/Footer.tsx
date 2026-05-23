@@ -27,8 +27,11 @@ export default function Footer() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-16">
         <div className="grid grid-cols-1 gap-16 pb-20 border-b border-primary-foreground/10 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-6">
-            <span className="text-3xl font-bold tracking-tight text-white font-mono md:text-4xl">
-              AMMAR<span className="text-accent">.</span>
+            <span
+              className={`text-3xl font-bold tracking-tight text-white md:text-4xl ${isRTL ? 'font-sans' : 'font-mono'}`}
+            >
+              {t('nav.logo')}
+              <span className="text-accent">.</span>
             </span>
             <p className="text-base text-primary-foreground/70 leading-relaxed max-w-sm">
               {t(
@@ -112,10 +115,10 @@ export default function Footer() {
                 <li className="flex items-center gap-4">
                   <Mail size={20} className="text-accent shrink-0" />
                   <a
-                    href="mailto:hello@studioammar.com"
+                    href="mailto:hello@noahagency.com"
                     className="hover:text-accent transition-colors"
                   >
-                    hello@studioammar.com
+                    hello@noahagency.com
                   </a>
                 </li>
               </ul>
@@ -135,7 +138,7 @@ export default function Footer() {
 
         <div className="pt-12 flex flex-col items-center justify-between gap-6 sm:flex-row text-sm text-primary-foreground/50">
           <span>
-            &copy; {currentYear} AMMAR Studio.{' '}
+            &copy; {currentYear} {t('nav.logo')} Studio.{' '}
             {t('footer.rights', 'جميع الحقوق محفوظة.')}
           </span>
           <ul className="flex gap-8">

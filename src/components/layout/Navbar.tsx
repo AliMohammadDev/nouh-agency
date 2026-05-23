@@ -11,7 +11,7 @@ export default function Navbar() {
   const { t, i18n } = useTranslation();
   const { isRTL } = useDirection();
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation(); 
+  const location = useLocation();
 
   const navLinks = [
     { key: 'home', to: '/' },
@@ -28,6 +28,8 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-md transition-all duration-300">
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-16">
+        {/* الشعار واسم الوكالة المطور */}
+        {/* الشعار واسم الوكالة المعتمد على ملفات الترجمة بالكامل */}
         <Link
           to="/"
           className="text-xl font-bold tracking-tight flex items-center gap-3 group"
@@ -35,14 +37,18 @@ export default function Navbar() {
         >
           <img
             src={logoImg}
-            alt="Ammar Studio Logo"
+            alt="Noah Agency Logo"
             className="h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             onError={(e) => {
               e.currentTarget.style.display = 'none';
             }}
           />
-          <span className="font-mono text-xl tracking-wider text-foreground">
-            AMMAR<span className="text-accent">.</span>
+          {/* هنا يقرأ الاسم تلقائياً من ملف اللغة ويضع النقطة الملونة الفاخرة في النهاية */}
+          <span
+            className={`text-xl font-bold tracking-wide text-foreground sm:text-2xl ${isRTL ? 'font-sans' : 'font-mono'}`}
+          >
+            {t('nav.logo')}
+            <span className="text-accent">.</span>
           </span>
         </Link>
 
