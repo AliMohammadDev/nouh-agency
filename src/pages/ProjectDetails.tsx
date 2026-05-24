@@ -13,6 +13,7 @@ import {
 import { useDirection } from '../hooks/useDirection';
 import { useGetProject } from '../api/project';
 import { AnimatePresence } from 'motion/react';
+import { Pannellum } from 'pannellum-react';
 
 interface Tag {
   id: number;
@@ -68,17 +69,18 @@ export default function ProjectDetails() {
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
+  // 1. تحديد مصفوفة الصور بناءً على الوضع المختار
   const imagesToShow =
     viewMode === 'normal'
       ? project?.all_images || []
       : project?.all_images_vr || [];
-  const currentMainImage =
-    activeImage ||
-    (viewMode === 'normal' ? project?.image : project?.image_vr) ||
-    imagesToShow[0];
+
+  // 2. تحديث طريقة جلب الصورة الرئيسية لتعتمد دائماً على المصفوفات وتتجاوز الروابط الفردية المغلقة
+  const currentMainImage = activeImage || imagesToShow[0] || '';
 
   const handleModeChange = (mode: 'normal' | 'vr') => {
     setViewMode(mode);
+    // تصفير الصورة النشطة لكي يأخذ تلقائياً أول صورة من المصفوفة الجديدة المحددة
     setActiveImage(null);
   };
 
@@ -149,7 +151,7 @@ export default function ProjectDetails() {
                 <ImageIcon size={12} />
                 {isRTL ? 'الصور العادية' : 'Normal View'}
               </button>
-              {(project.image_vr || project.all_images_vr?.length > 0) && (
+              {project.all_images_vr && project.all_images_vr.length > 0 && (
                 <button
                   onClick={() => handleModeChange('vr')}
                   className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition-all cursor-pointer ${viewMode === 'vr' ? 'bg-zinc-900 text-accent border border-zinc-800' : 'text-zinc-500 hover:text-zinc-300'}`}
@@ -161,17 +163,40 @@ export default function ProjectDetails() {
             </div>
 
             <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-950 border border-zinc-900 rounded-2xl group shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-              <img
-                src={currentMainImage || ''}
-                alt={project.name}
-                className="w-full h-full object-cover transition-all duration-700 contrast-105 brightness-95"
-              />
-              <button
-                onClick={() => setLightboxImage(currentMainImage || null)}
-                className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-black/80 border border-zinc-800/60 text-zinc-400 hover:text-accent opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-sm"
-              >
-                <Maximize2 size={14} />
-              </button>
+              {currentMainImage ? (
+                viewMode === 'vr' ? (
+                  <Pannellum
+                    width="100%"
+                    height="100%"
+                    image={currentMainImage}
+                    pitch={10}
+                    yaw={180}
+                    hfov={110}
+                    autoLoad
+                    showZoomCtrl={false}
+                    mouseZoom={false}
+                  />
+                ) : (
+                  <img
+                    src={currentMainImage}
+                    alt={project.name}
+                    className="w-full h-full object-cover transition-all duration-700 contrast-105 brightness-95"
+                  />
+                )
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">
+                  {isRTL ? 'لا توجد صورة متاحة' : 'No image available'}
+                </div>
+              )}
+
+              {currentMainImage && viewMode === 'normal' && (
+                <button
+                  onClick={() => setLightboxImage(currentMainImage)}
+                  className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-black/80 border border-zinc-800/60 text-zinc-400 hover:text-accent opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-sm"
+                >
+                  <Maximize2 size={14} />
+                </button>
+              )}
             </div>
 
             {imagesToShow.length > 1 && (
@@ -197,13 +222,13 @@ export default function ProjectDetails() {
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 {project.category && (
-                  <span className="text-[9px] font-bold tracking-widest text-accent uppercase bg-accent/5 border border-accent/10 px-2 py-0.5 rounded">
+                  <span className="text-1xl font-bold tracking-widest text-accent uppercase bg-accent/5 border border-accent/10 px-2 py-0.5 rounded">
                     {project.category.name}
                   </span>
                 )}
                 {project.project_number && (
-                  <span className="text-[9px] font-mono tracking-widest text-zinc-500 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
-                    #{project.project_number}
+                  <span className="text-2xl font-mono tracking-widest text-zinc-500 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
+                    {project.project_number}
                   </span>
                 )}
               </div>
@@ -275,20 +300,23 @@ export default function ProjectDetails() {
       <AnimatePresence>
         {lightboxImage && (
           <div
-            className="fixed inset-0 bg-black/95 backdrop-blur-md z-[9999] flex items-center justify-center p-4 cursor-zoom-out"
+            className="fixed inset-0 bg-black/98 backdrop-blur-md z-[9999] flex items-center justify-center cursor-zoom-out"
             onClick={() => setLightboxImage(null)}
           >
             <button
               onClick={() => setLightboxImage(null)}
-              className="absolute top-6 right-6 p-3 rounded-full bg-zinc-900 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+              className="absolute top-6 right-6 p-3 rounded-full bg-zinc-900/80 text-zinc-400 hover:text-white transition-colors cursor-pointer z-50 backdrop-blur-sm border border-zinc-800"
             >
-              <X size={16} />
+              <X size={20} />
             </button>
-            <img
-              src={lightboxImage}
-              alt="Project zoomed"
-              className="max-w-full max-h-[85vh] object-contain rounded-xl border border-zinc-900 shadow-2xl"
-            />
+
+            <div className="w-full h-full flex items-center justify-center p-0 m-0 overflow-hidden">
+              <img
+                src={lightboxImage}
+                alt="Project zoomed full page"
+                className="w-screen h-screen object-contain select-none"
+              />
+            </div>
           </div>
         )}
       </AnimatePresence>
