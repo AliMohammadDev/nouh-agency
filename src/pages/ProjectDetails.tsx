@@ -164,32 +164,17 @@ export default function ProjectDetails() {
 
             <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-950 border border-zinc-900 rounded-2xl group shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
               {currentMainImage ? (
-                viewMode === 'vr' ? (
-                  <Pannellum
-                    width="100%"
-                    height="100%"
-                    image={currentMainImage}
-                    pitch={10}
-                    yaw={180}
-                    hfov={110}
-                    autoLoad
-                    showZoomCtrl={false}
-                    mouseZoom={false}
-                  />
-                ) : (
-                  <img
-                    src={currentMainImage}
-                    alt={project.name}
-                    className="w-full h-full object-cover transition-all duration-700 contrast-105 brightness-95"
-                  />
-                )
+                <img
+                  src={currentMainImage}
+                  alt={project.name}
+                  className="w-full h-full object-cover transition-all duration-700 contrast-105 brightness-95"
+                />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">
                   {isRTL ? 'لا توجد صورة متاحة' : 'No image available'}
                 </div>
               )}
-
-              {currentMainImage && viewMode === 'normal' && (
+              {currentMainImage && (
                 <button
                   onClick={() => setLightboxImage(currentMainImage)}
                   className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-black/80 border border-zinc-800/60 text-zinc-400 hover:text-accent opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-sm"

@@ -1,7 +1,18 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Globe, ArrowUpRight, ChevronDown } from 'lucide-react';
+import {
+  Menu,
+  X,
+  Globe,
+  ArrowUpRight,
+  ChevronDown,
+  Home,
+  Info,
+  Briefcase,
+  Phone,
+  Layers,
+} from 'lucide-react';
 import { useDirection } from '../../hooks/useDirection';
 import { motion, AnimatePresence } from 'motion/react';
 import { useGetMajors } from '../../api/major';
@@ -25,15 +36,16 @@ export default function Navbar() {
   const { isRTL } = useDirection();
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const location = useLocation();
 
   const { data: majors } = useGetMajors() as { data: Major[] | undefined };
 
   const navLinks = [
-    { key: 'home', to: '/' },
-    { key: 'about', to: '/about' },
-    { key: 'work', to: '/work', hasDropdown: true },
-    { key: 'contact', to: '/contact' },
+    { key: 'home', to: '/', icon: Home },
+    { key: 'about', to: '/about', icon: Info },
+    { key: 'work', to: '/work', hasDropdown: true, icon: Briefcase },
+    { key: 'contact', to: '/contact', icon: Phone },
   ];
 
   const getMajorSlugPath = (major: Major) => {
@@ -57,6 +69,7 @@ export default function Navbar() {
         <Link
           to="/"
           className="text-xl font-bold tracking-tight flex items-center gap-3 group no-underline hover:no-underline"
+          onClick={() => setMenuOpen(false)}
         >
           <img
             src={logoImg}
@@ -147,13 +160,124 @@ export default function Navbar() {
           </Link>
 
           <button
-            className="p-2 rounded-xl border lg:hidden"
+            className="p-2 rounded-xl border border-border/40 text-white lg:hidden bg-white/5 transition-colors duration-200"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </nav>
+
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="border-t border-border/20 bg-[#1c1c1c] lg:hidden overflow-hidden"
+          >
+            <div className="px-6 py-6 flex flex-col gap-4">
+              <ul className="flex flex-col gap-2">
+                {navLinks.map(({ key, to, hasDropdown, icon: Icon }) => {
+                  const isActive =
+                    location.pathname === to ||
+                    (hasDropdown && location.pathname.startsWith('/work'));
+
+                  return (
+                    <li key={key} className="flex flex-col">
+                      {hasDropdown ? (
+                        <div>
+                          <button
+                            onClick={() =>
+                              setMobileDropdownOpen(!mobileDropdownOpen)
+                            }
+                            className={`w-full flex items-center justify-between p-3.5 rounded-xl font-semibold text-base transition-colors duration-200 ${
+                              isActive
+                                ? 'bg-accent/10 text-accent'
+                                : 'text-muted-foreground hover:bg-white/5'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <Icon
+                                size={18}
+                                className={
+                                  isActive
+                                    ? 'text-accent'
+                                    : 'text-muted-foreground'
+                                }
+                              />
+                              <span>{t(`nav.links.${key}`)}</span>
+                            </div>
+                            <ChevronDown
+                              size={16}
+                              className={`transition-transform duration-300 ${mobileDropdownOpen ? 'rotate-180 text-accent' : ''}`}
+                            />
+                          </button>
+
+                          <AnimatePresence>
+                            {mobileDropdownOpen && majors && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="overflow-hidden bg-black/20 rounded-xl mt-1 mx-2"
+                              >
+                                <div className="p-2 flex flex-col gap-1">
+                                  {majors.map((major) => (
+                                    <Link
+                                      key={major.id}
+                                      to={getMajorSlugPath(major)}
+                                      onClick={() => setMenuOpen(false)}
+                                      className="flex items-center gap-2.5 p-3 text-sm font-medium text-muted-foreground hover:text-white rounded-lg no-underline"
+                                    >
+                                      <Layers
+                                        size={14}
+                                        className="text-muted-foreground/60"
+                                      />
+                                      {major.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ) : (
+                        <Link
+                          to={to}
+                          onClick={() => setMenuOpen(false)}
+                          className={`flex items-center gap-3 p-3.5 rounded-xl font-semibold text-base transition-all duration-200 no-underline hover:no-underline ${
+                            isActive
+                              ? 'bg-accent/10 text-accent'
+                              : 'text-muted-foreground hover:bg-white/5'
+                          }`}
+                        >
+                          <Icon
+                            size={18}
+                            className={
+                              isActive ? 'text-accent' : 'text-muted-foreground'
+                            }
+                          />
+                          <span>{t(`nav.links.${key}`)}</span>
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <Link
+                to="/contact"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-base font-bold text-black hover:bg-accent hover:text-accent-foreground transition-all no-underline hover:no-underline mt-2"
+              >
+                <span>{t('nav.cta', 'ابدأ مشروعك')}</span>
+                <ArrowUpRight size={16} />
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
