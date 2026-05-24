@@ -2,105 +2,36 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDirection } from '../../hooks/useDirection';
 import { motion, AnimatePresence } from 'motion/react';
-import { Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Eye, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { useGetProjects } from '../../api/project';
 
-interface ShowcaseImage {
-  id: string;
-  url: string;
-  titleEn: string;
-  titleAr: string;
-  subtitleEn: string;
-  subtitleAr: string;
-  descEn: string;
-  descAr: string;
-  locationEn: string;
-  locationAr: string;
-  coordinates: string;
+interface ProjectData {
+  id: number;
+  name: string;
+  description: string;
+  project_number: string;
+  is_featured: boolean;
+  image: string | null;
+  image_vr?: string;
+  category?: {
+    id: number;
+    name: string;
+    description: string;
+  };
 }
-
-const ARCH_IMAGES: ShowcaseImage[] = [
-  {
-    id: 'arch-1',
-    url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1400&q=90',
-    titleEn: 'Vanguard Nouh Residence',
-    titleAr: 'إقامة نوح الريادية',
-    subtitleEn: 'Cantilevered Modern Exterior Design',
-    subtitleAr: 'تصميم خارجي حديث بكتل كابولية معلقة',
-    descEn:
-      'A structural statement of luxury, combining suspended fair-faced concrete volumes, double-height glazing, and Amber twilight ambient backlighting.',
-    descAr:
-      'عمل فخم صاخب يدمج الكتل الخرسانية المعلقة والجدران الزجاجية الشاهقة، مضافاً إليها لمسات ممتدة من الإضاءة الليلية الدافئة.',
-    locationEn: 'Aleppo, Waddah Al-Yamamah',
-    locationAr: 'حلب الجمالية، شارع وضاح اليمامة',
-    coordinates: '36.2132° N, 37.1354° E',
-  },
-  {
-    id: 'arch-2',
-    url: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=90',
-    titleEn: 'W40 Luxury Apartment',
-    titleAr: 'تصميم الشقة السكنية W40',
-    subtitleEn: 'Premium Spatial Composition',
-    subtitleAr: 'التوزيع الفراغي وتصميم الديكور الداخلي',
-    descEn:
-      'Blending rich natural walnut wood cladding with structural matte black metal frames to craft a warm yet highly minimalist modern lounge.',
-    descAr:
-      'توليفة راقية تدمج ألواح خشب الجوز الطبيعي دافئ الملمس مع إطارات معدنية سوداء داكنة تبرز الهندسة المعاصرة.',
-    locationEn: 'Damascus Royal District',
-    locationAr: 'مشروع دمر السكني الفاخر، دمشق',
-    coordinates: '33.5138° N, 36.2765° E',
-  },
-  {
-    id: 'arch-3',
-    url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=90',
-    titleEn: 'W40 Brutalist Art Gallery',
-    titleAr: 'صالة معرض W40 الفنية',
-    subtitleEn: 'Minimalist Exhibition Design',
-    subtitleAr: 'تصميم فضاءات متاحف ومعارض ريادية',
-    descEn:
-      'Featuring structural columns of reinforced cast-in-place concrete, specialized neon light strips, and custom acoustic zoning.',
-    descAr:
-      'مساحات معمارية مخصصة للأعمال الفخرية، تتميز بأعمدة خرسانية خام، وعناصر معزولة، ومصادر إضاءة نيون مستترة.',
-    locationEn: 'Beirut Downtown Front',
-    locationAr: 'شاطئ بيروت، وسط المدينة التجاري',
-    coordinates: '33.8938° N, 35.5018° E',
-  },
-  {
-    id: 'arch-4',
-    url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=90',
-    titleEn: 'W42 Premium Penthouse Suite',
-    titleAr: 'جناح البنتهاوس الراق W42',
-    subtitleEn: 'High-End Residential Masterpiece',
-    subtitleAr: 'تحفة سكنية معمارية مخصصة للنخبة',
-    descEn:
-      'Designed with panoramic floor-to-ceiling windows, high-fidelity indirect dynamic illumination, and premium Italian marble finishing.',
-    descAr:
-      'شقة علوية واسعة بإطلالة كاملة كاشفة، مصممة بألواح الرخام الإيطالي الفاتح وتوزيع إنارة ديناميكية غاية في الرقي.',
-    locationEn: 'Aleppo West Quarters',
-    locationAr: 'المناطق الغربية الفاخرة، حلب',
-    coordinates: '36.2061° N, 37.1094° E',
-  },
-  {
-    id: 'arch-5',
-    url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=90',
-    titleEn: 'Amber Horizon Villa',
-    titleAr: 'فيلا الأفق العنبري',
-    subtitleEn: 'Elevated Cantilevered Glass Pavilion',
-    subtitleAr: 'أجنحة معلقة وجدران زجاجية متناغمة مع الأفق',
-    descEn:
-      'A dramatic luxury pavilion overlooking the rolling landscape, designed with thermal steel profiles, automated sliding window panels, and rich stone claddings.',
-    descAr:
-      'جناح معلق مذهل يشرف على الطبيعة الخضراء، مجهز بمسارات واجهة فولاذية ذكية، لوحات زجاج منزلقة مؤتمتة، وأناقة الأحجار الطبيعية.',
-    locationEn: 'Duma Slopes, Rural Damascus',
-    locationAr: 'مرتفعات دوما الجبلية الواعدة، ريف دمشق',
-    coordinates: '33.5684° N, 36.4150° E',
-  },
-];
 
 type AnimStyle = '3D-flip' | 'zoom-elastic' | 'warp-slide' | 'cine-fade';
 
 export default function ArchShowcase() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
+
+  const { data: projects, isLoading } = useGetProjects() as {
+    data: ProjectData[] | undefined;
+    isLoading: boolean;
+  };
+
+  const [featuredProjects, setFeaturedProjects] = useState<ProjectData[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [animStyle, setAnimStyle] = useState<AnimStyle>('3D-flip');
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
@@ -108,15 +39,26 @@ export default function ArchShowcase() {
   const [isAutoplay, setIsAutoplay] = useState(true);
 
   useEffect(() => {
-    if (!isAutoplay) return;
-    const interval = setInterval(() => {
-      setDirection('next');
-      setActiveIndex((prev) => (prev + 1) % ARCH_IMAGES.length);
-    }, 4500);
-    return () => clearInterval(interval);
-  }, [isAutoplay]);
+    if (projects) {
+      const filtered = projects.filter(
+        (project) => project.is_featured === true
+      );
+      setFeaturedProjects(filtered);
+      setActiveIndex(0);
+    }
+  }, [projects]);
 
   useEffect(() => {
+    if (!isAutoplay || featuredProjects.length <= 1) return;
+    const interval = setInterval(() => {
+      setDirection('next');
+      setActiveIndex((prev) => (prev + 1) % featuredProjects.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [isAutoplay, featuredProjects]);
+
+  useEffect(() => {
+    if (featuredProjects.length === 0) return;
     const styles: AnimStyle[] = [
       '3D-flip',
       'zoom-elastic',
@@ -125,19 +67,21 @@ export default function ArchShowcase() {
     ];
     const nextStyle = styles[activeIndex % styles.length];
     setAnimStyle(nextStyle);
-  }, [activeIndex]);
+  }, [activeIndex, featuredProjects]);
 
   const handleNext = () => {
+    if (featuredProjects.length <= 1) return;
     setIsAutoplay(false);
     setDirection('next');
-    setActiveIndex((prev) => (prev + 1) % ARCH_IMAGES.length);
+    setActiveIndex((prev) => (prev + 1) % featuredProjects.length);
   };
 
   const handlePrev = () => {
+    if (featuredProjects.length <= 1) return;
     setIsAutoplay(false);
     setDirection('prev');
     setActiveIndex(
-      (prev) => (prev - 1 + ARCH_IMAGES.length) % ARCH_IMAGES.length
+      (prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length
     );
   };
 
@@ -146,8 +90,6 @@ export default function ArchShowcase() {
     setDirection(idx > activeIndex ? 'next' : 'prev');
     setActiveIndex(idx);
   };
-
-  const activeImage = ARCH_IMAGES[activeIndex];
 
   const getAnimationVariants = () => {
     const isNext = direction === 'next';
@@ -237,6 +179,35 @@ export default function ArchShowcase() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <section className="py-28 bg-zinc-950 text-white flex items-center justify-center min-h-[600px]">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 text-accent animate-spin" />
+          <span className="text-xs tracking-widest text-zinc-500 uppercase font-mono">
+            {isRTL
+              ? 'جاري جلب المشاريع المميزة...'
+              : 'Loading featured projects...'}
+          </span>
+        </div>
+      </section>
+    );
+  }
+
+  if (featuredProjects.length === 0) {
+    return (
+      <section className="py-28 bg-zinc-950 text-white flex items-center justify-center min-h-[400px]">
+        <span className="text-xs font-mono text-zinc-500 tracking-widest uppercase">
+          {isRTL
+            ? 'لا توجد مشاريع مميزة لعرضها حالياً'
+            : 'NO FEATURED PROJECTS TO DISPLAY YET'}
+        </span>
+      </section>
+    );
+  }
+
+  const activeImage = featuredProjects[activeIndex];
+
   return (
     <section className="py-28 bg-zinc-950 text-white relative overflow-hidden border-b border-accent/10 font-cairo">
       <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
@@ -247,14 +218,12 @@ export default function ArchShowcase() {
         <div className="mb-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 border-b border-accent/10 pb-8">
           <div className="max-w-2xl">
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl !leading-tight text-white font-cairo">
-              {isRTL
-                ? 'معرض تحف معمارية مصممة بدقة فائقة'
-                : 'PREMIUM ARCHITECTURAL MASTERPIECE VIEWPORT'}
+              {isRTL ? 'معرض أعمالنا المميزة' : 'OUR FEATURED MASTERPIECES'}
             </h2>
             <p className="mt-4 text-base leading-relaxed max-w-xl text-zinc-400 font-cairo">
               {isRTL
-                ? 'إليك تصفحاً بصرياً فخماً لأبرز تصاميم الفلل المعمارية المعاصرة، الشقق الملكية والأبنية الخدمية الحاصلة على ثقة النخبة من عملاء وكالة نوح.'
-                : 'A luxurious multi-visual experience presenting contemporary luxury mansions, royal estates, and boutique spaces crafted by Nouh Agency.'}
+                ? 'نستعرض هنا نخبة من المشاريع والتحف المعمارية التي تم تمييزها لتبين مدى دقة وجودة تنفيذ تفاصيلنا الإبداعية.'
+                : 'A curated showcase of our ultimate architectural masterpieces highlighted to reflect our peak creative execution.'}
             </p>
           </div>
         </div>
@@ -267,11 +236,13 @@ export default function ArchShowcase() {
 
           <div
             className="relative flex-grow aspect-[16/9] lg:aspect-[21/9] w-full bg-black overflow-hidden border border-accent/10 cursor-zoom-in group"
-            onClick={() => setFullscreenImage(activeImage.url)}
+            onClick={() =>
+              activeImage.image && setFullscreenImage(activeImage.image)
+            }
             style={{ perspective: 1200 }}
           >
             <div className="absolute top-4 left-4 text-[10px] text-white z-20 bg-black/80 py-1.5 px-3 border border-white/10 shadow-lg select-none flex items-center gap-1.5 backdrop-blur-sm font-mono">
-              <Eye className="h-3 w-3 text-accent font-ca" />
+              <Eye className="h-3 w-3 text-accent" />
               <span>
                 {isRTL ? 'انقر لتكبير الشاشة' : 'CLICK TO FULLSCREEN'}
               </span>
@@ -289,8 +260,8 @@ export default function ArchShowcase() {
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <img
-                  src={activeImage.url}
-                  alt={isRTL ? activeImage.titleAr : activeImage.titleEn}
+                  src={activeImage.image || ''}
+                  alt={activeImage.name}
                   referrerPolicy="no-referrer"
                   className="h-full w-full object-cover select-none transition-all duration-700 ease-out brightness-90 group-hover:brightness-100 group-hover:scale-[1.01]"
                 />
@@ -301,15 +272,20 @@ export default function ArchShowcase() {
           <div className="mt-5 pt-4 border-t border-accent/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="max-w-2xl">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-accent">
-                  {isRTL ? activeImage.subtitleAr : activeImage.subtitleEn}
+                <span className="text-[11px] font-bold uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded">
+                  #{activeImage.project_number}
                 </span>
+                {activeImage.category && (
+                  <span className="text-[11px] font-medium text-zinc-400">
+                    {activeImage.category.name}
+                  </span>
+                )}
               </div>
               <h3 className="text-xl font-bold tracking-tight text-white mt-1 font-cairo">
-                {isRTL ? activeImage.titleAr : activeImage.titleEn}
+                {activeImage.name}
               </h3>
               <p className="text-zinc-400 text-sm leading-relaxed mt-1 border-s-2 border-accent/30 ps-3 font-cairo">
-                {isRTL ? activeImage.descAr : activeImage.descEn}
+                {activeImage.description}
               </p>
             </div>
 
@@ -329,7 +305,9 @@ export default function ArchShowcase() {
               <div className="px-2 text-xs font-mono font-bold text-white flex items-center">
                 <span>0{activeIndex + 1}</span>
                 <span className="text-zinc-600 px-1.5">/</span>
-                <span className="text-zinc-600">0{ARCH_IMAGES.length}</span>
+                <span className="text-zinc-600">
+                  0{featuredProjects.length}
+                </span>
               </div>
 
               <button
@@ -348,7 +326,7 @@ export default function ArchShowcase() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-6">
-          {ARCH_IMAGES.map((img, idx) => (
+          {featuredProjects.map((img, idx) => (
             <button
               key={img.id}
               onClick={() => triggerSelect(idx)}
@@ -359,17 +337,17 @@ export default function ArchShowcase() {
               }`}
             >
               <img
-                src={img.url}
-                alt={img.id}
+                src={img.image || ''}
+                alt={img.name}
                 referrerPolicy="no-referrer"
                 className="h-full w-full object-cover brightness-50 hover:brightness-90 transition-all duration-300"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent flex flex-col justify-end p-2">
                 <span className="text-[9px] uppercase text-zinc-400 truncate block">
-                  {isRTL ? img.locationAr : img.locationEn}
+                  {img.project_number}
                 </span>
                 <span className="text-[10px] font-bold text-white truncate block uppercase font-cairo">
-                  {isRTL ? img.titleAr : img.titleEn}
+                  {img.name}
                 </span>
               </div>
               <span className="absolute top-1.5 right-1.5 text-[8px] font-mono bg-accent/20 text-accent px-1.5 py-0.5 font-bold border border-accent/30">
