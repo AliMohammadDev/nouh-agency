@@ -135,16 +135,16 @@
     },
     "contact_info": {
       "phone_title": "رقم الهاتف",
-      "phone_value": "+963 999 999 999",
+      "phone_value": "+963 940 471 847",
       "email_title": "البريد الإلكتروني",
-      "email_value": "info@nouhagency.com",
+      "email_value": "nouh.architects@gmail.com",
       "loc_title": "موقع الشركة",
-      "loc_value": "سوريا - حلب - الفرقان"
+      "loc_value": "سوريا - حلب - حي المحافظة"
     },
     "map": {
       "label": "موقعنا",
       "heading": "زوروا الشركة الخاصة بنا",
-      "address": "سوريا، حلب، حي الفرقان - الشارع الرئيسي"
+      "address": "سوريا، حلب، حي المحافظة -  شارع الماركات"
     },
     "feats": {
       "design": { "title": "نهج هندسي متطور", "desc": "تخطيط دقيق لكل مليمتر" },
