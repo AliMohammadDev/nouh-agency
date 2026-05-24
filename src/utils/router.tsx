@@ -6,6 +6,7 @@ import Work from '../pages/Work';
 import Contact from '../pages/Contact';
 import NotFound from '../pages/NotFound';
 import { createBrowserRouter } from 'react-router-dom';
+import ProjectDetails from '../pages/ProjectDetails';
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: 'about', Component: About },
       { path: 'work/:categorySlug?', Component: Work },
+      { path: 'work/project/:id', Component: ProjectDetails },
       { path: 'contact', Component: Contact },
       { path: '*', Component: NotFound },
     ],
