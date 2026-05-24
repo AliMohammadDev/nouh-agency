@@ -51,6 +51,32 @@ export default function WhyChooseUs() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, rotate: isRTL ? -2 : 2 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+            className="flex items-center justify-center relative group order-first lg:order-last"
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent rounded-full filter blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+            <motion.img
+              src={logoImg}
+              alt="Noah Agency Premium Logo"
+              animate={{ y: [0, -12, 0] }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+              whileHover={{ scale: 1.04 }}
+              className="w-3/5 sm:w-1/2 md:w-3/4 max-w-[320px] lg:max-w-[420px] h-auto object-contain drop-shadow-[0_25px_25px_rgba(0,0,0,0.6)] cursor-pointer filter brightness-95 hover:brightness-110 transition-all duration-500"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </motion.div>
+
           <div className="flex flex-col gap-10">
             <div>
               <motion.span
@@ -92,47 +118,24 @@ export default function WhyChooseUs() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="p-5 rounded-xl bg-[#242424] border border-white/[0.03] hover:border-accent/20 transition-all duration-300 group"
+                  className="p-5 rounded-xl bg-[#242424] border border-white/[0.03] hover:border-accent/20 transition-all duration-300 group flex flex-row sm:flex-col items-start gap-4 sm:gap-0"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110">
+                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 sm:mb-4 transition-transform duration-300 group-hover:scale-110">
                     {item.icon}
                   </div>
-                  <h3 className="text-base font-bold mb-2 group-hover:text-accent transition-colors duration-300">
-                    {t(item.titleKey, item.defaultTitle)}
-                  </h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {t(item.descKey, item.defaultDesc)}
-                  </p>
+
+                  <div className="flex flex-col">
+                    <h3 className="text-base font-bold mb-2 group-hover:text-accent transition-colors duration-300">
+                      {t(item.titleKey, item.defaultTitle)}
+                    </h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {t(item.descKey, item.defaultDesc)}
+                    </p>
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, rotate: isRTL ? -2 : 2 }}
-            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="flex items-center justify-center relative group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent rounded-full filter blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-
-            <motion.img
-              src={logoImg}
-              alt="Noah Agency Premium Logo"
-              animate={{ y: [0, -12, 0] }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              whileHover={{ scale: 1.04 }}
-              className="w-4/5 md:w-3/4 max-w-[420px] h-auto object-contain drop-shadow-[0_25px_25px_rgba(0,0,0,0.6)] cursor-pointer filter brightness-95 hover:brightness-110 transition-all duration-500"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          </motion.div>
         </div>
       </div>
     </section>
