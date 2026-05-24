@@ -15,7 +15,6 @@
       "web": "Websites & Software Platforms"
     }
   },
-
   "hero": {
     "cta": "View Our Work",
     "secondary": "Our Services",
@@ -39,7 +38,7 @@
   },
   "features": {
     "tag": "// 01. SERVICES & PILLARS",
-    "heading": "Our Core Pillars",
+    "heading": "Our Services ",
     "subheading": "Precision engineering meets visual excellence across three disciplines",
     "deliverables_label": "Core Deliverables Include",
     "explore_more": "Explore Details +",
@@ -125,10 +124,28 @@
       "sitemap": "Sitemap"
     }
   },
-
   "about": {
     "heading": "We Merge Art and Engineering to Craft Exceptional Spaces",
-    "sub": "Founded in 2018, Ammar Studio is a creative hub integrating authentic architecture and interior design with modern digital solutions. We believe physical spaces and digital experiences complement each other to build unforgettable brands.",
+    "sub": "Founded in 2018, Nouh Agency is a creative hub integrating authentic architecture and interior design with modern digital solutions. We believe physical spaces and digital experiences complement each other to build unforgettable brands.",
+    "social_title": "Follow Us on Our Platforms",
+    "contact": {
+      "label": "Contact Us",
+      "heading": "Ready to turn your vision into reality",
+      "desc": "You can contact us for any inquiries or to start your next project with our creative team."
+    },
+    "contact_info": {
+      "phone_title": "Phone Number",
+      "phone_value": "+963 999 999 999",
+      "email_title": "Email Address",
+      "email_value": "info@nouhagency.com",
+      "loc_title": "Company Location",
+      "loc_value": "Syria - Aleppo - Al-Furqan"
+    },
+    "map": {
+      "label": "Our Location",
+      "heading": "Visit Our Company",
+      "address": "Syria, Aleppo, Al-Furqan District - Main Street"
+    },
     "feats": {
       "design": {
         "title": "Advanced Architecture",
@@ -160,14 +177,12 @@
         "title": "Regional Leadership & Innovation",
         "body": "Today, we stand as a premier creative studio delivering physical and digital design harmony under one roof."
       }
-    ],
-    "map": {
-      "label": "Visit Us",
-      "heading": "Our Creative Headquarters",
-      "address": "Al-Muhafaza, Brands Street, Aleppo"
-    }
+    ]
   },
-
+  "common": {
+    "explore": "Explore More",
+    "contact": "Contact Us"
+  },
   "contact": {
     "heading": "Let's Craft Something Great Together",
     "sub": "Our architectural and digital team is thrilled to hear your vision and help guide you through a premium implementation process.",

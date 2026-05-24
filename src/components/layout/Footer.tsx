@@ -100,7 +100,6 @@ export default function Footer() {
               )}
             </p>
 
-            {/* الأيقونات المعدلة هندسياً بالكامل */}
             <div className="flex flex-wrap gap-2 mt-2 max-w-xs">
               {socialAccounts.map((account, index) => (
                 <a

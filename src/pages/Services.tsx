@@ -2,14 +2,13 @@ import { useTranslation } from 'react-i18next';
 import { ArrowUpRight, Layers, Sparkles, Layout } from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
 import { useGetMajors } from '../api/major';
-import { motion } from 'motion/react'; // أو 'framer-motion' حسب نسختك
+import { motion } from 'motion/react';
 
 export default function Services() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
   const { data: majors, isLoading } = useGetMajors();
 
-  // تأثير الهياكل المؤقتة (Skeleton Loading) لجمالية الـ UX أثناء جلب البيانات
   if (isLoading) {
     return (
       <section className="pt-36 pb-24 bg-background">
@@ -31,11 +30,9 @@ export default function Services() {
 
   return (
     <section className="pt-36 pb-24 bg-background text-foreground relative overflow-hidden">
-      {/* خطوط هندسية جمالية بالخلفية مستوحاة من مخططات الـ Blueprint */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:60px_60px]" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
-        {/* رأس الصفحة المطور بنصوص مخصصة للخدمات */}
         <div className="max-w-3xl mb-20">
           <span className="mb-4 inline-block text-xs font-bold uppercase tracking-widest text-accent bg-accent/10 px-3 py-1 rounded-full">
             {t('nav.links.services')}
@@ -48,7 +45,6 @@ export default function Services() {
           </h1>
         </div>
 
-        {/* شبكة الخدمات (Grid) الفاخرة */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {majors?.map((major, index) => (
             <motion.div
@@ -60,13 +56,11 @@ export default function Services() {
               className="group relative flex flex-col justify-between p-8 rounded-2xl border border-border/70 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-accent/40 hover:bg-card hover:shadow-2xl hover:shadow-accent/5"
             >
               <div>
-                {/* الجزء العلوي: الرقم والأيقونة المتفاعلة وسهم الانطلاق */}
                 <div className="flex items-center justify-between mb-8">
                   <span className="font-mono text-sm font-bold text-accent">
                     {String(index + 1).padStart(2, '0')}
                   </span>
 
-                  {/* سهم صاعد بزاوية (ArrowUpRight) يعطي إيحاء بالفخامة ومفهوم استوديوهات العمارة العالمية */}
                   <div className="p-2 rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-300">
                     <ArrowUpRight
                       size={18}
