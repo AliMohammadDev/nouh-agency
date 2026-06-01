@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,8 +13,7 @@ import {
 import { useDirection } from '../hooks/useDirection';
 import { useGetProject } from '../api/project';
 import { AnimatePresence } from 'motion/react';
-// @ts-ignore
-import { Pannellum } from 'pannellum-react';
+import SafePannellum from '../components/SafePannellum';
 
 interface Tag {
   id: number;
@@ -79,7 +78,7 @@ export default function ProjectDetails() {
 
   const handleModeChange = (mode: 'normal' | 'vr') => {
     setViewMode(mode);
-    setActiveImage(null); // تصفير الاختيار ليعود لأول صورة في المصفوفة الجديدة تلقائياً
+    setActiveImage(null);
   };
 
   if (isLoading) {
@@ -177,17 +176,7 @@ export default function ProjectDetails() {
                     </button>
                   </>
                 ) : (
-                  <Pannellum
-                    width="100%"
-                    height="100%"
-                    image={currentMainImage}
-                    pitch={10}
-                    yaw={180}
-                    hfov={100}
-                    autoLoad
-                    showZoomCtrl={true}
-                    showFullscreenCtrl={true}
-                  />
+                  <SafePannellum imageUrl={currentMainImage} isRTL={isRTL} />
                 )
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">
@@ -297,21 +286,21 @@ export default function ProjectDetails() {
       <AnimatePresence>
         {lightboxImage && viewMode === 'normal' && (
           <div
-            className="fixed inset-0 bg-black/98 backdrop-blur-md z-[9999] flex items-center justify-center cursor-zoom-out"
+            className="fixed inset-0 bg-black z-[9999] flex items-center justify-center cursor-zoom-out select-none"
             onClick={() => setLightboxImage(null)}
           >
             <button
               onClick={() => setLightboxImage(null)}
-              className="absolute top-6 right-6 p-3 rounded-full bg-zinc-900/80 text-zinc-400 hover:text-white transition-colors cursor-pointer z-50 backdrop-blur-sm border border-zinc-800"
+              className="absolute top-6 right-6 p-3 rounded-full bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white transition-all cursor-pointer z-[10000] backdrop-blur-md border border-zinc-800 shadow-lg"
             >
-              <X size={20} />
+              <X size={22} />
             </button>
 
             <div className="w-full h-full flex items-center justify-center p-0 m-0 overflow-hidden">
               <img
                 src={lightboxImage}
-                alt="Project zoomed full page"
-                className="w-screen h-screen object-contain select-none"
+                alt="Project zoomed full screen"
+                className="w-full h-full object-contain pointer-events-none"
               />
             </div>
           </div>
