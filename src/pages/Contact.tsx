@@ -72,8 +72,8 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 group">
-                <div className="p-3 rounded-xl bg-zinc-900 text-accent">
+              <div className="flex items-center gap-4 group ">
+                <div className="p-3 rounded-xl bg-zinc-900 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
                   <Clock size={18} />
                 </div>
                 <div className="flex flex-col">
