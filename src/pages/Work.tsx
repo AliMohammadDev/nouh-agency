@@ -299,7 +299,7 @@ export default function Work() {
 
         {!isLoading && filteredProjects.length === 0 && (
           <div className="h-64 flex flex-col items-center justify-center text-center border border-dashed border-zinc-900 rounded-xl p-8 mt-6 bg-zinc-950/10">
-            <span className="text-xs font-mono text-zinc-500 tracking-widest uppercase">
+            <span className="text-xs font-cairo text-zinc-500 tracking-widest uppercase">
               {searchQuery
                 ? isRTL
                   ? `NO_RESULTS  لم نجد نتائج لـ "${searchQuery}"`
