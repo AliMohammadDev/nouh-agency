@@ -82,13 +82,6 @@ export default function ProjectDetails() {
     setActiveImage(null); // تصفير الاختيار ليعود لأول صورة في المصفوفة الجديدة تلقائياً
   };
 
-  useEffect(() => {
-    fetch(currentMainImage)
-      .then((r) => r.blob())
-      .then(console.log)
-      .catch(console.error);
-  }, [currentMainImage]);
-
   if (isLoading) {
     return (
       <section className="pt-36 pb-24 bg-black text-zinc-100 min-h-screen relative overflow-hidden">
