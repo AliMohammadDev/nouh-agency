@@ -83,7 +83,7 @@ export default function Contact() {
                   <span className="text-sm font-semibold text-white/80">
                     {t(
                       'contact.info.hours_val',
-                      'الأحد - الخميس: 9:00 ص - 6:00 م'
+                      'السبت - الخميس: 9:00 ص - 6:00 م'
                     )}
                   </span>
                 </div>
