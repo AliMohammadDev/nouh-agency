@@ -9,6 +9,8 @@ import {
   Image as ImageIcon,
   Maximize2,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
 import { useGetProject } from '../api/project';
@@ -75,6 +77,30 @@ export default function ProjectDetails() {
       : project?.all_images_vr || [];
 
   const currentMainImage = activeImage || imagesToShow[0] || '';
+
+  const handleNextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!project?.all_images.length || !lightboxImage) return;
+
+    const currentIndex = project.all_images.indexOf(lightboxImage);
+    const nextIndex = (currentIndex + 1) % project.all_images.length;
+
+    setLightboxImage(project.all_images[nextIndex]);
+    setActiveImage(project.all_images[nextIndex]);
+  };
+
+  const handlePrevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!project?.all_images.length || !lightboxImage) return;
+
+    const currentIndex = project.all_images.indexOf(lightboxImage);
+    const prevIndex =
+      (currentIndex - 1 + project.all_images.length) %
+      project.all_images.length;
+
+    setLightboxImage(project.all_images[prevIndex]);
+    setActiveImage(project.all_images[prevIndex]);
+  };
 
   const handleModeChange = (mode: 'normal' | 'vr') => {
     setViewMode(mode);
@@ -286,23 +312,39 @@ export default function ProjectDetails() {
       <AnimatePresence>
         {lightboxImage && viewMode === 'normal' && (
           <div
-            className="fixed inset-0 bg-black z-[9999] flex items-center justify-center cursor-zoom-out select-none"
+            className="fixed inset-0 bg-black z-[9999] flex items-center justify-center cursor-zoom-out select-none w-screen h-screen overflow-hidden"
             onClick={() => setLightboxImage(null)}
           >
             <button
               onClick={() => setLightboxImage(null)}
-              className="absolute top-6 right-6 p-3 rounded-full bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white transition-all cursor-pointer z-[10000] backdrop-blur-md border border-zinc-800 shadow-lg"
+              className="absolute top-6 right-6 p-3 rounded-full bg-black/60 hover:bg-zinc-900/90 text-zinc-300 hover:text-white transition-all cursor-pointer z-[10000] backdrop-blur-md border border-zinc-800/40 shadow-lg"
             >
               <X size={22} />
             </button>
 
-            <div className="w-full h-full flex items-center justify-center p-0 m-0 overflow-hidden">
-              <img
-                src={lightboxImage}
-                alt="Project zoomed full screen"
-                className="w-full h-full object-contain pointer-events-none"
-              />
-            </div>
+            {project && project.all_images.length > 1 && (
+              <>
+                <button
+                  onClick={isRTL ? handleNextImage : handlePrevImage}
+                  className="absolute left-6 p-4 rounded-full bg-black/40 hover:bg-black/80 text-white border border-zinc-800/30 backdrop-blur-sm transition-all hover:scale-105 cursor-pointer z-[10000] shadow-2xl"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+
+                <button
+                  onClick={isRTL ? handlePrevImage : handleNextImage}
+                  className="absolute right-6 p-4 rounded-full bg-black/40 hover:bg-black/80 text-white border border-zinc-800/30 backdrop-blur-sm transition-all hover:scale-105 cursor-pointer z-[10000] shadow-2xl"
+                >
+                  <ChevronRight size={28} />
+                </button>
+              </>
+            )}
+
+            <img
+              src={lightboxImage}
+              alt="Project zoomed full screen"
+              className="w-full h-full object-cover pointer-events-none absolute inset-0 z-0"
+            />
           </div>
         )}
       </AnimatePresence>
