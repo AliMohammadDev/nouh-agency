@@ -222,5 +222,8 @@
         "desc": "We are not just service providers; we are success partners who are always there for you."
       }
     }
+  },
+  "loading": {
+    "structure": "Loading Structure..."
   }
 }
