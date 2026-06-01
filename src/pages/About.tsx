@@ -158,47 +158,55 @@ export default function About() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {/* PHONE CARD */}
-            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 transition-all duration-300">
-              {/* أيقونة الهاتف بلمسة هندسية */}
+            <a
+              href={`tel:${t('about.contact_info.phone_value')}`}
+              className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 hover:bg-zinc-900/80 transition-all duration-300 block"
+            >
               <div className="w-12 h-12 rounded-2xl bg-zinc-800/50 border border-white/5 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Phone size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-3">
+              <h3 className="text-xl font-bold mb-3 text-white">
                 {t('about.contact_info.phone_title')}
               </h3>
-              <p className="text-white/60" dir="ltr">
+              <p
+                className="text-white/60 group-hover:text-accent transition-colors duration-300"
+                dir="ltr"
+              >
                 {t('about.contact_info.phone_value')}
               </p>
-            </div>
+            </a>
 
-            {/* EMAIL CARD */}
-            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 transition-all duration-300">
-              {/* أيقونة الإيميل */}
+            <a
+              href="mailto:nouh.architects@gmail.com"
+              className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 hover:bg-zinc-900/80 transition-all duration-300 block"
+            >
               <div className="w-12 h-12 rounded-2xl bg-zinc-800/50 border border-white/5 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Mail size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-3">
+              <h3 className="text-xl font-bold mb-3 text-white">
                 {t('about.contact_info.email_title')}
               </h3>
-              <p className="text-white/60">
+              <p className="text-white/60 group-hover:text-accent transition-colors duration-300 break-all">
                 {t('about.contact_info.email_value')}
               </p>
-            </div>
+            </a>
 
-            {/* LOCATION CARD */}
-            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 transition-all duration-300">
-              {/* أيقونة الموقع الجغرافي */}
+            <a
+              href="https://maps.app.goo.gl/dqhNLTdDnmmETTV37"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center block flex-col items-center group hover:border-accent/40 hover:bg-zinc-900/80 transition-all duration-300 block"
+            >
               <div className="w-12 h-12 rounded-2xl bg-zinc-800/50 border border-white/5 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform duration-300">
                 <MapPin size={22} />
               </div>
-              <h3 className="text-xl font-bold mb-3">
+              <h3 className="text-xl font-bold mb-3 text-white">
                 {t('about.contact_info.loc_title')}
               </h3>
-              <p className="text-white/60">
+              <p className="text-white/60 group-hover:text-accent transition-colors duration-300">
                 {t('about.contact_info.loc_value')}
               </p>
-            </div>
+            </a>
           </div>
 
           {/* SOCIAL MEDIA */}
