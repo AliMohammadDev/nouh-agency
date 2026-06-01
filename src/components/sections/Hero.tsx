@@ -109,7 +109,7 @@ export default function Hero() {
                 />
               </a>
               <a
-                href="#services"
+                href="work"
                 className="flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-8 py-4 text-sm font-medium text-white backdrop-blur-sm transition hover:border-white hover:bg-white/20"
               >
                 {t('hero.secondary')}

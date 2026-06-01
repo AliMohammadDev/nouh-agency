@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,6 +13,7 @@ import {
 import { useDirection } from '../hooks/useDirection';
 import { useGetProject } from '../api/project';
 import { AnimatePresence } from 'motion/react';
+// @ts-ignore
 import { Pannellum } from 'pannellum-react';
 
 interface Tag {
@@ -69,20 +70,24 @@ export default function ProjectDetails() {
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
-  // 1. تحديد مصفوفة الصور بناءً على الوضع المختار
   const imagesToShow =
     viewMode === 'normal'
       ? project?.all_images || []
       : project?.all_images_vr || [];
 
-  // 2. تحديث طريقة جلب الصورة الرئيسية لتعتمد دائماً على المصفوفات وتتجاوز الروابط الفردية المغلقة
   const currentMainImage = activeImage || imagesToShow[0] || '';
 
   const handleModeChange = (mode: 'normal' | 'vr') => {
     setViewMode(mode);
-    // تصفير الصورة النشطة لكي يأخذ تلقائياً أول صورة من المصفوفة الجديدة المحددة
-    setActiveImage(null);
+    setActiveImage(null); // تصفير الاختيار ليعود لأول صورة في المصفوفة الجديدة تلقائياً
   };
+
+  useEffect(() => {
+    fetch(currentMainImage)
+      .then((r) => r.blob())
+      .then(console.log)
+      .catch(console.error);
+  }, [currentMainImage]);
 
   if (isLoading) {
     return (
@@ -111,7 +116,7 @@ export default function ProjectDetails() {
     return (
       <section className="pt-36 pb-24 bg-black text-zinc-100 min-h-screen flex items-center justify-center">
         <p className="text-xs font-mono tracking-widest text-zinc-500 uppercase">
-          {isRTL ? 'تعذر العثور على المشروع المطلوبة' : 'PROJECT NOT FOUND'}
+          {isRTL ? 'تعذر العثور على المشروع المطلوب' : 'PROJECT NOT FOUND'}
         </p>
       </section>
     );
@@ -157,30 +162,44 @@ export default function ProjectDetails() {
                   className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition-all cursor-pointer ${viewMode === 'vr' ? 'bg-zinc-900 text-accent border border-zinc-800' : 'text-zinc-500 hover:text-zinc-300'}`}
                 >
                   <Box size={12} />
-                  {isRTL ? 'معاينة VR' : 'VR Rendering'}
+                  {isRTL ? 'معاينة VR 360°' : 'VR Rendering'}
                 </button>
               )}
             </div>
 
             <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-950 border border-zinc-900 rounded-2xl group shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
               {currentMainImage ? (
-                <img
-                  src={currentMainImage}
-                  alt={project.name}
-                  className="w-full h-full object-cover transition-all duration-700 contrast-105 brightness-95"
-                />
+                viewMode === 'normal' ? (
+                  <>
+                    <img
+                      src={currentMainImage}
+                      alt={project.name}
+                      className="w-full h-full object-cover transition-all duration-700 contrast-105 brightness-95"
+                    />
+                    <button
+                      onClick={() => setLightboxImage(currentMainImage)}
+                      className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-black/80 border border-zinc-800/60 text-zinc-400 hover:text-accent opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-sm"
+                    >
+                      <Maximize2 size={14} />
+                    </button>
+                  </>
+                ) : (
+                  <Pannellum
+                    width="100%"
+                    height="100%"
+                    image={currentMainImage}
+                    pitch={10}
+                    yaw={180}
+                    hfov={100}
+                    autoLoad
+                    showZoomCtrl={true}
+                    showFullscreenCtrl={true}
+                  />
+                )
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">
                   {isRTL ? 'لا توجد صورة متاحة' : 'No image available'}
                 </div>
-              )}
-              {currentMainImage && (
-                <button
-                  onClick={() => setLightboxImage(currentMainImage)}
-                  className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-black/80 border border-zinc-800/60 text-zinc-400 hover:text-accent opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-sm"
-                >
-                  <Maximize2 size={14} />
-                </button>
               )}
             </div>
 
@@ -283,7 +302,7 @@ export default function ProjectDetails() {
       </div>
 
       <AnimatePresence>
-        {lightboxImage && (
+        {lightboxImage && viewMode === 'normal' && (
           <div
             className="fixed inset-0 bg-black/98 backdrop-blur-md z-[9999] flex items-center justify-center cursor-zoom-out"
             onClick={() => setLightboxImage(null)}
