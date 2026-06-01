@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import {
   MapPin,
+  Phone,
+  Mail,
   ArrowRight,
   Instagram,
   Linkedin,
@@ -156,8 +158,12 @@ export default function About() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {/* PHONE */}
-            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center">
+            {/* PHONE CARD */}
+            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 transition-all duration-300">
+              {/* أيقونة الهاتف بلمسة هندسية */}
+              <div className="w-12 h-12 rounded-2xl bg-zinc-800/50 border border-white/5 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Phone size={22} />
+              </div>
               <h3 className="text-xl font-bold mb-3">
                 {t('about.contact_info.phone_title')}
               </h3>
@@ -166,8 +172,12 @@ export default function About() {
               </p>
             </div>
 
-            {/* EMAIL */}
-            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center">
+            {/* EMAIL CARD */}
+            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 transition-all duration-300">
+              {/* أيقونة الإيميل */}
+              <div className="w-12 h-12 rounded-2xl bg-zinc-800/50 border border-white/5 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Mail size={22} />
+              </div>
               <h3 className="text-xl font-bold mb-3">
                 {t('about.contact_info.email_title')}
               </h3>
@@ -176,8 +186,12 @@ export default function About() {
               </p>
             </div>
 
-            {/* LOCATION */}
-            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center">
+            {/* LOCATION CARD */}
+            <div className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 transition-all duration-300">
+              {/* أيقونة الموقع الجغرافي */}
+              <div className="w-12 h-12 rounded-2xl bg-zinc-800/50 border border-white/5 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform duration-300">
+                <MapPin size={22} />
+              </div>
               <h3 className="text-xl font-bold mb-3">
                 {t('about.contact_info.loc_title')}
               </h3>
