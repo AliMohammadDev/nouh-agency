@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { Suspense } from 'react';
 import I18nProvider from '../../providers/I18nProvider';
 import Navbar from './Navbar';
@@ -19,6 +19,8 @@ export default function RootLayout() {
         </main>
 
         <Footer />
+
+        <ScrollRestoration />
 
         <ScrollToTopButton />
       </div>
