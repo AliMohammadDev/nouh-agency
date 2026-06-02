@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <section className="flex min-h-screen items-center justify-center bg-background">
       <div className="text-center">
-        <p className="mb-4 font-mono text-6xl uppercase tracking-widest text-accent">
+        <p className="mb-4 font-cairo text-6xl uppercase tracking-widest text-accent">
           404
         </p>
         <h1 className="mb-4 text-6xl font-bold lg:text-8xl">

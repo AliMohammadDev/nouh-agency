@@ -67,7 +67,7 @@ export default function Contact() {
                     className="text-sm font-semibold text-white hover:text-accent transition-colors"
                     dir="ltr"
                   >
-                    +966 50 000 0000
+                    +963 940 471 847
                   </a>
                 </div>
               </div>

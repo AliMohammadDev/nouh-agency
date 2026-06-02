@@ -74,7 +74,7 @@ export default function SafePannellum({ imageUrl, isRTL }: SafePannellumProps) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-950 text-red-500 text-xs p-6 text-center gap-2">
         <span className="font-bold">❌ فشل تحميل الـ VR</span>
-        <code className="text-[10px] bg-red-950/40 text-red-400 p-2 rounded border border-red-900/50 font-mono max-w-full overflow-x-auto block">
+        <code className="text-[10px] bg-red-950/40 text-red-400 p-2 rounded border border-red-900/50 font-cairo max-w-full overflow-x-auto block">
           {debugError}
         </code>
       </div>

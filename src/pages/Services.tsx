@@ -57,7 +57,7 @@ export default function Services() {
             >
               <div>
                 <div className="flex items-center justify-between mb-8">
-                  <span className="font-mono text-sm font-bold text-accent">
+                  <span className="font-cairo text-sm font-bold text-accent">
                     {String(index + 1).padStart(2, '0')}
                   </span>
 

@@ -108,7 +108,7 @@ export default function Features() {
                     <div className="flex h-12 w-12 items-center justify-center border border-accent/20 bg-accent/5 text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-black">
                       <IconComponent size={20} strokeWidth={1.5} />
                     </div>
-                    <span className="font-mono text-3xl font-bold text-zinc-800 group-hover:text-accent/30 transition-colors duration-300">
+                    <span className="font-cairo text-3xl font-bold text-zinc-800 group-hover:text-accent/30 transition-colors duration-300">
                       {item.number}
                     </span>
                   </div>
@@ -139,7 +139,7 @@ export default function Features() {
                   </ul>
                 </div>
 
-                <div className="mt-8 pt-4 flex items-center justify-between font-mono text-[9px] text-zinc-600 border-t border-dashed border-zinc-900 group-hover:text-accent/60 transition-colors duration-350 relative z-20">
+                <div className="mt-8 pt-4 flex items-center justify-between font-cairo text-[9px] text-zinc-600 border-t border-dashed border-zinc-900 group-hover:text-accent/60 transition-colors duration-350 relative z-20">
                   <div className="text-accent/40 group-hover:text-accent transition-colors duration-300 flex items-center gap-1 font-cairo">
                     <span className="text-[10px] font-cairo">
                       {t('features.explore_more')}

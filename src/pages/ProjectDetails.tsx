@@ -134,7 +134,7 @@ export default function ProjectDetails() {
   if (error || !project) {
     return (
       <section className="pt-36 pb-24 bg-black text-zinc-100 min-h-screen flex items-center justify-center">
-        <p className="text-xs font-mono tracking-widest text-zinc-500 uppercase">
+        <p className="text-xs font-cairo tracking-widest text-zinc-500 uppercase">
           {isRTL ? 'تعذر العثور على المشروع المطلوب' : 'PROJECT NOT FOUND'}
         </p>
       </section>
@@ -240,7 +240,7 @@ export default function ProjectDetails() {
                   </span>
                 )}
                 {project.project_number && (
-                  <span className="text-2xl font-mono tracking-widest text-zinc-500 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
+                  <span className="text-2xl font-cairo tracking-widest text-zinc-500 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
                     {project.project_number}
                   </span>
                 )}

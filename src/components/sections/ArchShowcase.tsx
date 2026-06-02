@@ -184,7 +184,7 @@ export default function ArchShowcase() {
       <section className="py-28 bg-zinc-950 text-white flex items-center justify-center min-h-[600px]">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-8 w-8 text-accent animate-spin" />
-          <span className="text-xs tracking-widest text-zinc-500 uppercase font-mono">
+          <span className="text-xs tracking-widest text-zinc-500 uppercase font-cairo">
             {isRTL
               ? 'جاري جلب المشاريع المميزة...'
               : 'Loading featured projects...'}
@@ -197,7 +197,7 @@ export default function ArchShowcase() {
   if (featuredProjects.length === 0) {
     return (
       <section className="py-28 bg-zinc-950 text-white flex items-center justify-center min-h-[400px]">
-        <span className="text-xs font-mono text-zinc-500 tracking-widest uppercase">
+        <span className="text-xs font-cairo text-zinc-500 tracking-widest uppercase">
           {isRTL
             ? 'لا توجد مشاريع مميزة لعرضها حالياً'
             : 'NO FEATURED PROJECTS TO DISPLAY YET'}
@@ -241,7 +241,7 @@ export default function ArchShowcase() {
             }
             style={{ perspective: 1200 }}
           >
-            <div className="absolute top-4 left-4 text-[10px] text-white z-20 bg-black/80 py-1.5 px-3 border border-white/10 shadow-lg select-none flex items-center gap-1.5 backdrop-blur-sm font-mono">
+            <div className="absolute top-4 left-4 text-[10px] text-white z-20 bg-black/80 py-1.5 px-3 border border-white/10 shadow-lg select-none flex items-center gap-1.5 backdrop-blur-sm font-cairo">
               <Eye className="h-3 w-3 text-accent" />
               <span>
                 {isRTL ? 'انقر لتكبير الشاشة' : 'CLICK TO FULLSCREEN'}
@@ -302,7 +302,7 @@ export default function ArchShowcase() {
                 )}
               </button>
 
-              <div className="px-2 text-xs font-mono font-bold text-white flex items-center">
+              <div className="px-2 text-xs font-cairo font-bold text-white flex items-center">
                 <span>0{activeIndex + 1}</span>
                 <span className="text-zinc-600 px-1.5">/</span>
                 <span className="text-zinc-600">
@@ -350,7 +350,7 @@ export default function ArchShowcase() {
                   {img.name}
                 </span>
               </div>
-              <span className="absolute top-1.5 right-1.5 text-[8px] font-mono bg-accent/20 text-accent px-1.5 py-0.5 font-bold border border-accent/30">
+              <span className="absolute top-1.5 right-1.5 text-[8px] font-cairo bg-accent/20 text-accent px-1.5 py-0.5 font-bold border border-accent/30">
                 0{idx + 1}
               </span>
             </button>

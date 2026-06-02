@@ -37,7 +37,7 @@ function AnimatedCounter({ value }: { value: string }) {
   return (
     <span
       ref={ref}
-      className="font-mono text-4xl sm:text-5xl font-black text-white tracking-tight"
+      className="font-cairo text-4xl sm:text-5xl font-black text-white tracking-tight"
     >
       {current}
       <span className="text-accent ml-1 select-none">{suffix}</span>
@@ -64,7 +64,7 @@ export default function Stats() {
       <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <div className="inline-flex items-center gap-2 mb-3 p-1.5 px-3 bg-accent/5 border border-accent/10">
-            <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-accent">
+            <span className="font-cairo text-[9px] font-bold uppercase tracking-widest text-accent">
               {t('stats.label', 'مؤشرات النجاح الهندسية والرقمية')}
             </span>
           </div>

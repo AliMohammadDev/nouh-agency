@@ -66,7 +66,7 @@ export default function RelatedProjects({
                 </div>
               )}
               {project.project_number && (
-                <span className="absolute top-3 left-3 text-[10px] font-mono tracking-wider text-zinc-400 bg-black/80 border border-zinc-800/60 px-2 py-0.5 rounded-md backdrop-blur-sm">
+                <span className="absolute top-3 left-3 text-[10px] font-cairo tracking-wider text-zinc-400 bg-black/80 border border-zinc-800/60 px-2 py-0.5 rounded-md backdrop-blur-sm">
                   {project.project_number}
                 </span>
               )}

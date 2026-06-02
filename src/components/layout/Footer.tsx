@@ -193,23 +193,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-12 flex flex-col items-center justify-between gap-6 sm:flex-row text-xs text-muted-foreground/60 font-cairo">
+        <div className="pt-12 flex flex-col items-center justify-center gap-6 sm:flex-row text-xs text-muted-foreground/60 font-cairo">
           <span>
             &copy; {currentYear} {t('nav.logo', 'نوح')} Studio.{' '}
             {t('footer.rights', 'جميع الحقوق محفوظة.')}
           </span>
-          <ul className="flex gap-8">
-            {['privacy', 'terms', 'sitemap'].map((key) => (
-              <li key={key}>
-                <a
-                  href="#"
-                  className="transition hover:text-accent duration-200"
-                >
-                  {t(`footer.links.${key}`)}
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </footer>

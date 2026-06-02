@@ -157,7 +157,7 @@ export default function Work() {
         <div className="mb-12">
           <div className="inline-flex items-center gap-2 mb-4 p-1 px-3 bg-zinc-900 border border-zinc-800 rounded-md">
             <Layout size={12} className="text-accent animate-pulse" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-accent/90">
+            <span className="font-cairo text-[10px] font-bold uppercase tracking-widest text-accent/90">
               {currentMajor
                 ? currentMajor.name
                 : isRTL

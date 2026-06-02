@@ -75,7 +75,7 @@ export default function ScrollToTopButton() {
             />
           </div>
 
-          <div className="text-[9px] font-mono font-bold tracking-widest select-none origin-center text-zinc-500 group-hover:text-accent transition-colors duration-300 mt-1">
+          <div className="text-[9px] font-cairo font-bold tracking-widest select-none origin-center text-zinc-500 group-hover:text-accent transition-colors duration-300 mt-1">
             {Math.round(scrollProgress)}%
           </div>
 
