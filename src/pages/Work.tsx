@@ -2,7 +2,15 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
-import { Layers, Layout, Search, X, Grid } from 'lucide-react';
+import {
+  Layers,
+  Layout,
+  Search,
+  X,
+  Grid,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
 import { useGetMajors } from '../api/major';
 import { useGetProjects } from '../api/project';
@@ -46,6 +54,8 @@ const MAJOR_MAP: Record<string, number> = {
   'web-development': 3,
 };
 
+const PROJECTS_PER_PAGE = 6;
+
 export default function Work() {
   const { t, i18n } = useTranslation();
   const { isRTL } = useDirection();
@@ -65,6 +75,12 @@ export default function Work() {
   const [activeCategory, setActiveCategory] = useState<number | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [categorySlug, activeCategory, searchQuery]);
 
   useEffect(() => {
     if (!majors || majors.length === 0) return;
@@ -121,12 +137,24 @@ export default function Work() {
   const filteredProjects = getFilteredProjects();
   const isLoading = isMajorsLoading || isProjectsLoading;
 
+  const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PROJECTS_PER_PAGE;
+  const paginatedProjects = filteredProjects.slice(
+    startIndex,
+    startIndex + PROJECTS_PER_PAGE
+  );
+
   const handleMajorFilterClick = (slug: string | null) => {
     if (!slug) {
       navigate('/work');
     } else {
       navigate(`/work/${slug}`);
     }
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (isLoading) {
@@ -292,10 +320,47 @@ export default function Work() {
         </div>
 
         <ProjectGrid
-          projects={filteredProjects}
+          projects={paginatedProjects}
           isRTL={isRTL}
           onProjectClick={(id) => navigate(`/work/project/${id}`)}
         />
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 mt-16 border-t border-zinc-900 pt-8">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="p-2 rounded-md border border-zinc-800 bg-zinc-950/40 text-zinc-400 hover:text-white hover:border-zinc-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+            >
+              {isRTL ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => {
+              const page = index + 1;
+              return (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`w-8 h-8 rounded-md text-xs font-bold transition-all cursor-pointer border ${
+                    currentPage === page
+                      ? 'bg-[#D4AF37] text-black border-[#D4AF37] font-black shadow-[0_0_15px_rgba(212,175,55,0.3)]'
+                      : 'border-zinc-800 text-zinc-400 bg-zinc-950/40 hover:text-white hover:border-zinc-700'
+                  }`}
+                >
+                  {page}
+                </button>
+              );
+            })}
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="p-2 rounded-md border border-zinc-800 bg-zinc-950/40 text-zinc-400 hover:text-white hover:border-zinc-700 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+            >
+              {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+            </button>
+          </div>
+        )}
 
         {!isLoading && filteredProjects.length === 0 && (
           <div className="h-64 flex flex-col items-center justify-center text-center border border-dashed border-zinc-900 rounded-xl p-8 mt-6 bg-zinc-950/10">
