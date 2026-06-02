@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import RootLayout from '../components/layout/RootLayout';
+import Loading from '../components/Loading';
 
 const Home = lazy(() => import('../pages/Home'));
 const About = lazy(() => import('../pages/About'));
@@ -19,7 +20,14 @@ export const router = createBrowserRouter([
       { path: 'work/:categorySlug?', element: <Work /> },
       { path: 'work/project/:id', element: <ProjectDetails /> },
       { path: 'contact', element: <Contact /> },
-      { path: '*', element: <NotFound /> },
     ],
+  },
+  {
+    path: '*',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <NotFound />
+      </Suspense>
+    ),
   },
 ]);

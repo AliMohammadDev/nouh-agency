@@ -225,5 +225,10 @@
   },
   "loading": {
     "structure": "Loading Structure..."
+  },
+  "not_found": {
+    "title": "Page not found",
+    "description": "The page you are looking for doesn't exist or has been moved.",
+    "back_home": "Back to Home"
   }
 }

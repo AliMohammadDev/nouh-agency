@@ -8,24 +8,25 @@ export default function NotFound() {
   const { isRTL } = useDirection();
 
   return (
-    <section className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <p className="mb-4 font-cairo text-6xl uppercase tracking-widest text-accent">
+    <section className="fixed inset-0 z-[9999] flex min-h-screen items-center justify-center bg-background select-none">
+      <div className="text-center px-6">
+        <p className="mb-4 font-cairo text-6xl font-black uppercase tracking-widest text-accent">
           404
         </p>
-        <h1 className="mb-4 text-6xl font-bold lg:text-8xl">
-          {isRTL ? 'الصفحة غير موجودة' : 'Page not found'}
+
+        <h1 className="mb-4 text-4xl font-bold lg:text-7xl text-foreground font-cairo">
+          {t('not_found.title')}
         </h1>
-        <p className="m-10 text-base text-muted-foreground">
-          {isRTL
-            ? 'الصفحة التي تبحث عنها غير موجودة أو تم نقلها.'
-            : "The page you are looking for doesn't exist or has been moved."}
+
+        <p className="m-6 text-base text-muted-foreground max-w-md mx-auto font-cairo">
+          {t('not_found.description')}
         </p>
+
         <Link
           to="/"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition hover:opacity-80"
+          className="inline-flex items-center gap-2 rounded-full bg-primary font-cairo px-6 py-3 text-sm font-medium text-primary-foreground transition hover:opacity-90 cursor-pointer shadow-lg"
         >
-          {isRTL ? 'العودة للرئيسية' : 'Back to Home'}
+          {t('not_found.back_home')}
           <ArrowRight size={14} className={isRTL ? 'rotate-180' : ''} />
         </Link>
       </div>
