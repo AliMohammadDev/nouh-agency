@@ -41,3 +41,24 @@ export const useGetProject = (id: number | string) => {
     enabled: !!id,
   });
 };
+
+export const useGetRelatedProjects = (
+  categoryId: number | undefined,
+  currentProjectId: number | string | undefined
+) => {
+  const { i18n } = useTranslation();
+
+  return useQuery<Project[]>({
+    queryKey: ['projects', currentProjectId, 'related', i18n.language],
+    queryFn: async () => {
+      const lang = i18n.language?.split('-')[0] || 'en';
+
+      const res = await axios.get(`projects/${currentProjectId}/related`, {
+        headers: { 'Accept-Language': lang },
+      });
+
+      return res.data.data;
+    },
+    enabled: !!currentProjectId,
+  });
+};

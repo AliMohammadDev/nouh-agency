@@ -15,7 +15,8 @@ import {
 import { useDirection } from '../hooks/useDirection';
 import { useGetProject } from '../api/project';
 import { AnimatePresence } from 'motion/react';
-import SafePannellum from '../components/SafePannellum';
+import SafePannellum from '../components/projects/SafePannellum';
+import RelatedProjects from '../components/projects/RelatedProjects';
 
 interface Tag {
   id: number;
@@ -307,6 +308,12 @@ export default function ProjectDetails() {
             )}
           </div>
         </div>
+
+        {/* Related Projects */}
+        <RelatedProjects
+          categoryId={project?.category?.id}
+          currentProjectId={project?.id}
+        />
       </div>
 
       <AnimatePresence>
