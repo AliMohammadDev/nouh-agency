@@ -350,7 +350,7 @@ export default function ProjectDetails() {
             <img
               src={lightboxImage}
               alt="Project zoomed full screen"
-              className="w-full h-full object-cover pointer-events-none absolute inset-0 z-0"
+              className="w-full h-full max-w-[95vw] max-h-[92vh] object-contain pointer-events-none absolute inset-0 m-auto z-10 transition-all duration-300"
             />
           </div>
         )}
