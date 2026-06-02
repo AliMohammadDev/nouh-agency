@@ -9,19 +9,23 @@ export default function I18nProvider({ children }: I18nProviderProps) {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // تأمين جلب اللغة الأساسية باستخدام startsWith
     const currentLang = i18n.language || 'en';
-    const lang = currentLang.startsWith('ar') ? 'ar' : 'en';
-    const dir = lang === 'ar' ? 'rtl' : 'ltr';
 
-    // تطبيق الخصائص على الـ DOM
+    const cleanLang = currentLang.startsWith('ar') ? 'ar' : 'en';
+
+    if (currentLang !== cleanLang) {
+      i18n.changeLanguage(cleanLang);
+      return;
+    }
+
+    const dir = cleanLang === 'ar' ? 'rtl' : 'ltr';
+
     document.documentElement.setAttribute('dir', dir);
-    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('lang', cleanLang);
 
-    // تطبيق الخطوط بناءً على اللغة المفعلة
     document.documentElement.style.fontFamily =
-      lang === 'ar' ? "'Cairo', sans-serif" : "'DM Sans', sans-serif";
-  }, [i18n.language]);
+      cleanLang === 'ar' ? "'Cairo', sans-serif" : "'DM Sans', sans-serif";
+  }, [i18n.language, i18n]);
 
   return <>{children}</>;
 }
