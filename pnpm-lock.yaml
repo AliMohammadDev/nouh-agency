@@ -11,6 +11,9 @@ importers:
       '@egjs/react-view360':
         specifier: ^3.0.4
         version: 3.0.4(react@19.2.6)
+      '@emailjs/browser':
+        specifier: ^4.4.1
+        version: 4.4.1
       '@emotion/react':
         specifier: 11.14.0
         version: 11.14.0(@types/react@19.2.15)(react@19.2.6)
@@ -125,6 +128,9 @@ importers:
       date-fns:
         specifier: 3.6.0
         version: 3.6.0
+      emailjs:
+        specifier: ^5.0.1
+        version: 5.0.1(typescript@6.0.3)
       embla-carousel-react:
         specifier: 8.6.0
         version: 8.6.0(react@19.2.6)
@@ -340,6 +346,10 @@ packages:
 
   '@egjs/view360@3.6.4':
     resolution: {integrity: sha512-b+yShl7/MJpr+muJwU+zTlapeAkXhPdN5KgPw1xD818G3a+inticFTCzD9dclBBfORUJv2E7HdGWWvkMZRPorg==}
+
+  '@emailjs/browser@4.4.1':
+    resolution: {integrity: sha512-DGSlP9sPvyFba3to2A50kDtZ+pXVp/0rhmqs2LmbMS3I5J8FSOgLwzY2Xb4qfKlOVHh29EAutLYwe5yuEZmEFg==}
+    engines: {node: '>=14.0.0'}
 
   '@emotion/babel-plugin@11.13.5':
     resolution: {integrity: sha512-pxHCpT2ex+0q+HH91/zsdHkw/lXd468DIN2zvfvLtPKLLMo6gQj7oLObq8PhkrxOZb/gGCq03S3Z7PDhS8pduQ==}
@@ -1831,6 +1841,15 @@ packages:
   electron-to-chromium@1.5.360:
     resolution: {integrity: sha512-GkcBt6YYAw9SxFWn+xVar4cLVGlXVuswwtRLBozi2zp0GjXs4ZnOrqV4zbXzg35n7w81hCkyJNYicgXlVHAmBA==}
 
+  emailjs@5.0.1:
+    resolution: {integrity: sha512-qeKRIcZTXze6wMfhNLGl4YfRBCuBOVq5kMiKdKYrXlEDAcZASRE1lXYSB0lyuPudnAoKy6blBj2v/0k+h2AIxg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      typescript: '>=5.0.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   embla-carousel-react@8.6.0:
     resolution: {integrity: sha512-0/PjqU7geVmo6F734pmPqpyHqiM99olvyecY7zdweCw+6tKEXnrE90pBiBbMMU8s5tICemzpQ3hi5EpxzGW+JA==}
     peerDependencies:
@@ -2796,6 +2815,8 @@ snapshots:
       '@egjs/imready': 1.4.2
       gl-matrix: 3.4.4
       promise-polyfill: 8.3.0
+
+  '@emailjs/browser@4.4.1': {}
 
   '@emotion/babel-plugin@11.13.5':
     dependencies:
@@ -4190,6 +4211,10 @@ snapshots:
       gopd: 1.2.0
 
   electron-to-chromium@1.5.360: {}
+
+  emailjs@5.0.1(typescript@6.0.3):
+    optionalDependencies:
+      typescript: 6.0.3
 
   embla-carousel-react@8.6.0(react@19.2.6):
     dependencies:

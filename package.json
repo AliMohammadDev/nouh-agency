@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@egjs/react-view360": "^3.0.4",
+    "@emailjs/browser": "^4.4.1",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@mui/icons-material": "7.3.5",
@@ -47,6 +48,7 @@
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
     "date-fns": "3.6.0",
+    "emailjs": "^5.0.1",
     "embla-carousel-react": "8.6.0",
     "i18next": "^26.2.0",
     "i18next-browser-languagedetector": "^8.2.1",

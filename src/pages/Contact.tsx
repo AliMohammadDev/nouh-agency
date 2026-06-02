@@ -1,18 +1,50 @@
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Mail, Phone, Clock } from 'lucide-react';
+import { ArrowRight, Mail, Phone, Clock, Loader2 } from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
 import { motion } from 'motion/react';
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
 
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle');
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    const formElement = e.currentTarget;
+
+    try {
+      await emailjs.sendForm(
+        'service_5052bzm',
+        'template_0o52uwh',
+        formElement,
+        'nvlTmYUxP2BrK2wYA'
+      );
+
+      setStatus('success');
+      formElement.reset();
+
+      setTimeout(() => setStatus('idle'), 4000);
+    } catch (err) {
+      console.error('EmailJS Error:', err);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 4000);
+    }
+  };
+
   return (
-    <section className="pt-36 pb-24 bg-black text-foreground relative overflow-hidden">
+    <section className="pt-36 pb-24 bg-black text-foreground relative overflow-hidden font-cairo">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none z-0" />
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none z-0" />
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-16">
+      <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
           <motion.div
             initial={{ opacity: 0, x: isRTL ? 30 : -30 }}
@@ -63,7 +95,7 @@ export default function Contact() {
                     {t('contact.info.phone', 'الهاتف')}
                   </span>
                   <a
-                    href="tel:+966500000000"
+                    href="tel:+963940471847"
                     className="text-sm font-semibold text-white hover:text-accent transition-colors"
                     dir="ltr"
                   >
@@ -72,7 +104,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 group ">
+              <div className="flex items-center gap-4 group">
                 <div className="p-3 rounded-xl bg-zinc-900 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
                   <Clock size={18} />
                 </div>
@@ -98,16 +130,14 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="p-8 rounded-2xl border border-white/[0.05] bg-zinc-900/40 backdrop-blur-sm shadow-2xl shadow-black/5"
           >
-            <form
-              className="flex flex-col gap-6"
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-white/70 uppercase tracking-wide">
                     {isRTL ? 'الاسم الكامل' : 'Full Name'}
                   </label>
                   <input
+                    name="name"
                     type="text"
                     required
                     className="w-full rounded-xl border border-border/80 bg-black/50 px-4 py-3.5 text-sm text-white outline-none transition-all duration-300 focus:border-accent focus:bg-black focus:ring-1 focus:ring-accent/20"
@@ -118,6 +148,7 @@ export default function Contact() {
                     {isRTL ? 'البريد الإلكتروني' : 'Email Address'}
                   </label>
                   <input
+                    name="email"
                     type="email"
                     required
                     className="w-full rounded-xl border border-border/80 bg-black/50 px-4 py-3.5 text-sm text-white outline-none transition-all duration-300 focus:border-accent focus:bg-black focus:ring-1 focus:ring-accent/20"
@@ -130,6 +161,7 @@ export default function Contact() {
                   {isRTL ? 'الموضوع' : 'Subject'}
                 </label>
                 <input
+                  name="subject"
                   type="text"
                   required
                   className="w-full rounded-xl border border-border/80 bg-black/50 px-4 py-3.5 text-sm text-white outline-none transition-all duration-300 focus:border-accent focus:bg-black focus:ring-1 focus:ring-accent/20"
@@ -141,6 +173,7 @@ export default function Contact() {
                   {isRTL ? 'تفاصيل مشروعك' : 'Project Details'}
                 </label>
                 <textarea
+                  name="message"
                   rows={5}
                   required
                   className="w-full resize-none rounded-xl border border-border/80 bg-black/50 px-4 py-3.5 text-sm text-white outline-none transition-all duration-300 focus:border-accent focus:bg-black focus:ring-1 focus:ring-accent/20"
@@ -148,16 +181,46 @@ export default function Contact() {
               </div>
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: status === 'loading' ? 1 : 1.02 }}
+                whileTap={{ scale: status === 'loading' ? 1 : 0.98 }}
                 type="submit"
-                className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-accent px-8 py-4 text-sm font-bold text-accent-foreground shadow-lg shadow-accent/10 transition-all duration-300 hover:bg-accent/90 cursor-pointer group"
+                disabled={status === 'loading' || status === 'success'}
+                className={`mt-2 flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-sm font-bold shadow-lg transition-all duration-300 cursor-pointer group ${
+                  status === 'success'
+                    ? 'bg-emerald-600 text-white shadow-emerald-900/20'
+                    : status === 'error'
+                      ? 'bg-red-500 text-white shadow-red-900/20'
+                      : 'bg-accent text-accent-foreground shadow-accent/10 hover:bg-accent/90'
+                } disabled:pointer-events-none`}
               >
-                {t('contact.btn_send', 'إرسال الرسالة')}
-                <ArrowRight
-                  size={16}
-                  className={`transition-transform duration-300 group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`}
-                />
+                {status === 'loading' ? (
+                  <>
+                    <span>{isRTL ? 'جاري الإرسال...' : 'Sending...'}</span>
+                    <Loader2 size={16} className="animate-spin" />
+                  </>
+                ) : status === 'success' ? (
+                  <span>
+                    {isRTL
+                      ? 'تم إرسال رسالتك بنجاح! '
+                      : 'Message Sent Successfully! '}
+                  </span>
+                ) : status === 'error' ? (
+                  <span>
+                    {isRTL
+                      ? 'حدث خطأ، يرجى المحاولة لاحقاً '
+                      : 'An error occurred, please try again '}
+                  </span>
+                ) : (
+                  <>
+                    <span>{t('contact.btn_send', 'إرسال الرسالة')}</span>
+                    <ArrowRight
+                      size={16}
+                      className={`transition-transform duration-300 group-hover:translate-x-1 ${
+                        isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''
+                      }`}
+                    />
+                  </>
+                )}
               </motion.button>
             </form>
           </motion.div>
