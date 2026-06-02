@@ -333,16 +333,16 @@ export default function ProjectDetails() {
               <>
                 <button
                   onClick={isRTL ? handleNextImage : handlePrevImage}
-                  className="absolute left-6 p-4 rounded-full bg-black/40 hover:bg-black/80 text-white border border-zinc-800/30 backdrop-blur-sm transition-all hover:scale-105 cursor-pointer z-[10000] shadow-2xl"
+                  className="absolute left-4 md:left-6 p-2.5 md:p-4 rounded-full bg-black/40 hover:bg-black/80 text-white border border-zinc-800/30 backdrop-blur-sm transition-all hover:scale-105 cursor-pointer z-[10000] shadow-2xl"
                 >
-                  <ChevronLeft size={28} />
+                  <ChevronLeft className="w-4 h-4 md:w-7 md:h-7" />
                 </button>
 
                 <button
                   onClick={isRTL ? handlePrevImage : handleNextImage}
-                  className="absolute right-6 p-4 rounded-full bg-black/40 hover:bg-black/80 text-white border border-zinc-800/30 backdrop-blur-sm transition-all hover:scale-105 cursor-pointer z-[10000] shadow-2xl"
+                  className="absolute right-4 md:right-6 p-2.5 md:p-4 rounded-full bg-black/40 hover:bg-black/80 text-white border border-zinc-800/30 backdrop-blur-sm transition-all hover:scale-105 cursor-pointer z-[10000] shadow-2xl"
                 >
-                  <ChevronRight size={28} />
+                  <ChevronRight className="w-4 h-4 md:w-7 md:h-7" />
                 </button>
               </>
             )}
