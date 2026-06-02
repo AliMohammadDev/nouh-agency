@@ -8,10 +8,34 @@ import {
   Facebook,
 } from 'lucide-react';
 import { useDirection } from '../../hooks/useDirection';
+import { Link } from 'react-router-dom';
+import { useGetMajors } from '../../api/major';
+
+interface Major {
+  id: number;
+  name: string;
+  description: string;
+}
 
 export default function Footer() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
+
+  const { data: majors, isLoading } = useGetMajors() as {
+    data: Major[] | undefined;
+    isLoading: boolean;
+  };
+
+  const getMajorSlugPath = (major: Major) => {
+    const nameLower = major.name.toLowerCase();
+    if (nameLower.includes('عمار') || nameLower.includes('arch'))
+      return '/work/architecture';
+    if (nameLower.includes('جرافيك') || nameLower.includes('graphic'))
+      return '/work/graphic-design';
+    if (nameLower.includes('ويب') || nameLower.includes('web'))
+      return '/work/web-development';
+    return `/work/${major.id}`;
+  };
 
   const currentYear = new Date().getFullYear();
 
@@ -88,7 +112,7 @@ export default function Footer() {
       <div className="absolute top-0 right-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-16">
-        <div className="grid grid-cols-1 gap-16 pb-20 border-b border-border/40 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-16  border-b border-border/40 md:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-6">
             <span className="text-3xl font-extrabold tracking-tight text-white md:text-4xl font-cairo">
               {t('nav.logo', 'نوح')}
@@ -151,19 +175,35 @@ export default function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-widest text-accent mb-8 font-cairo">
               {t('footer.titles.services', 'تخصصاتنا')}
             </h4>
+
             <ul className="flex flex-col gap-4 text-sm text-muted-foreground font-cairo">
-              <li className="hover:text-accent transition-colors duration-200 cursor-default">
-                {t('footer.serv_list.arch', 'التصميم المعماري المستدام')}
-              </li>
-              <li className="hover:text-accent transition-colors duration-200 cursor-default">
-                {t('footer.serv_list.interior', 'التصميم الداخلي والديكور')}
-              </li>
-              <li className="hover:text-accent transition-colors duration-200 cursor-default">
-                {t('footer.serv_list.branding', 'الهوية البصرية والجرافيك')}
-              </li>
-              <li className="hover:text-accent transition-colors duration-200 cursor-default">
-                {t('footer.serv_list.web', 'تطوير وتصميم مواقع الويب')}
-              </li>
+              {/* 💡 حالة التحميل الأنيق Skeleton Loading */}
+              {isLoading && (
+                <>
+                  <li className="h-4 w-32 bg-zinc-900 animate-pulse rounded" />
+                  <li className="h-4 w-40 bg-zinc-900 animate-pulse rounded" />
+                  <li className="h-4 w-36 bg-zinc-900 animate-pulse rounded" />
+                </>
+              )}
+
+              {/* 💡 رندرة الأقسام القادمة من الـ API ديناميكياً وتحويلها لروابط تنقل */}
+              {!isLoading && majors && majors.length > 0
+                ? majors.map((major) => (
+                    <li key={major.id}>
+                      <Link
+                        to={getMajorSlugPath(major)}
+                        className="hover:text-accent transition-colors duration-200 block no-underline hover:no-underline"
+                      >
+                        {major.name}
+                      </Link>
+                    </li>
+                  ))
+                : /* 💡 محتوى احتياطي في حال لم ترجع بيانات بعد من السيرفر */
+                  !isLoading && (
+                    <span className="text-xs text-zinc-600">
+                      {t('footer.no_majors', 'لا توجد أقسام متاحة')}
+                    </span>
+                  )}
             </ul>
           </div>
 
@@ -193,9 +233,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-12 flex flex-col items-center justify-center gap-6 sm:flex-row text-xs text-muted-foreground/60 font-cairo">
+        <div className="flex flex-col items-center justify-center gap-6 sm:flex-row text-xs text-muted-foreground/60 font-cairo">
           <span>
-            &copy; {currentYear} {t('nav.logo', 'نوح')} Studio.{' '}
+            &copy; 2018 - {new Date().getFullYear()} {t('nav.logo', 'نوح')}.{' '}
             {t('footer.rights', 'جميع الحقوق محفوظة.')}
           </span>
         </div>
