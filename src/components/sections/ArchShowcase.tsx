@@ -284,9 +284,6 @@ export default function ArchShowcase() {
               <h3 className="text-xl font-bold tracking-tight text-white mt-1 font-cairo">
                 {activeImage.name}
               </h3>
-              <p className="text-zinc-400 text-sm leading-relaxed mt-1 border-s-2 border-accent/30 ps-3 font-cairo">
-                {activeImage.description}
-              </p>
             </div>
 
             <div className="flex items-center gap-1.5 self-end md:self-center bg-black/40 border border-accent/10 p-1">
