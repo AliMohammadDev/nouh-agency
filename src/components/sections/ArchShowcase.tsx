@@ -256,14 +256,20 @@ export default function ArchShowcase() {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="absolute inset-0 h-full w-full"
+                className="absolute inset-0 h-full w-full flex items-center justify-center overflow-hidden"
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <img
                   src={activeImage.image || ''}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover blur-2xl opacity-25 scale-110 pointer-events-none select-none"
+                />
+
+                <img
+                  src={activeImage.image || ''}
                   alt={activeImage.name}
                   referrerPolicy="no-referrer"
-                  className="h-full w-full object-cover select-none transition-all duration-700 ease-out brightness-90 group-hover:brightness-100 group-hover:scale-[1.01]"
+                  className="relative z-10 max-h-full max-w-full object-contain select-none transition-all duration-700 ease-out brightness-95 group-hover:brightness-100 group-hover:scale-[1.005]"
                 />
               </motion.div>
             </AnimatePresence>
@@ -272,7 +278,7 @@ export default function ArchShowcase() {
           <div className="mt-5 pt-4 border-t border-accent/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="max-w-2xl">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded">
+                <span className="text-md font-bold uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded">
                   #{activeImage.project_number}
                 </span>
                 {activeImage.category && (
@@ -364,14 +370,14 @@ export default function ArchShowcase() {
             className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-4 backdrop-blur-md cursor-zoom-out select-none"
             onClick={() => setFullscreenImage(null)}
           >
-            <div className="relative max-w-6xl w-full max-h-[85vh] border border-white/10 overflow-hidden shadow-2xl">
+            <div className="relative max-w-6xl w-full max-h-[85vh] overflow-hidden shadow-2xl">
               <img
                 src={fullscreenImage}
                 alt="Fullscreen architecture render"
                 className="w-full h-full object-contain mx-auto"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute top-4 right-4 bg-black/80 px-4 py-1.5 text-[11px] text-accent border border-white/10 font-cairo">
+              <div className="absolute top-4 right-6 bg-black/80 px-4 py-1.5 text-[11px] text-accent border border-white/10 font-cairo">
                 {isRTL ? 'اضغط في أي مكان للإغلاق' : 'CLICK ANYWHERE TO CLOSE'}
               </div>
             </div>
