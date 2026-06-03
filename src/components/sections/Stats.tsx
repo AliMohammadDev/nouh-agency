@@ -15,7 +15,8 @@ const STAT_ICONS = [Landmark, Compass, ShieldCheck];
 function AnimatedCounter({ value }: { value: string }) {
   const [current, setCurrent] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+  const isInView = useInView(ref, { once: true, margin: '-20px' });
 
   const targetNumber = parseInt(value.replace(/\D/g, ''), 10) || 0;
   const suffix = value.replace(/[0-9]/g, '');
@@ -37,10 +38,11 @@ function AnimatedCounter({ value }: { value: string }) {
   return (
     <span
       ref={ref}
-      className="font-cairo text-4xl sm:text-5xl font-black text-white tracking-tight"
+      className="font-cairo text-4xl sm:text-5xl font-black text-white tracking-tight flex items-center"
+      dir="ltr"
     >
       {current}
-      <span className="text-accent ml-1 select-none">{suffix}</span>
+      <span className="text-accent mx-0.5 select-none">{suffix}</span>
     </span>
   );
 }
@@ -109,7 +111,7 @@ export default function Stats() {
                     <AnimatedCounter value={stat.value} />
                   </div>
 
-                  <h3 className="font-cairo text-base font-bold text-white uppercase mt-5 tracking-wide group-hover:text-accent transition-colors duration-300 font-cairo">
+                  <h3 className="font-cairo text-base font-bold text-white uppercase mt-5 tracking-wide group-hover:text-accent transition-colors duration-300">
                     {stat.label}
                   </h3>
 
