@@ -142,7 +142,7 @@ export default function About() {
       </div>
 
       {/* CONTACT SECTION */}
-      <div className="mx-auto max-w-7xl px-6 lg:px-16">
+      <div className="mx-auto max-w-7xl px-6 lg:px-16 py-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -151,7 +151,7 @@ export default function About() {
           className="mt-24"
         >
           <div className="text-center mb-14">
-            <span className="text-xs uppercase tracking-[0.25em] text-accent font-bold">
+            <span className="text-md uppercase tracking-[0.25em] text-accent font-bold">
               {t('about.contact.label')}
             </span>
 
