@@ -256,15 +256,16 @@ export default function ProjectDetails() {
             </div>
 
             {project.tags && project.tags.length > 0 && (
-              <div className="space-y-2.5">
-                <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase block">
-                  {isRTL ? 'الأسلوب و الخصائص' : 'Project tags'}
+              <div className="space-y-3">
+                <span className="text-[10px] font-bold tracking-wider text-zinc-500 uppercase block font-cairo">
+                  {isRTL ? 'المواصفات والسمات' : 'Project Attributes'}
                 </span>
-                <div className="flex flex-wrap gap-1.5">
+
+                <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
                     <span
                       key={tag.id}
-                      className="text-[9px] font-medium font-cairo bg-zinc-950 border border-zinc-900 text-zinc-400 px-3 py-1 rounded-md"
+                      className="text-[11px] font-medium font-cairo bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/80 hover:border-accent/40 text-zinc-400 hover:text-accent px-3.5 py-1.5 rounded-full transition-all duration-300 ease-out cursor-default select-none shadow-sm whitespace-nowrap"
                     >
                       {tag.name}
                     </span>
