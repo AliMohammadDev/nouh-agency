@@ -94,7 +94,7 @@ export default function WhyChooseUs() {
                 transition={{ delay: 0.1 }}
                 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight"
               >
-                {t('why.title', 'لماذا يختارنا المبدعون؟')}
+                {t('why.title', 'لماذا يختارنا عملاؤنا')}
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 15 }}
