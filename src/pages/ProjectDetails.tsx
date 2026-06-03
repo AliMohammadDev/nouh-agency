@@ -197,9 +197,9 @@ export default function ProjectDetails() {
                     />
                     <button
                       onClick={() => setLightboxImage(currentMainImage)}
-                      className="absolute bottom-4 right-4 p-2.5 rounded-xl bg-black/80 border border-zinc-800/60 text-zinc-400 hover:text-accent opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer backdrop-blur-sm"
+                      className="absolute bottom-4 right-4 p-3 md:p-2.5 rounded-xl bg-black/80 md:bg-black/80 border border-zinc-800/60 text-zinc-300 md:text-zinc-400 hover:text-accent block md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm shadow-xl active:scale-95"
                     >
-                      <Maximize2 size={14} />
+                      <Maximize2 size={16} className="md:size-[14px]" />
                     </button>
                   </>
                 ) : (
