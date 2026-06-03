@@ -142,7 +142,7 @@ export default function About() {
       </div>
 
       {/* CONTACT SECTION */}
-      <div className="mx-auto max-w-7xl px-6 lg:px-16 py-20">
+      <div className="mx-auto max-w-7xl px-6 lg:px-16">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
