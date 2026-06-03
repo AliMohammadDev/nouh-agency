@@ -10,6 +10,7 @@ import {
   Youtube,
   Facebook,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function About() {
   const { t, i18n } = useTranslation();
@@ -120,14 +121,20 @@ export default function About() {
               </p>
 
               <div className="flex flex-wrap gap-3">
-                <button className="bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2">
-                  {t('common.explore')}
+                <Link
+                  to="/work"
+                  className="bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 no-underline hover:no-underline"
+                >
+                  <span>{t('common.explore')}</span>
                   <ArrowRight size={16} className={isRtl ? 'rotate-180' : ''} />
-                </button>
+                </Link>
 
-                <button className="border border-white/20 bg-white/5 px-6 py-3 rounded-2xl text-sm font-semibold">
+                <Link
+                  to="/contact"
+                  className="border border-white/20 bg-white/5 hover:bg-white/10 text-white px-6 py-3 rounded-2xl text-sm font-semibold no-underline hover:no-underline transition-colors"
+                >
                   {t('common.contact')}
-                </button>
+                </Link>
               </div>
             </motion.div>
           </div>
