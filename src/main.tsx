@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from 'react-router-dom';
 
 axios.defaults.baseURL =
-  import.meta.env.VITE_API || 'https://realestate-api.voom.cc/api';
+  import.meta.env.VITE_API || 'https://admin.nouh-agency.com/api/';
 
 const queryClient = new QueryClient({
   defaultOptions: {
