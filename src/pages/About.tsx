@@ -202,7 +202,7 @@ export default function About() {
               href="https://maps.app.goo.gl/dqhNLTdDnmmETTV37"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center block flex-col items-center group hover:border-accent/40 hover:bg-zinc-900/80 transition-all duration-300 block"
+              className="bg-zinc-900 border border-white/10 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-accent/40 hover:bg-zinc-900/80 transition-all duration-300"
             >
               <div className="w-12 h-12 rounded-2xl bg-zinc-800/50 border border-white/5 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform duration-300">
                 <MapPin size={22} />

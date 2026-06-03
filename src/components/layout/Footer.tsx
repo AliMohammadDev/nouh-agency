@@ -166,7 +166,7 @@ export default function Footer() {
                 { label: t('nav.links.about', 'عن الشركة'), href: '/about' },
                 {
                   label: t('nav.links.services', 'خدماتنا'),
-                  href: '/services',
+                  href: '/work',
                 },
                 { label: t('nav.links.work', 'أعمالنا'), href: '/work' },
                 { label: t('nav.links.contact', 'اتصل بنا'), href: '/contact' },
