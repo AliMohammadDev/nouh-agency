@@ -139,7 +139,7 @@ export default function Features() {
                   </ul>
                 </div>
 
-                <div className="mt-8 pt-4 flex items-center justify-between font-cairo text-[9px] text-zinc-600 border-t border-dashed border-zinc-900 group-hover:text-accent/60 transition-colors duration-350 relative z-20">
+                {/* <div className="mt-8 pt-4 flex items-center justify-between font-cairo text-[9px] text-zinc-600 border-t border-dashed border-zinc-900 group-hover:text-accent/60 transition-colors duration-350 relative z-20">
                   <div className="text-accent/40 group-hover:text-accent transition-colors duration-300 flex items-center gap-1 font-cairo">
                     <span className="text-[10px] font-cairo">
                       {t('features.explore_more')}
@@ -149,7 +149,7 @@ export default function Features() {
                       className={`transition-transform ${isRTL ? 'group-hover:-translate-x-0.5' : 'group-hover:translate-x-0.5'}`}
                     />
                   </div>
-                </div>
+                </div> */}
               </motion.div>
             );
           })}

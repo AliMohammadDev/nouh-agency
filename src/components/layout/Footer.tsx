@@ -177,7 +177,6 @@ export default function Footer() {
             </h4>
 
             <ul className="flex flex-col gap-4 text-sm text-muted-foreground font-cairo">
-              {/* 💡 حالة التحميل الأنيق Skeleton Loading */}
               {isLoading && (
                 <>
                   <li className="h-4 w-32 bg-zinc-900 animate-pulse rounded" />
@@ -186,20 +185,18 @@ export default function Footer() {
                 </>
               )}
 
-              {/* 💡 رندرة الأقسام القادمة من الـ API ديناميكياً وتحويلها لروابط تنقل */}
               {!isLoading && majors && majors.length > 0
                 ? majors.map((major) => (
                     <li key={major.id}>
                       <Link
                         to={getMajorSlugPath(major)}
-                        className="hover:text-accent transition-colors duration-200 block no-underline hover:no-underline"
+                        className="text-sm text-muted-foreground transition hover:text-accent hover:translate-x-1 inline-block duration-200 font-cairo"
                       >
                         {major.name}
                       </Link>
                     </li>
                   ))
-                : /* 💡 محتوى احتياطي في حال لم ترجع بيانات بعد من السيرفر */
-                  !isLoading && (
+                : !isLoading && (
                     <span className="text-xs text-zinc-600">
                       {t('footer.no_majors', 'لا توجد أقسام متاحة')}
                     </span>
@@ -216,14 +213,17 @@ export default function Footer() {
                 <li className="flex items-start gap-4">
                   <MapPin size={18} className="text-accent shrink-0 mt-0.5" />
                   <span>
-                    {t('about.map.address', 'حي التصميم والإبداع، الرياض')}
+                    {t(
+                      'about.map.address',
+                      'سوريا، حلب، حي المحافظة - شارع الماركات'
+                    )}
                   </span>
                 </li>
                 <li className="flex items-center gap-4">
                   <Mail size={18} className="text-accent shrink-0" />
                   <a
                     href="mailto:nouh.architects@gmail.com"
-                    className="hover:text-accent transition-colors duration-200 break-all"
+                    className="text-sm text-muted-foreground transition hover:text-accent hover:translate-x-1 inline-block duration-200 font-cairo"
                   >
                     nouh.architects@gmail.com
                   </a>
