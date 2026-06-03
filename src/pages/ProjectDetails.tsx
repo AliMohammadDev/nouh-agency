@@ -11,6 +11,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Globe,
 } from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
 import { useGetProject } from '../api/project';
@@ -42,6 +43,7 @@ interface Project {
   id: number;
   name: string;
   description: string;
+  country: string | null;
   project_number: string;
   image: string | null;
   image_vr: string | null;
@@ -242,6 +244,13 @@ export default function ProjectDetails() {
                 {project.project_number && (
                   <span className="text-2xl font-cairo tracking-widest text-zinc-500 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
                     {project.project_number}
+                  </span>
+                )}
+
+                {project.country && (
+                  <span className="inline-flex items-center gap-1 text-2xl font-cairo tracking-widest text-zinc-400 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
+                    <Globe size={12} className="text-zinc-500" />
+                    {project.country}
                   </span>
                 )}
               </div>
