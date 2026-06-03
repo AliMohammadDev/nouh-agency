@@ -10,6 +10,7 @@ import {
 import { useDirection } from '../../hooks/useDirection';
 import { Link } from 'react-router-dom';
 import { useGetMajors } from '../../api/major';
+import logoImg from '../../assets/images/png/logo/logo-agency.png';
 
 interface Major {
   id: number;
@@ -36,8 +37,6 @@ export default function Footer() {
       return '/work/web-development';
     return `/work/${major.id}`;
   };
-
-  const currentYear = new Date().getFullYear();
 
   const socialAccounts = [
     {
@@ -112,11 +111,25 @@ export default function Footer() {
       <div className="absolute top-0 right-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-16">
-        <div className="grid grid-cols-1 gap-16  border-b border-border/40 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-16 border-b border-border/40 md:grid-cols-2 lg:grid-cols-4 pb-16">
           <div className="flex flex-col gap-6">
-            <span className="text-3xl font-extrabold tracking-tight text-white md:text-4xl font-cairo">
-              {t('nav.logo', 'نوح')}
-            </span>
+            <Link
+              to="/"
+              className="text-3xl font-extrabold tracking-tight flex items-center gap-3 group no-underline hover:no-underline"
+            >
+              <img
+                src={logoImg}
+                alt="Noah Agency Logo"
+                className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+              <span className="text-2xl font-extrabold tracking-tight text-white font-cairo">
+                {t('nav.logo', 'نوح')}
+              </span>
+            </Link>
+
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm font-cairo">
               {t(
                 'footer.about_text',
@@ -233,7 +246,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-6 sm:flex-row text-xs text-muted-foreground/60 font-cairo">
+        <div className="flex flex-col items-center justify-center gap-6 sm:flex-row text-xs text-muted-foreground/60 font-cairo pt-8">
           <span>
             &copy; 2018 - {new Date().getFullYear()} {t('nav.logo', 'نوح')}.{' '}
             {t('footer.rights', 'جميع الحقوق محفوظة.')}
