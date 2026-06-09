@@ -148,7 +148,7 @@ export default function ProjectDetails() {
 
       <div className="mx-auto max-w-6xl px-6 lg:px-16 relative z-10">
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/projects')}
           className="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-white border border-transparent hover:border-zinc-900 hover:bg-zinc-950/50 px-3 py-1.5 rounded-lg transition-all mb-10 group cursor-pointer"
         >
           {isRTL ? (
