@@ -86,26 +86,21 @@ export default function ProjectDetails() {
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!project?.all_images.length || !lightboxImage) return;
-
-    const currentIndex = project.all_images.indexOf(lightboxImage);
-    const nextIndex = (currentIndex + 1) % project.all_images.length;
-
-    setLightboxImage(project.all_images[nextIndex]);
-    setActiveImage(project.all_images[nextIndex]);
+    if (!imagesToShow.length || !lightboxImage) return;
+    const currentIndex = imagesToShow.indexOf(lightboxImage);
+    const nextIndex = (currentIndex + 1) % imagesToShow.length;
+    setLightboxImage(imagesToShow[nextIndex]);
+    setActiveImage(imagesToShow[nextIndex]);
   };
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!project?.all_images.length || !lightboxImage) return;
-
-    const currentIndex = project.all_images.indexOf(lightboxImage);
+    if (!imagesToShow.length || !lightboxImage) return;
+    const currentIndex = imagesToShow.indexOf(lightboxImage);
     const prevIndex =
-      (currentIndex - 1 + project.all_images.length) %
-      project.all_images.length;
-
-    setLightboxImage(project.all_images[prevIndex]);
-    setActiveImage(project.all_images[prevIndex]);
+      (currentIndex - 1 + imagesToShow.length) % imagesToShow.length;
+    setLightboxImage(imagesToShow[prevIndex]);
+    setActiveImage(imagesToShow[prevIndex]);
   };
 
   const handleModeChange = (mode: 'design' | 'vr' | 'real') => {
@@ -326,7 +321,7 @@ export default function ProjectDetails() {
       </div>
 
       <AnimatePresence>
-        {lightboxImage && viewMode === 'vr' && (
+        {lightboxImage && viewMode !== 'vr' && (
           <div
             className="fixed inset-0 bg-black z-[9999] flex items-center justify-center cursor-zoom-out select-none w-screen h-screen overflow-hidden"
             onClick={() => setLightboxImage(null)}
@@ -338,7 +333,7 @@ export default function ProjectDetails() {
               <X size={22} />
             </button>
 
-            {project && project.all_images.length > 1 && (
+            {imagesToShow.length > 1 && (
               <>
                 <button
                   onClick={isRTL ? handleNextImage : handlePrevImage}
@@ -358,8 +353,8 @@ export default function ProjectDetails() {
 
             <img
               src={lightboxImage}
-              alt="Project zoomed full screen"
-              className="w-full h-full max-w-[95vw] max-h-[92vh] object-contain pointer-events-none absolute inset-0 m-auto z-10 transition-all duration-300"
+              alt="Project zoomed"
+              className="w-full h-full max-w-[95vw] max-h-[92vh] object-contain pointer-events-none absolute inset-0 m-auto z-10"
             />
           </div>
         )}
