@@ -49,6 +49,7 @@ interface Project {
   image_vr: string | null;
   all_images: string[];
   all_images_vr: string[];
+  all_images_real: string[];
   category: Category | null;
   tags: Tag[];
   links: ProjectLink[];
@@ -70,14 +71,16 @@ export default function ProjectDetails() {
     error: any;
   };
 
-  const [viewMode, setViewMode] = useState<'normal' | 'vr'>('normal');
+  const [viewMode, setViewMode] = useState<'design' | 'vr' | 'real'>('design');
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   const imagesToShow =
-    viewMode === 'normal'
+    viewMode === 'design'
       ? project?.all_images || []
-      : project?.all_images_vr || [];
+      : viewMode === 'real'
+        ? project?.all_images_real || []
+        : project?.all_images_vr || [];
 
   const currentMainImage = activeImage || imagesToShow[0] || '';
 
@@ -105,7 +108,7 @@ export default function ProjectDetails() {
     setActiveImage(project.all_images[prevIndex]);
   };
 
-  const handleModeChange = (mode: 'normal' | 'vr') => {
+  const handleModeChange = (mode: 'design' | 'vr' | 'real') => {
     setViewMode(mode);
     setActiveImage(null);
   };
@@ -171,62 +174,58 @@ export default function ProjectDetails() {
           <div className="lg:col-span-7 space-y-4">
             <div className="inline-flex p-1 bg-zinc-950 border border-zinc-900 rounded-xl gap-1">
               <button
-                onClick={() => handleModeChange('normal')}
-                className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition-all cursor-pointer ${viewMode === 'normal' ? 'bg-zinc-900 text-accent border border-zinc-800' : 'text-zinc-500 hover:text-zinc-300'}`}
+                onClick={() => handleModeChange('design')}
+                className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase rounded-lg ${viewMode === 'design' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
               >
-                <ImageIcon size={12} />
-                {isRTL ? 'الصور العادية' : 'Normal View'}
+                <ImageIcon size={12} /> {isRTL ? 'صور التصميم' : 'Design'}
               </button>
-              {project.all_images_vr && project.all_images_vr.length > 0 && (
+              {project.all_images_real?.length > 0 && (
+                <button
+                  onClick={() => handleModeChange('real')}
+                  className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase rounded-lg ${viewMode === 'real' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
+                >
+                  <ImageIcon size={12} />{' '}
+                  {isRTL ? 'صور التنفيذ' : 'Real Photos'}
+                </button>
+              )}
+              {project.all_images_vr?.length > 0 && (
                 <button
                   onClick={() => handleModeChange('vr')}
-                  className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition-all cursor-pointer ${viewMode === 'vr' ? 'bg-zinc-900 text-accent border border-zinc-800' : 'text-zinc-500 hover:text-zinc-300'}`}
+                  className={`flex items-center gap-1.5 px-4 py-2 text-[10px] font-black uppercase rounded-lg ${viewMode === 'vr' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
                 >
-                  <Box size={12} />
-                  {isRTL ? 'معاينة VR 360°' : 'VR Rendering'}
+                  <Box size={12} /> {isRTL ? 'معاينة 360°' : '360° View'}
                 </button>
               )}
             </div>
 
-            <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-950 border border-zinc-900 rounded-2xl group shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-              {currentMainImage ? (
-                viewMode === 'normal' ? (
-                  <>
-                    <img
-                      src={currentMainImage}
-                      alt={project.name}
-                      className="w-full h-full object-cover transition-all duration-700 contrast-105 brightness-95"
-                    />
-                    <button
-                      onClick={() => setLightboxImage(currentMainImage)}
-                      className="absolute bottom-4 right-4 p-3 md:p-2.5 rounded-xl bg-black/80 md:bg-black/80 border border-zinc-800/60 text-zinc-300 md:text-zinc-400 hover:text-accent block md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-sm shadow-xl active:scale-95"
-                    >
-                      <Maximize2 size={16} className="md:size-[14px]" />
-                    </button>
-                  </>
-                ) : (
-                  <SafePannellum imageUrl={currentMainImage} isRTL={isRTL} />
-                )
+            <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-950 border border-zinc-900 rounded-2xl">
+              {viewMode === 'vr' ? (
+                <SafePannellum imageUrl={currentMainImage} isRTL={isRTL} />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">
-                  {isRTL ? 'لا توجد صورة متاحة' : 'No image available'}
-                </div>
+                <>
+                  <img
+                    src={currentMainImage}
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    onClick={() => setLightboxImage(currentMainImage)}
+                    className="absolute bottom-4 right-4 p-3 bg-black/80 rounded-xl hover:text-accent"
+                  >
+                    <Maximize2 size={16} />
+                  </button>
+                </>
               )}
             </div>
 
             {imagesToShow.length > 1 && (
-              <div className="flex flex-wrap gap-2.5 pt-1">
+              <div className="flex flex-wrap gap-2.5">
                 {imagesToShow.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    className={`relative aspect-[4/3] w-20 overflow-hidden rounded-lg bg-zinc-950 border transition-all duration-300 cursor-pointer ${currentMainImage === img ? 'border-accent scale-[0.97]' : 'border-zinc-900 hover:border-zinc-700 opacity-60 hover:opacity-100'}`}
+                    className={`w-20 aspect-[4/3] rounded-lg border ${currentMainImage === img ? 'border-accent' : 'border-zinc-900'}`}
                   >
-                    <img
-                      src={img}
-                      alt={`Thumb ${idx}`}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={img} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -327,7 +326,7 @@ export default function ProjectDetails() {
       </div>
 
       <AnimatePresence>
-        {lightboxImage && viewMode === 'normal' && (
+        {lightboxImage && viewMode === 'vr' && (
           <div
             className="fixed inset-0 bg-black z-[9999] flex items-center justify-center cursor-zoom-out select-none w-screen h-screen overflow-hidden"
             onClick={() => setLightboxImage(null)}
