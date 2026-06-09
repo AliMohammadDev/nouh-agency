@@ -75,6 +75,13 @@ export default function ProjectDetails() {
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
+  useEffect(() => {
+    setViewMode('design');
+    setActiveImage(null);
+    setLightboxImage(null);
+    window.scrollTo(0, 0);
+  }, [id]);
+
   const imagesToShow =
     viewMode === 'design'
       ? project?.all_images || []
