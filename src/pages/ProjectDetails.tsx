@@ -148,7 +148,7 @@ export default function ProjectDetails() {
 
       <div className="mx-auto max-w-6xl px-6 lg:px-16 relative z-10">
         <button
-          onClick={() => navigate('/projects')}
+          onClick={() => navigate('/work/project')}
           className="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-white border border-transparent hover:border-zinc-900 hover:bg-zinc-950/50 px-3 py-1.5 rounded-lg transition-all mb-10 group cursor-pointer"
         >
           {isRTL ? (
@@ -204,7 +204,7 @@ export default function ProjectDetails() {
                   />
                   <button
                     onClick={() => setLightboxImage(currentMainImage)}
-                    className="absolute bottom-4 right-4 p-3 bg-black/80 rounded-xl hover:text-accent"
+                    className="absolute bottom-4 cursor-pointer right-4 p-3 bg-black/80 rounded-xl hover:text-accent"
                   >
                     <Maximize2 size={16} />
                   </button>
@@ -319,46 +319,6 @@ export default function ProjectDetails() {
           currentProjectId={project?.id}
         />
       </div>
-
-      <AnimatePresence>
-        {lightboxImage && viewMode !== 'vr' && (
-          <div
-            className="fixed inset-0 bg-black z-[9999] flex items-center justify-center cursor-zoom-out select-none w-screen h-screen overflow-hidden"
-            onClick={() => setLightboxImage(null)}
-          >
-            <button
-              onClick={() => setLightboxImage(null)}
-              className="absolute top-6 right-6 p-3 rounded-full bg-black/60 hover:bg-zinc-900/90 text-zinc-300 hover:text-white transition-all cursor-pointer z-[10000] backdrop-blur-md border border-zinc-800/40 shadow-lg"
-            >
-              <X size={22} />
-            </button>
-
-            {imagesToShow.length > 1 && (
-              <>
-                <button
-                  onClick={isRTL ? handleNextImage : handlePrevImage}
-                  className="absolute left-4 md:left-6 p-2.5 md:p-4 rounded-full bg-black/40 hover:bg-black/80 text-white border border-zinc-800/30 backdrop-blur-sm transition-all hover:scale-105 cursor-pointer z-[10000] shadow-2xl"
-                >
-                  <ChevronLeft className="w-4 h-4 md:w-7 md:h-7" />
-                </button>
-
-                <button
-                  onClick={isRTL ? handlePrevImage : handleNextImage}
-                  className="absolute right-4 md:right-6 p-2.5 md:p-4 rounded-full bg-black/40 hover:bg-black/80 text-white border border-zinc-800/30 backdrop-blur-sm transition-all hover:scale-105 cursor-pointer z-[10000] shadow-2xl"
-                >
-                  <ChevronRight className="w-4 h-4 md:w-7 md:h-7" />
-                </button>
-              </>
-            )}
-
-            <img
-              src={lightboxImage}
-              alt="Project zoomed"
-              className="w-full h-full max-w-[95vw] max-h-[92vh] object-contain pointer-events-none absolute inset-0 m-auto z-10"
-            />
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
