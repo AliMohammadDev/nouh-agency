@@ -28,9 +28,11 @@ export interface Project {
   url_youtube: string;
   image: string;
   image_vr: string;
+  image_real: string;
 
-  all_images: string[];
-  all_images_vr: string[];
+  all_images: Record<string, string[]>;
+  all_images_vr: Record<string, string[]>;
+  all_images_real: Record<string, string[]>;
 
   category: ProjectCategory;
   tags: ProjectTag[];

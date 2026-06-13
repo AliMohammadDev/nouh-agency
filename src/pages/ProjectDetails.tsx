@@ -33,10 +33,7 @@ interface Category {
 
 interface ProjectLink {
   id: number;
-  name: {
-    ar: string;
-    en: string;
-  };
+  name: string;
   url: string;
 }
 
@@ -48,10 +45,9 @@ interface Project {
   country: string | null;
   project_number: string;
   image: string | null;
-  image_vr: string | null;
-  all_images: string[];
-  all_images_vr: string[];
-  all_images_real: string[];
+  design_images: Record<string, string[]>;
+  vr_images: Record<string, string[]>;
+  real_images: Record<string, string[]>;
   category: Category | null;
   tags: Tag[];
   links: ProjectLink[];
@@ -74,26 +70,42 @@ export default function ProjectDetails() {
   };
 
   const [viewMode, setViewMode] = useState<'design' | 'vr' | 'real'>('design');
+
+  const [activeSubTab, setActiveSubTab] = useState<string>('');
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
+  const currentCollection =
+    viewMode === 'design'
+      ? project?.design_images
+      : viewMode === 'real'
+        ? project?.real_images
+        : project?.vr_images;
+
+  const subTabs = currentCollection ? Object.keys(currentCollection) : [];
+
   useEffect(() => {
-    setViewMode('design');
+    if (subTabs.length > 0) {
+      setActiveSubTab(subTabs[0]);
+    } else {
+      setActiveSubTab('');
+    }
     setActiveImage(null);
+  }, [viewMode, project, id]);
+
+  const imagesToShow =
+    currentCollection && activeSubTab
+      ? currentCollection[activeSubTab] || []
+      : [];
+
+  const currentMainImage = activeImage || imagesToShow[0] || '';
+
+  useEffect(() => {
     setLightboxImage(null);
     window.scrollTo(0, 0);
   }, [id]);
 
   const { mutate: likeProject, isPending } = useLikeProject();
-
-  const imagesToShow =
-    viewMode === 'design'
-      ? project?.all_images || []
-      : viewMode === 'real'
-        ? project?.all_images_real || []
-        : project?.all_images_vr || [];
-
-  const currentMainImage = activeImage || imagesToShow[0] || '';
 
   const handleNextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -116,7 +128,6 @@ export default function ProjectDetails() {
 
   const handleModeChange = (mode: 'design' | 'vr' | 'real') => {
     setViewMode(mode);
-    setActiveImage(null);
   };
 
   if (isLoading) {
@@ -152,6 +163,13 @@ export default function ProjectDetails() {
     );
   }
 
+  const hasRealImages = project.real_images
+    ? Object.keys(project.real_images).length > 0
+    : false;
+  const hasVrImages = project.vr_images
+    ? Object.keys(project.vr_images).length > 0
+    : false;
+
   return (
     <section className="pt-36 pb-24 bg-black text-zinc-100 min-h-screen relative font-cairo overflow-hidden">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none z-0" />
@@ -177,48 +195,74 @@ export default function ProjectDetails() {
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <div className="lg:col-span-7 space-y-4">
+          <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex p-1 bg-zinc-950 border border-zinc-900 rounded-xl gap-1">
               <button
                 onClick={() => handleModeChange('design')}
-                className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg ${viewMode === 'design' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
+                className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg transition-all ${viewMode === 'design' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
               >
                 <ImageIcon size={12} /> {isRTL ? 'صور التصميم' : 'Design'}
               </button>
-              {project.all_images_real?.length > 0 && (
+              {hasRealImages && (
                 <button
                   onClick={() => handleModeChange('real')}
-                  className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg ${viewMode === 'real' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
+                  className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg transition-all ${viewMode === 'real' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
                 >
                   <ImageIcon size={12} />{' '}
                   {isRTL ? 'صور التنفيذ' : 'Real Photos'}
                 </button>
               )}
-              {project.all_images_vr?.length > 0 && (
+              {hasVrImages && (
                 <button
                   onClick={() => handleModeChange('vr')}
-                  className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg ${viewMode === 'vr' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
+                  className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg transition-all ${viewMode === 'vr' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
                 >
                   <Box size={12} /> {isRTL ? 'معاينة 360°' : '360° View'}
                 </button>
               )}
             </div>
 
+            {subTabs.length > 1 && (
+              <div className="flex flex-wrap gap-2 border-b border-zinc-900/60 pb-3">
+                {subTabs.map((tabName) => (
+                  <button
+                    key={tabName}
+                    onClick={() => {
+                      setActiveSubTab(tabName);
+                      setActiveImage(null);
+                    }}
+                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer border ${
+                      activeSubTab === tabName
+                        ? 'bg-accent/10 border-accent/30 text-accent'
+                        : 'bg-zinc-950 border-zinc-900 text-zinc-400 hover:text-zinc-200'
+                    }`}
+                  >
+                    {tabName}
+                  </button>
+                ))}
+              </div>
+            )}
+
             <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-950 border border-zinc-900 rounded-2xl">
               {viewMode === 'vr' ? (
                 <SafePannellum imageUrl={currentMainImage} isRTL={isRTL} />
               ) : (
                 <>
-                  <img
-                    src={currentMainImage}
-                    className="w-full h-full object-cover"
-                  />
-                  <button
-                    onClick={() => setLightboxImage(currentMainImage)}
-                    className="absolute bottom-4 right-4 cursor-pointer p-3 bg-black/80 rounded-xl hover:text-accent"
-                  >
-                    <Maximize2 size={16} />
-                  </button>
+                  {currentMainImage && (
+                    <img
+                      src={currentMainImage}
+                      className="w-full h-full object-cover animate-fade-in"
+                      alt={activeSubTab}
+                    />
+                  )}
+                  {currentMainImage && (
+                    <button
+                      onClick={() => setLightboxImage(currentMainImage)}
+                      className="absolute bottom-4 right-4 cursor-pointer p-3 bg-black/80 rounded-xl hover:text-accent"
+                    >
+                      <Maximize2 size={16} />
+                    </button>
+                  )}
                 </>
               )}
             </div>
@@ -229,129 +273,21 @@ export default function ProjectDetails() {
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    className={`w-20 aspect-[4/3] rounded-lg border ${currentMainImage === img ? 'border-accent' : 'border-zinc-900'}`}
+                    className={`w-20 aspect-[4/3] rounded-lg border transition-all ${currentMainImage === img ? 'border-accent scale-95' : 'border-zinc-900 hover:border-zinc-700'}`}
                   >
-                    <img src={img} className="w-full h-full object-cover" />
+                    <img
+                      src={img}
+                      className="w-full h-full object-cover rounded-md"
+                      alt=""
+                    />
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-8">
-            <div>
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!isPending) likeProject(project.id);
-                  }}
-                  disabled={isPending}
-                  className={`flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg border border-zinc-800 transition-all ${
-                    isPending
-                      ? 'opacity-50 cursor-not-allowed bg-zinc-900'
-                      : 'hover:border-red-500/50 hover:bg-red-500/5 hover:text-red-500 bg-zinc-900/50'
-                  }`}
-                >
-                  <Heart
-                    size={18}
-                    className={`${isPending ? 'animate-pulse' : ''} ${
-                      project.links && project.links.length > 0
-                        ? 'text-red-500 fill-red-500'
-                        : 'text-zinc-400'
-                    }`}
-                  />
-                  <span className="text-xs font-bold font-cairo">
-                    {project.likes_count}
-                  </span>
-                </button>
-
-                {project.category && (
-                  <span className="text-1xl font-bold tracking-widest text-accent uppercase bg-accent/5 border border-accent/10 px-2 py-0.5 rounded">
-                    {project.category.name}
-                  </span>
-                )}
-                {project.project_number && (
-                  <span className="text-2xl font-cairo tracking-widest text-zinc-500 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
-                    {project.project_number}
-                  </span>
-                )}
-
-                {project.country && (
-                  <span className="inline-flex items-center gap-1 text-2xl font-cairo tracking-widest text-zinc-400 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
-                    <Globe size={12} className="text-zinc-500" />
-                    {project.country}
-                  </span>
-                )}
-              </div>
-
-              <h1 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight leading-tight">
-                {project.name}
-              </h1>
-
-              <p className="text-xs text-zinc-400 mt-4 leading-relaxed font-normal whitespace-pre-line border-l-2 border-zinc-900 pl-4">
-                {project.description}
-              </p>
-            </div>
-
-            {project.tags && project.tags.length > 0 && (
-              <div className="space-y-3">
-                <span className="text-[10px] font-bold tracking-wider text-zinc-500 uppercase block font-cairo">
-                  {isRTL ? 'المواصفات والسمات' : 'Project Attributes'}
-                </span>
-
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag.id}
-                      className="text-[11px] font-medium font-cairo bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/80 hover:border-accent/40 text-zinc-400 hover:text-accent px-3.5 py-1.5 rounded-full transition-all duration-300 ease-out cursor-default select-none shadow-sm whitespace-nowrap"
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {project.links && project.links.length > 0 && (
-              <div className="pt-4 border-t border-zinc-900/60 space-y-3">
-                <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase block">
-                  {isRTL ? 'روابط ومعلومات إضافية' : 'External Links'}
-                </span>
-                <div className="flex flex-col gap-2">
-                  {project.links.map((link) => {
-                    const currentLang =
-                      (i18n.language?.split('-')[0] as 'ar' | 'en') || 'en';
-                    const linkName =
-                      typeof link.name === 'object'
-                        ? link.name[currentLang] || link.name['en']
-                        : link.name;
-
-                    return (
-                      <a
-                        key={link.id}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-between w-full bg-zinc-950 hover:bg-zinc-900 border border-zinc-900 hover:border-zinc-800 p-3 rounded-xl text-xs text-zinc-300 hover:text-accent transition-all duration-300 group"
-                      >
-                        <span className="font-medium">{linkName}</span>
-                        <ExternalLink
-                          size={12}
-                          className="text-zinc-600 group-hover:text-accent transition-colors"
-                        />
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div> */}
-
           <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-8">
-            {/* Header */}
             <div className="space-y-3">
-              {/* Badges */}
               <div className="flex flex-wrap gap-2 items-center">
                 {project.category && (
                   <span className="text-1xl font-bold tracking-widest text-accent uppercase bg-accent/5 border border-accent/10 px-2 py-0.5 rounded">
@@ -373,18 +309,15 @@ export default function ProjectDetails() {
                 )}
               </div>
 
-              {/* Title */}
               <h1 className="text-4xl font-black text-white leading-tight">
                 {project.name}
               </h1>
 
-              {/* Description */}
               <p className="text-sm text-zinc-400 leading-7 border-l-2 border-zinc-800 pl-4">
                 {project.description}
               </p>
             </div>
 
-            {/* Likes */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -396,7 +329,6 @@ export default function ProjectDetails() {
               <span className="text-sm font-bold">{project.likes_count}</span>
             </button>
 
-            {/* Tags */}
             <div className="space-y-3">
               <span className="text-xs uppercase tracking-widest text-zinc-500">
                 {isRTL ? 'المواصفات والسمات' : 'Project Attributes'}
@@ -414,7 +346,6 @@ export default function ProjectDetails() {
               </div>
             </div>
 
-            {/* Links */}
             {project.links?.length > 0 && (
               <div className="space-y-3 pt-4 border-t border-zinc-900">
                 <span className="text-xs uppercase tracking-widest text-zinc-500">
@@ -423,9 +354,6 @@ export default function ProjectDetails() {
 
                 <div className="space-y-2">
                   {project.links.map((link) => {
-                    const lang = i18n.language?.startsWith('ar') ? 'ar' : 'en';
-                    const linkName = link.name?.[lang] ?? link.name.en;
-
                     return (
                       <a
                         key={link.id}
@@ -435,7 +363,7 @@ export default function ProjectDetails() {
                         className="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-900 hover:border-accent/30 hover:bg-zinc-900 transition group"
                       >
                         <span className="text-sm text-zinc-300 group-hover:text-white">
-                          {linkName}
+                          {link.name}
                         </span>
 
                         <ExternalLink
@@ -451,7 +379,6 @@ export default function ProjectDetails() {
           </div>
         </div>
 
-        {/* Related Projects */}
         <RelatedProjects
           categoryId={project?.category?.id}
           currentProjectId={project?.id}
