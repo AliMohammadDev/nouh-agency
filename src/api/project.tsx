@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { Project } from '../types/project';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useGetProjects = () => {
   const { i18n } = useTranslation();
@@ -60,5 +61,23 @@ export const useGetRelatedProjects = (
       return res.data.data;
     },
     enabled: !!currentProjectId,
+  });
+};
+
+export const useLikeProject = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (projectId: number | string) => {
+      const res = await axios.post(`projects/${projectId}/like`);
+      return res.data;
+    },
+    onSuccess: (data, projectId) => {
+      queryClient.invalidateQueries({
+        queryKey: ['project', projectId.toString()],
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+    },
   });
 };

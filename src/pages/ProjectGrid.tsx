@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Heart } from 'lucide-react';
+import { useState } from 'react';
 
 interface TagData {
   id: number;
@@ -13,6 +14,7 @@ interface ProjectData {
   description: string;
   image: string | null;
   image_vr?: string;
+  likes_count: number;
   category?: {
     id: number;
     name: string;
@@ -62,6 +64,8 @@ function ProjectCard({ project, isRTL, onClick }: ProjectCardProps) {
     project.image ||
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200';
 
+  const [liked, setLiked] = useState(false);
+
   return (
     <div
       onClick={onClick}
@@ -107,6 +111,16 @@ function ProjectCard({ project, isRTL, onClick }: ProjectCardProps) {
                 {project.project_number}
               </span>
             )}
+
+            <div className="flex items-center gap-2">
+              <Heart
+                size={15}
+                className="text-red-500 fill-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.35)]"
+              />
+              <span className="text-xs font-bold text-zinc-400 tracking-wide font-cairo">
+                {project.likes_count || 0}
+              </span>
+            </div>
           </div>
         )}
       </div>

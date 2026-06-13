@@ -12,9 +12,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Globe,
+  Heart,
 } from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
-import { useGetProject } from '../api/project';
+import { useGetProject, useLikeProject } from '../api/project';
 import { AnimatePresence } from 'motion/react';
 import SafePannellum from '../components/projects/SafePannellum';
 import RelatedProjects from '../components/projects/RelatedProjects';
@@ -43,6 +44,7 @@ interface Project {
   id: number;
   name: string;
   description: string;
+  likes_count: number;
   country: string | null;
   project_number: string;
   image: string | null;
@@ -81,6 +83,8 @@ export default function ProjectDetails() {
     setLightboxImage(null);
     window.scrollTo(0, 0);
   }, [id]);
+
+  const { mutate: likeProject, isPending } = useLikeProject();
 
   const imagesToShow =
     viewMode === 'design'
@@ -234,9 +238,34 @@ export default function ProjectDetails() {
             )}
           </div>
 
-          <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-8">
+          {/* <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-8">
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-4">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!isPending) likeProject(project.id);
+                  }}
+                  disabled={isPending}
+                  className={`flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg border border-zinc-800 transition-all ${
+                    isPending
+                      ? 'opacity-50 cursor-not-allowed bg-zinc-900'
+                      : 'hover:border-red-500/50 hover:bg-red-500/5 hover:text-red-500 bg-zinc-900/50'
+                  }`}
+                >
+                  <Heart
+                    size={18}
+                    className={`${isPending ? 'animate-pulse' : ''} ${
+                      project.links && project.links.length > 0
+                        ? 'text-red-500 fill-red-500'
+                        : 'text-zinc-400'
+                    }`}
+                  />
+                  <span className="text-xs font-bold font-cairo">
+                    {project.likes_count}
+                  </span>
+                </button>
+
                 {project.category && (
                   <span className="text-1xl font-bold tracking-widest text-accent uppercase bg-accent/5 border border-accent/10 px-2 py-0.5 rounded">
                     {project.category.name}
@@ -310,6 +339,108 @@ export default function ProjectDetails() {
                         <ExternalLink
                           size={12}
                           className="text-zinc-600 group-hover:text-accent transition-colors"
+                        />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div> */}
+
+          <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-8">
+            {/* Header */}
+            <div className="space-y-3">
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2 items-center">
+                {project.category && (
+                  <span className="text-1xl font-bold tracking-widest text-accent uppercase bg-accent/5 border border-accent/10 px-2 py-0.5 rounded">
+                    {project.category.name}
+                  </span>
+                )}
+
+                {project.country && (
+                  <span className="inline-flex items-center gap-1 text-2xl font-cairo tracking-widest text-zinc-400 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
+                    <Globe size={12} className="text-zinc-500" />
+                    {project.country}
+                  </span>
+                )}
+
+                {project.project_number && (
+                  <span className="text-2xl font-cairo tracking-widest text-zinc-500 bg-zinc-900 border border-zinc-800/60 px-2 py-0.5 rounded">
+                    {project.project_number}
+                  </span>
+                )}
+              </div>
+
+              {/* Title */}
+              <h1 className="text-4xl font-black text-white leading-tight">
+                {project.name}
+              </h1>
+
+              {/* Description */}
+              <p className="text-sm text-zinc-400 leading-7 border-l-2 border-zinc-800 pl-4">
+                {project.description}
+              </p>
+            </div>
+
+            {/* Likes */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isPending) likeProject(project.id);
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-red-500/40 transition"
+            >
+              <Heart className="text-red-500 fill-red-500" size={18} />
+              <span className="text-sm font-bold">{project.likes_count}</span>
+            </button>
+
+            {/* Tags */}
+            <div className="space-y-3">
+              <span className="text-xs uppercase tracking-widest text-zinc-500">
+                {isRTL ? 'المواصفات والسمات' : 'Project Attributes'}
+              </span>
+
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    className="px-3 py-1 text-xs rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-accent/40 hover:text-accent transition"
+                  >
+                    {tag.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Links */}
+            {project.links?.length > 0 && (
+              <div className="space-y-3 pt-4 border-t border-zinc-900">
+                <span className="text-xs uppercase tracking-widest text-zinc-500">
+                  {isRTL ? 'روابط ومعلومات إضافية' : 'External Links'}
+                </span>
+
+                <div className="space-y-2">
+                  {project.links.map((link) => {
+                    const lang = i18n.language?.startsWith('ar') ? 'ar' : 'en';
+                    const linkName = link.name?.[lang] ?? link.name.en;
+
+                    return (
+                      <a
+                        key={link.id}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-900 hover:border-accent/30 hover:bg-zinc-900 transition group"
+                      >
+                        <span className="text-sm text-zinc-300 group-hover:text-white">
+                          {linkName}
+                        </span>
+
+                        <ExternalLink
+                          size={14}
+                          className="text-zinc-500 group-hover:text-accent"
                         />
                       </a>
                     );
