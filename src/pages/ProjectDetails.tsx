@@ -16,9 +16,9 @@ import {
 } from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
 import { useGetProject, useLikeProject } from '../api/project';
-import { AnimatePresence } from 'motion/react';
 import SafePannellum from '../components/projects/SafePannellum';
 import RelatedProjects from '../components/projects/RelatedProjects';
+import { AnimatePresence } from 'framer-motion';
 
 interface Tag {
   id: number;
@@ -37,6 +37,17 @@ interface ProjectLink {
   url: string;
 }
 
+interface GalleryImage {
+  original: string;
+  thumbnail: string;
+}
+
+interface GalleryAlbum {
+  id: number;
+  album_name: string;
+  images: GalleryImage[];
+}
+
 interface Project {
   id: number;
   name: string;
@@ -44,10 +55,10 @@ interface Project {
   likes_count: number;
   country: string | null;
   project_number: string;
-  image: string | null;
-  design_images: Record<string, string[]>;
-  vr_images: Record<string, string[]>;
-  real_images: Record<string, string[]>;
+  main_image: string | null;
+  design_galleries: GalleryAlbum[];
+  vr_galleries: GalleryAlbum[];
+  real_galleries: GalleryAlbum[];
   category: Category | null;
   tags: Tag[];
   links: ProjectLink[];
@@ -71,34 +82,53 @@ export default function ProjectDetails() {
 
   const [viewMode, setViewMode] = useState<'design' | 'vr' | 'real'>('design');
 
-  const [activeSubTab, setActiveSubTab] = useState<string>('');
+  // نستخدم string للتحكم بالتبويب النشط: إما 'all' أو معرف الألبوم كـ string
+  const [activeSubTab, setActiveSubTab] = useState<string>('all');
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
-  const currentCollection =
+  // 1. تحديد مصفوفة الألبومات الحالية بناءً على وضع العرض النشط
+  const currentGalleries =
     viewMode === 'design'
-      ? project?.design_images
+      ? project?.design_galleries
       : viewMode === 'real'
-        ? project?.real_images
-        : project?.vr_images;
+        ? project?.real_galleries
+        : project?.vr_galleries;
 
-  const subTabs = currentCollection ? Object.keys(currentCollection) : [];
-
+  // 2. عند تغيير وضع العرض الرئيسي، نعود افتراضياً لخيار "الكل"
   useEffect(() => {
-    if (subTabs.length > 0) {
-      setActiveSubTab(subTabs[0]);
-    } else {
-      setActiveSubTab('');
-    }
+    setActiveSubTab('all');
     setActiveImage(null);
   }, [viewMode, project, id]);
 
-  const imagesToShow =
-    currentCollection && activeSubTab
-      ? currentCollection[activeSubTab] || []
-      : [];
+  // 3. بناء مصفوفة الصور ومصفوفة الكائنات المصغرة بناءً على التبويب المحدد
+  let imagesToShow: string[] = [];
+  let thumbnailsToShow: GalleryImage[] = [];
 
-  const currentMainImage = activeImage || imagesToShow[0] || '';
+  if (currentGalleries) {
+    if (activeSubTab === 'all') {
+      // تجميع كافة الصور من كافة الألبومات في القسم النشط
+      currentGalleries.forEach((album) => {
+        album.images.forEach((img) => {
+          imagesToShow.push(img.original);
+          thumbnailsToShow.push(img);
+        });
+      });
+    } else {
+      // جلب صور ألبوم محدد بناءً على معرفه الفريد (ID)
+      const activeAlbum = currentGalleries.find(
+        (g) => g.id === Number(activeSubTab)
+      );
+      if (activeAlbum) {
+        imagesToShow = activeAlbum.images.map((img) => img.original);
+        thumbnailsToShow = activeAlbum.images;
+      }
+    }
+  }
+
+  // الصورة الكبيرة المعروضة حالياً بالواجهة
+  const currentMainImage =
+    activeImage || imagesToShow[0] || project?.main_image || '';
 
   useEffect(() => {
     setLightboxImage(null);
@@ -163,12 +193,11 @@ export default function ProjectDetails() {
     );
   }
 
-  const hasRealImages = project.real_images
-    ? Object.keys(project.real_images).length > 0
-    : false;
-  const hasVrImages = project.vr_images
-    ? Object.keys(project.vr_images).length > 0
-    : false;
+  const hasDesignImages =
+    project.design_galleries && project.design_galleries.length > 0;
+  const hasRealImages =
+    project.real_galleries && project.real_galleries.length > 0;
+  const hasVrImages = project.vr_galleries && project.vr_galleries.length > 0;
 
   return (
     <section className="pt-36 pb-24 bg-black text-zinc-100 min-h-screen relative font-cairo overflow-hidden">
@@ -196,13 +225,16 @@ export default function ProjectDetails() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-7 space-y-6">
+            {/* أزرار التبديل الرئيسية للأقسام */}
             <div className="inline-flex p-1 bg-zinc-950 border border-zinc-900 rounded-xl gap-1">
-              <button
-                onClick={() => handleModeChange('design')}
-                className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg transition-all ${viewMode === 'design' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
-              >
-                <ImageIcon size={12} /> {isRTL ? 'صور التصميم' : 'Design'}
-              </button>
+              {hasDesignImages && (
+                <button
+                  onClick={() => handleModeChange('design')}
+                  className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg transition-all ${viewMode === 'design' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
+                >
+                  <ImageIcon size={12} /> {isRTL ? 'صور التصميم' : 'Design'}
+                </button>
+              )}
               {hasRealImages && (
                 <button
                   onClick={() => handleModeChange('real')}
@@ -222,27 +254,45 @@ export default function ProjectDetails() {
               )}
             </div>
 
-            {subTabs.length > 1 && (
+            {/* التبويبات الفرعية مع إدراج خيار "الكل" في البداية */}
+            {currentGalleries && currentGalleries.length > 0 && (
               <div className="flex flex-wrap gap-2 border-b border-zinc-900/60 pb-3">
-                {subTabs.map((tabName) => (
+                {/* زر الكل الثابت */}
+                <button
+                  onClick={() => {
+                    setActiveSubTab('all');
+                    setActiveImage(null);
+                  }}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer border ${
+                    activeSubTab === 'all'
+                      ? 'bg-accent/10 border-accent/30 text-accent'
+                      : 'bg-zinc-950 border-zinc-900 text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  {isRTL ? 'الكل' : 'All'}
+                </button>
+
+                {/* بقية الألبومات القادمة من الـ API */}
+                {currentGalleries.map((album) => (
                   <button
-                    key={tabName}
+                    key={album.id}
                     onClick={() => {
-                      setActiveSubTab(tabName);
+                      setActiveSubTab(String(album.id));
                       setActiveImage(null);
                     }}
                     className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer border ${
-                      activeSubTab === tabName
+                      activeSubTab === String(album.id)
                         ? 'bg-accent/10 border-accent/30 text-accent'
                         : 'bg-zinc-950 border-zinc-900 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    {tabName}
+                    {album.album_name}
                   </button>
                 ))}
               </div>
             )}
 
+            {/* مساحة عرض الصورة الرئيسية الكبيرة أو مشغّل البانوراما */}
             <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-950 border border-zinc-900 rounded-2xl">
               {viewMode === 'vr' ? (
                 <SafePannellum imageUrl={currentMainImage} isRTL={isRTL} />
@@ -252,7 +302,7 @@ export default function ProjectDetails() {
                     <img
                       src={currentMainImage}
                       className="w-full h-full object-cover animate-fade-in"
-                      alt={activeSubTab}
+                      alt=""
                     />
                   )}
                   {currentMainImage && (
@@ -267,16 +317,17 @@ export default function ProjectDetails() {
               )}
             </div>
 
-            {imagesToShow.length > 1 && (
+            {/* شريط الصور المصغرة التابعة للخيار الحالي النشط */}
+            {imagesToShow.length > 0 && (
               <div className="flex flex-wrap gap-2.5">
-                {imagesToShow.map((img, idx) => (
+                {thumbnailsToShow.map((imgObj, idx) => (
                   <button
                     key={idx}
-                    onClick={() => setActiveImage(img)}
-                    className={`w-20 aspect-[4/3] rounded-lg border transition-all ${currentMainImage === img ? 'border-accent scale-95' : 'border-zinc-900 hover:border-zinc-700'}`}
+                    onClick={() => setActiveImage(imgObj.original)}
+                    className={`w-20 aspect-[4/3] rounded-lg border transition-all overflow-hidden ${currentMainImage === imgObj.original ? 'border-accent scale-95' : 'border-zinc-900 hover:border-zinc-700'}`}
                   >
                     <img
-                      src={img}
+                      src={imgObj.thumbnail || imgObj.original}
                       className="w-full h-full object-cover rounded-md"
                       alt=""
                     />
@@ -286,6 +337,7 @@ export default function ProjectDetails() {
             )}
           </div>
 
+          {/* تفاصيل ومعلومات المشروع الجانبية */}
           <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-8">
             <div className="space-y-3">
               <div className="flex flex-wrap gap-2 items-center">
@@ -385,6 +437,7 @@ export default function ProjectDetails() {
         />
       </div>
 
+      {/* نافذة معاينة الصور المكبرة (Lightbox) */}
       <AnimatePresence>
         {lightboxImage && viewMode !== 'vr' && (
           <div
