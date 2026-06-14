@@ -16,37 +16,8 @@ import { useGetMajors } from '../api/major';
 import { useGetProjects } from '../api/project';
 import { ProjectGrid } from './ProjectGrid';
 import { motion } from 'motion/react';
-
-interface TagData {
-  id: number;
-  name: string;
-}
-
-interface ProjectData {
-  id: number;
-  project_number: string;
-  name: string;
-  description: string;
-  image: string | null;
-  image_vr?: string;
-  category?: {
-    id: number;
-    name: string;
-    description: string;
-  };
-  tags?: TagData[];
-}
-
-interface Major {
-  id: number;
-  name: string;
-  description: string;
-  categories: {
-    id: number;
-    name: string;
-    description: string;
-  }[];
-}
+import { Project } from '../types/project';
+import { Major } from '../types/major';
 
 const MAJOR_MAP: Record<string, number> = {
   architecture: 1,
@@ -57,7 +28,6 @@ const MAJOR_MAP: Record<string, number> = {
 const PROJECTS_PER_PAGE = 6;
 
 export default function Work() {
-  const { t, i18n } = useTranslation();
   const { isRTL } = useDirection();
   const navigate = useNavigate();
   const { categorySlug } = useParams<{ categorySlug?: string }>();
@@ -66,8 +36,9 @@ export default function Work() {
     data: Major[] | undefined;
     isLoading: boolean;
   };
+
   const { data: projects, isLoading: isProjectsLoading } = useGetProjects() as {
-    data: ProjectData[] | undefined;
+    data: Project[] | undefined;
     isLoading: boolean;
   };
 
@@ -75,7 +46,6 @@ export default function Work() {
   const [activeCategory, setActiveCategory] = useState<number | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -102,31 +72,44 @@ export default function Work() {
     }
   }, [categorySlug, majors]);
 
-  const getFilteredProjects = (): ProjectData[] => {
+  const getFilteredProjects = (): Project[] => {
     if (!projects) return [];
 
     return projects.filter((project) => {
       if (currentMajor) {
         const isBelongsToMajor = currentMajor.categories.some(
-          (cat) => cat.id === project.category?.id
+          (cat) => cat.id === project.categories?.id
         );
         if (!isBelongsToMajor) return false;
       }
 
       if (categorySlug && activeCategory !== 'all') {
-        if (project.category?.id !== activeCategory) return false;
+        if (project.categories?.id !== activeCategory) return false;
       }
 
       const query = searchQuery.toLowerCase().trim();
       if (query !== '') {
         const matchesName = project.name?.toLowerCase().includes(query);
         const matchesDesc = project.description?.toLowerCase().includes(query);
-        const matchesNum = project.project_number?.includes(query);
+        const matchesNum = project.project_number
+          ?.toLowerCase()
+          .includes(query);
+
         const matchesTags = project.tags?.some((tag) =>
           tag.name.toLowerCase().includes(query)
         );
 
-        if (!matchesName && !matchesDesc && !matchesNum && !matchesTags)
+        const matchesGalleries = project.gallery_names?.some((galleryName) =>
+          galleryName.toLowerCase().includes(query)
+        );
+
+        if (
+          !matchesName &&
+          !matchesDesc &&
+          !matchesNum &&
+          !matchesTags &&
+          !matchesGalleries
+        )
           return false;
       }
 
@@ -298,7 +281,9 @@ export default function Work() {
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setIsSearchFocused(false)}
                 placeholder={
-                  isRTL ? 'ابحث عن اسم المشروع...' : 'Search project name...'
+                  isRTL
+                    ? 'ابحث بالاسم، الرقم أو الألبوم...'
+                    : 'Search by name, number or gallery...'
                 }
                 className={`w-full bg-transparent py-2 text-[11px] text-white placeholder-zinc-500 focus:outline-none font-medium ${isRTL ? 'pl-8 font-cairo' : 'pr-8 font-sans'}`}
               />
@@ -367,11 +352,11 @@ export default function Work() {
             <span className="text-xs font-cairo text-zinc-500 tracking-widest uppercase">
               {searchQuery
                 ? isRTL
-                  ? `NO_RESULTS  لم نجد نتائج لـ "${searchQuery}"`
-                  : `NO_RESULTS  NO MATCHES FOR "${searchQuery}"`
+                  ? `NO_RESULTS لم نجد نتائج لـ "${searchQuery}"`
+                  : `NO_RESULTS NO MATCHES FOR "${searchQuery}"`
                 : isRTL
-                  ? '  لا توجد مشاريع مضافة هنا بعد'
-                  : '  NO PROJECTS IN THIS CATEGORY YET'}
+                  ? ' لا توجد مشاريع مضافة هنا بعد'
+                  : ' NO PROJECTS IN THIS CATEGORY YET'}
             </span>
           </div>
         )}

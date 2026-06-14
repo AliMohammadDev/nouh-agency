@@ -1,30 +1,9 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUpRight, Heart } from 'lucide-react';
-import { useState } from 'react';
-
-interface TagData {
-  id: number;
-  name: string;
-}
-
-interface ProjectData {
-  id: number;
-  project_number: string;
-  name: string;
-  description: string;
-  image: string | null;
-  image_vr?: string;
-  likes_count: number;
-  category?: {
-    id: number;
-    name: string;
-    description: string;
-  };
-  tags?: TagData[];
-}
+import { ArrowUpRight, Heart, Images } from 'lucide-react';
+import { Project } from '../types/project';
 
 interface ProjectGridProps {
-  projects: ProjectData[];
+  projects: Project[];
   isRTL: boolean;
   onProjectClick: (id: number) => void;
 }
@@ -54,28 +33,27 @@ export function ProjectGrid({
 }
 
 interface ProjectCardProps {
-  project: ProjectData;
+  project: Project;
   isRTL: boolean;
   onClick: () => void;
 }
 
 function ProjectCard({ project, isRTL, onClick }: ProjectCardProps) {
   const projectImg =
-    project.image ||
+    project.main_image ||
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200';
-
-  const [liked, setLiked] = useState(false);
 
   return (
     <div
       onClick={onClick}
       className="group flex flex-col cursor-pointer bg-zinc-900/10 backdrop-blur-sm border border-zinc-900/80 p-4 rounded-xl transition-all duration-500 ease-out hover:border-accent/30 hover:bg-zinc-900/40 hover:shadow-[0_0_25px_rgba(255,255,255,0.02)]"
     >
+      {/* قسم الصورة */}
       <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg bg-zinc-950 border border-zinc-900 group-hover:border-zinc-800 transition-colors duration-500">
         <img
           src={projectImg}
           alt={project.name}
-          className="w-full h-full object-cover opacity-85 transition-all duration-750 ease-out grayscale-100 contrast-115 brightness-90 group-hover:scale-102 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 group-hover:brightness-100"
+          className="w-full h-full object-cover opacity-85 transition-all duration-750 ease-out grayscale group-hover:scale-102 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 group-hover:brightness-100"
           loading="lazy"
         />
 
@@ -101,6 +79,24 @@ function ProjectCard({ project, isRTL, onClick }: ProjectCardProps) {
           <p className="text-[11px] text-zinc-500 mt-1.5 leading-relaxed line-clamp-2 font-cairo group-hover:text-zinc-400 transition-colors duration-300">
             {project.description}
           </p>
+
+          {project.gallery_names && project.gallery_names.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-1.5 items-center">
+              <Images
+                size={12}
+                className="text-zinc-600 group-hover:text-accent/50 transition-colors duration-300 mr-0.5"
+              />
+
+              {project.gallery_names.map((albumName, index) => (
+                <span
+                  key={index}
+                  className="font-cairo text-[10px] px-2 py-0.5 rounded bg-zinc-950/40 border border-zinc-900 text-zinc-500 transition-all duration-300 group-hover:border-zinc-800 group-hover:bg-zinc-900/50 group-hover:text-zinc-300"
+                >
+                  {albumName}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         {(project.project_number ||

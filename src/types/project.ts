@@ -9,32 +9,40 @@ export interface ProjectCategory {
   description: string;
 }
 
-export interface ProjectLinkName {
-  ar: string;
-  en: string;
-}
-
 export interface ProjectLink {
   id: number;
-  name: ProjectLinkName;
+  name: string;
   url: string;
+}
+
+export interface GalleryImage {
+  original: string;
+  thumbnail: string;
+}
+
+export interface GalleryAlbum {
+  id: number;
+  album_name: string;
+  images: GalleryImage[];
 }
 
 export interface Project {
   id: number;
+  project_number: string;
   name: string;
   description: string;
-  project_number: string;
-  url_youtube: string;
-  image: string;
-  image_vr: string;
-  image_real: string;
+  likes_count: number;
+  is_featured: boolean;
+  country: string | null;
+  main_image: string | null;
 
-  all_images: Record<string, string[]>;
-  all_images_vr: Record<string, string[]>;
-  all_images_real: Record<string, string[]>;
+  design_galleries?: GalleryAlbum[];
+  vr_galleries?: GalleryAlbum[];
+  real_galleries?: GalleryAlbum[];
 
-  category: ProjectCategory;
-  tags: ProjectTag[];
-  links: ProjectLink[];
+  gallery_names?: string[];
+
+  categories?: ProjectCategory | null;
+  tags?: ProjectTag[];
+  links?: ProjectLink[];
 }
