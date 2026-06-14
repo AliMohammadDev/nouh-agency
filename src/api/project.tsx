@@ -64,6 +64,23 @@ export const useGetRelatedProjects = (
   });
 };
 
+export const useGetFeaturedProjects = () => {
+  const { i18n } = useTranslation();
+
+  return useQuery<Project[]>({
+    queryKey: ['projects', 'featured', i18n.language],
+    queryFn: async () => {
+      const lang = i18n.language?.split('-')[0] || 'en';
+      const res = await axios.get('projects/featured', {
+        headers: {
+          'Accept-Language': lang,
+        },
+      });
+      return res.data.data;
+    },
+  });
+};
+
 export const useLikeProject = () => {
   const queryClient = useQueryClient();
 

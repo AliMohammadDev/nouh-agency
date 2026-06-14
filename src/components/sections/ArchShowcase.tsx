@@ -3,22 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useDirection } from '../../hooks/useDirection';
 import { motion, AnimatePresence } from 'motion/react';
 import { Eye, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
-import { useGetProjects } from '../../api/project';
-
-interface ProjectData {
-  id: number;
-  name: string;
-  description: string;
-  project_number: string;
-  is_featured: boolean;
-  image: string | null;
-  image_vr?: string;
-  category?: {
-    id: number;
-    name: string;
-    description: string;
-  };
-}
+import { useGetFeaturedProjects } from '../../api/project';
+import { Project } from '@/src/types/project';
 
 type AnimStyle = '3D-flip' | 'zoom-elastic' | 'warp-slide' | 'cine-fade';
 
@@ -26,12 +12,13 @@ export default function ArchShowcase() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
 
-  const { data: projects, isLoading } = useGetProjects() as {
-    data: ProjectData[] | undefined;
-    isLoading: boolean;
-  };
+  const { data: featuredProjectsData, isLoading } =
+    useGetFeaturedProjects() as {
+      data: Project[] | undefined;
+      isLoading: boolean;
+    };
 
-  const [featuredProjects, setFeaturedProjects] = useState<ProjectData[]>([]);
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [animStyle, setAnimStyle] = useState<AnimStyle>('3D-flip');
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
@@ -39,14 +26,11 @@ export default function ArchShowcase() {
   const [isAutoplay, setIsAutoplay] = useState(true);
 
   useEffect(() => {
-    if (projects) {
-      const filtered = projects.filter(
-        (project) => project.is_featured === true
-      );
-      setFeaturedProjects(filtered);
+    if (featuredProjectsData) {
+      setFeaturedProjects(featuredProjectsData);
       setActiveIndex(0);
     }
-  }, [projects]);
+  }, [featuredProjectsData]);
 
   useEffect(() => {
     if (!isAutoplay || featuredProjects.length <= 1) return;
@@ -237,7 +221,8 @@ export default function ArchShowcase() {
           <div
             className="relative flex-grow aspect-[16/9] lg:aspect-[21/9] w-full bg-black overflow-hidden border border-accent/10 cursor-zoom-in group"
             onClick={() =>
-              activeImage.image && setFullscreenImage(activeImage.image)
+              activeImage.main_image &&
+              setFullscreenImage(activeImage.main_image)
             }
             style={{ perspective: 1200 }}
           >
@@ -260,13 +245,13 @@ export default function ArchShowcase() {
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <img
-                  src={activeImage.image || ''}
+                  src={activeImage.main_image || ''}
                   alt=""
                   className="absolute inset-0 h-full w-full object-cover blur-2xl opacity-25 scale-110 pointer-events-none select-none"
                 />
 
                 <img
-                  src={activeImage.image || ''}
+                  src={activeImage.main_image || ''}
                   alt={activeImage.name}
                   referrerPolicy="no-referrer"
                   className="relative z-10 max-h-full max-w-full object-contain select-none transition-all duration-700 ease-out brightness-95 group-hover:brightness-100 group-hover:scale-[1.005]"
@@ -279,11 +264,11 @@ export default function ArchShowcase() {
             <div className="max-w-2xl">
               <div className="flex items-center gap-2">
                 <span className="text-md font-bold uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded">
-                  #{activeImage.project_number}
+                  {activeImage.project_number}
                 </span>
-                {activeImage.category && (
+                {activeImage.categories && (
                   <span className="text-[11px] font-medium text-zinc-400">
-                    {activeImage.category.name}
+                    {activeImage.categories.name}
                   </span>
                 )}
               </div>
@@ -340,7 +325,7 @@ export default function ArchShowcase() {
               }`}
             >
               <img
-                src={img.image || ''}
+                src={img.main_image || ''}
                 alt={img.name}
                 referrerPolicy="no-referrer"
                 className="h-full w-full object-cover brightness-50 hover:brightness-90 transition-all duration-300"
