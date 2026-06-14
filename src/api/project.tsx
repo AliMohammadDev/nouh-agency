@@ -98,3 +98,20 @@ export const useLikeProject = () => {
     },
   });
 };
+
+export const useGetTopLikedProjects = () => {
+  const { i18n } = useTranslation();
+
+  return useQuery<Project[]>({
+    queryKey: ['projects', 'top-liked', i18n.language],
+    queryFn: async () => {
+      const lang = i18n.language?.split('-')[0] || 'en';
+      const res = await axios.get('projects/top-liked', {
+        headers: {
+          'Accept-Language': lang,
+        },
+      });
+      return res.data.data;
+    },
+  });
+};
