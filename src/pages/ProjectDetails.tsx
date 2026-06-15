@@ -13,62 +13,19 @@ import {
   ChevronRight,
   Globe,
   Heart,
+  Pencil,
 } from 'lucide-react';
 import { useDirection } from '../hooks/useDirection';
 import { useGetProject, useLikeProject } from '../api/project';
 import SafePannellum from '../components/projects/SafePannellum';
 import RelatedProjects from '../components/projects/RelatedProjects';
 import { AnimatePresence } from 'framer-motion';
-
-interface Tag {
-  id: number;
-  name: string;
-}
-
-interface Category {
-  id: number;
-  name: string;
-  description: string;
-}
-
-interface ProjectLink {
-  id: number;
-  name: string;
-  url: string;
-}
-
-interface GalleryImage {
-  original: string;
-  thumbnail: string;
-}
-
-interface GalleryAlbum {
-  id: number;
-  album_name: string;
-  images: GalleryImage[];
-}
-
-interface Project {
-  id: number;
-  name: string;
-  description: string;
-  likes_count: number;
-  country: string | null;
-  project_number: string;
-  main_image: string | null;
-  design_galleries: GalleryAlbum[];
-  vr_galleries: GalleryAlbum[];
-  real_galleries: GalleryAlbum[];
-  category: Category | null;
-  tags: Tag[];
-  links: ProjectLink[];
-}
+import { GalleryImage, Project } from '../types/project';
 
 export default function ProjectDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isRTL } = useDirection();
-  const { i18n } = useTranslation();
 
   const {
     data: project,
@@ -80,34 +37,33 @@ export default function ProjectDetails() {
     error: any;
   };
 
-  const [viewMode, setViewMode] = useState<'design' | 'vr' | 'real'>('design');
+  const [viewMode, setViewMode] = useState<
+    'design' | 'vr' | 'real' | 'drawings'
+  >('design');
 
-  // نستخدم string للتحكم بالتبويب النشط: إما 'all' أو معرف الألبوم كـ string
   const [activeSubTab, setActiveSubTab] = useState<string>('all');
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
-  // 1. تحديد مصفوفة الألبومات الحالية بناءً على وضع العرض النشط
   const currentGalleries =
     viewMode === 'design'
       ? project?.design_galleries
       : viewMode === 'real'
         ? project?.real_galleries
-        : project?.vr_galleries;
+        : viewMode === 'drawings'
+          ? project?.drawings_galleries
+          : project?.vr_galleries;
 
-  // 2. عند تغيير وضع العرض الرئيسي، نعود افتراضياً لخيار "الكل"
   useEffect(() => {
     setActiveSubTab('all');
     setActiveImage(null);
   }, [viewMode, project, id]);
 
-  // 3. بناء مصفوفة الصور ومصفوفة الكائنات المصغرة بناءً على التبويب المحدد
   let imagesToShow: string[] = [];
   let thumbnailsToShow: GalleryImage[] = [];
 
   if (currentGalleries) {
     if (activeSubTab === 'all') {
-      // تجميع كافة الصور من كافة الألبومات في القسم النشط
       currentGalleries.forEach((album) => {
         album.images.forEach((img) => {
           imagesToShow.push(img.original);
@@ -115,7 +71,6 @@ export default function ProjectDetails() {
         });
       });
     } else {
-      // جلب صور ألبوم محدد بناءً على معرفه الفريد (ID)
       const activeAlbum = currentGalleries.find(
         (g) => g.id === Number(activeSubTab)
       );
@@ -126,7 +81,6 @@ export default function ProjectDetails() {
     }
   }
 
-  // الصورة الكبيرة المعروضة حالياً بالواجهة
   const currentMainImage =
     activeImage || imagesToShow[0] || project?.main_image || '';
 
@@ -156,7 +110,7 @@ export default function ProjectDetails() {
     setActiveImage(imagesToShow[prevIndex]);
   };
 
-  const handleModeChange = (mode: 'design' | 'vr' | 'real') => {
+  const handleModeChange = (mode: 'design' | 'vr' | 'real' | 'drawings') => {
     setViewMode(mode);
   };
 
@@ -198,6 +152,8 @@ export default function ProjectDetails() {
   const hasRealImages =
     project.real_galleries && project.real_galleries.length > 0;
   const hasVrImages = project.vr_galleries && project.vr_galleries.length > 0;
+  const hasDrawingsImages =
+    project.drawings_galleries && project.drawings_galleries.length > 0;
 
   return (
     <section className="pt-36 pb-24 bg-black text-zinc-100 min-h-screen relative font-cairo overflow-hidden">
@@ -225,7 +181,6 @@ export default function ProjectDetails() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-7 space-y-6">
-            {/* أزرار التبديل الرئيسية للأقسام */}
             <div className="inline-flex p-1 bg-zinc-950 border border-zinc-900 rounded-xl gap-1">
               {hasDesignImages && (
                 <button
@@ -252,12 +207,19 @@ export default function ProjectDetails() {
                   <Box size={12} /> {isRTL ? 'معاينة 360°' : '360° View'}
                 </button>
               )}
+
+              {hasDrawingsImages && (
+                <button
+                  onClick={() => handleModeChange('drawings')}
+                  className={`flex items-center gap-1.5 cursor-pointer px-4 py-2 text-[10px] font-black uppercase rounded-lg transition-all ${viewMode === 'vr' ? 'bg-zinc-900 text-accent' : 'text-zinc-500'}`}
+                >
+                  <Pencil size={12} /> {isRTL ? 'الرسومات' : 'Drawings'}
+                </button>
+              )}
             </div>
 
-            {/* التبويبات الفرعية مع إدراج خيار "الكل" في البداية */}
             {currentGalleries && currentGalleries.length > 0 && (
               <div className="flex flex-wrap gap-2 border-b border-zinc-900/60 pb-3">
-                {/* زر الكل الثابت */}
                 <button
                   onClick={() => {
                     setActiveSubTab('all');
@@ -272,7 +234,6 @@ export default function ProjectDetails() {
                   {isRTL ? 'الكل' : 'All'}
                 </button>
 
-                {/* بقية الألبومات القادمة من الـ API */}
                 {currentGalleries.map((album) => (
                   <button
                     key={album.id}
@@ -292,7 +253,6 @@ export default function ProjectDetails() {
               </div>
             )}
 
-            {/* مساحة عرض الصورة الرئيسية الكبيرة أو مشغّل البانوراما */}
             <div className="relative w-full aspect-[4/3] overflow-hidden bg-zinc-950 border border-zinc-900 rounded-2xl">
               {viewMode === 'vr' ? (
                 <SafePannellum imageUrl={currentMainImage} isRTL={isRTL} />
@@ -317,7 +277,6 @@ export default function ProjectDetails() {
               )}
             </div>
 
-            {/* شريط الصور المصغرة التابعة للخيار الحالي النشط */}
             {imagesToShow.length > 0 && (
               <div className="flex flex-wrap gap-2.5">
                 {thumbnailsToShow.map((imgObj, idx) => (
@@ -337,13 +296,13 @@ export default function ProjectDetails() {
             )}
           </div>
 
-          {/* تفاصيل ومعلومات المشروع الجانبية */}
+          {/* details */}
           <div className="lg:col-span-5 lg:sticky lg:top-36 space-y-8">
             <div className="space-y-3">
               <div className="flex flex-wrap gap-2 items-center">
-                {project.category && (
+                {project.categories && (
                   <span className="text-1xl font-bold tracking-widest text-accent uppercase bg-accent/5 border border-accent/10 px-2 py-0.5 rounded">
-                    {project.category.name}
+                    {project.categories.name}
                   </span>
                 )}
 
@@ -387,7 +346,7 @@ export default function ProjectDetails() {
               </span>
 
               <div className="flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
+                {project.tags?.map((tag) => (
                   <span
                     key={tag.id}
                     className="px-3 py-1 text-xs rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:border-accent/40 hover:text-accent transition"
@@ -398,7 +357,7 @@ export default function ProjectDetails() {
               </div>
             </div>
 
-            {project.links?.length > 0 && (
+            {project.links && project.links.length > 0 && (
               <div className="space-y-3 pt-4 border-t border-zinc-900">
                 <span className="text-xs uppercase tracking-widest text-zinc-500">
                   {isRTL ? 'روابط ومعلومات إضافية' : 'External Links'}
@@ -432,12 +391,11 @@ export default function ProjectDetails() {
         </div>
 
         <RelatedProjects
-          categoryId={project?.category?.id}
+          categoryId={project?.categories?.id}
           currentProjectId={project?.id}
         />
       </div>
 
-      {/* نافذة معاينة الصور المكبرة (Lightbox) */}
       <AnimatePresence>
         {lightboxImage && viewMode !== 'vr' && (
           <div

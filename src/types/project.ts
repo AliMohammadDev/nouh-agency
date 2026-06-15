@@ -39,6 +39,7 @@ export interface Project {
   design_galleries?: GalleryAlbum[];
   vr_galleries?: GalleryAlbum[];
   real_galleries?: GalleryAlbum[];
+  drawings_galleries?: GalleryAlbum[];
 
   gallery_names?: string[];
 
