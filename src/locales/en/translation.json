@@ -230,5 +230,13 @@
     "title": "Page not found",
     "description": "The page you are looking for doesn't exist or has been moved.",
     "back_home": "Back to Home"
+  },
+  "topLiked": {
+    "loading": "Loading popular projects...",
+    "tagline": "POPULAR CHOICE",
+    "title": "MOST LIKED PROJECTS",
+    "subtitle": "The masterpieces that received the highest admiration and praise from our clients and creative community.",
+    "defaultDesc": "Click to view details of this exceptional project.",
+    "viewProject": "VIEW PROJECT"
   }
 }
