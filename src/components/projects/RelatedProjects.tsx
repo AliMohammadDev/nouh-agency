@@ -3,6 +3,7 @@ import { useGetRelatedProjects } from '../../api/project';
 import { useDirection } from '../../hooks/useDirection';
 import { FolderKanban, Heart, MapPin } from 'lucide-react';
 import { Project } from '../../types/project';
+import { formatLikes } from '@/utils/numberFormatter';
 
 interface RelatedProjectsProps {
   categoryId: number | undefined;
@@ -78,7 +79,7 @@ export default function RelatedProjects({
               {project.likes_count !== undefined && (
                 <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/60 border border-zinc-800/40 px-2 py-0.5 rounded-md backdrop-blur-sm text-[10px] text-zinc-300">
                   <Heart size={10} className="text-red-500 fill-red-500" />
-                  <span>{project.likes_count}</span>
+                  <span>{formatLikes(project.likes_count)}</span>
                 </div>
               )}
             </div>

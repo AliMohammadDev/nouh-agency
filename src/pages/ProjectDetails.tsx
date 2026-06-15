@@ -21,6 +21,7 @@ import SafePannellum from '../components/projects/SafePannellum';
 import RelatedProjects from '../components/projects/RelatedProjects';
 import { AnimatePresence } from 'framer-motion';
 import { GalleryImage, Project } from '../types/project';
+import { formatLikes } from '../utils/numberFormatter';
 
 export default function ProjectDetails() {
   const { id } = useParams<{ id: string }>();
@@ -337,7 +338,10 @@ export default function ProjectDetails() {
               className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-red-500/40 transition"
             >
               <Heart className="text-red-500 fill-red-500" size={18} />
-              <span className="text-sm font-bold">{project.likes_count}</span>
+              <span className="text-sm font-bold">
+                {' '}
+                <span>{formatLikes(project.likes_count)}</span>
+              </span>
             </button>
 
             <div className="space-y-3">

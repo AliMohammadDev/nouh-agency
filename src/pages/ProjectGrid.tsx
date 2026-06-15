@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, Heart, Images } from 'lucide-react';
 import { Project } from '../types/project';
+import { formatLikes } from '../utils/numberFormatter';
 
 interface ProjectGridProps {
   projects: Project[];
@@ -114,7 +115,7 @@ function ProjectCard({ project, isRTL, onClick }: ProjectCardProps) {
                 className="text-red-500 fill-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.35)]"
               />
               <span className="text-xs font-bold text-zinc-400 tracking-wide font-cairo">
-                {project.likes_count || 0}
+                <span>{formatLikes(project.likes_count)}</span>
               </span>
             </div>
           </div>

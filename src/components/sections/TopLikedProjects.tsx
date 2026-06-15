@@ -1,15 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { motion, Variants } from 'motion/react';
 import { Heart, Loader2, ArrowUpRight } from 'lucide-react';
 import { useDirection } from '../../hooks/useDirection';
 import { useGetTopLikedProjects } from '../../api/project';
 import { Project } from '@/src/types/project';
+import { formatLikes } from '@/utils/numberFormatter';
 
 export default function TopLikedProjects() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const { data: topProjects, isLoading } = useGetTopLikedProjects() as {
     data: Project[] | undefined;
@@ -103,7 +104,7 @@ export default function TopLikedProjects() {
                 <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-3 py-1.5 border border-white/10 rounded-full shadow-lg">
                   <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" />
                   <span className="text-xs font-bold text-white">
-                    {project.likes_count || 0}
+                    <span>{formatLikes(project.likes_count)}</span>
                   </span>
                 </div>
 
