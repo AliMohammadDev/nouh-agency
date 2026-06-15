@@ -99,8 +99,17 @@ export default function Work() {
           tag.name.toLowerCase().includes(query)
         );
 
-        const matchesGalleries = project.gallery_names?.some((galleryName) =>
-          galleryName.toLowerCase().includes(query)
+        const matchesDesignGalleries = project.design_galleries?.some((g) =>
+          g.album_name?.toLowerCase().includes(query)
+        );
+        const matchesVrGalleries = project.vr_galleries?.some((g) =>
+          g.album_name?.toLowerCase().includes(query)
+        );
+        const matchesRealGalleries = project.real_galleries?.some((g) =>
+          g.album_name?.toLowerCase().includes(query)
+        );
+        const matchesDrawingsGalleries = project.drawings_galleries?.some((g) =>
+          g.album_name?.toLowerCase().includes(query)
         );
 
         if (
@@ -108,7 +117,10 @@ export default function Work() {
           !matchesDesc &&
           !matchesNum &&
           !matchesTags &&
-          !matchesGalleries
+          !matchesDesignGalleries &&
+          !matchesVrGalleries &&
+          !matchesRealGalleries &&
+          !matchesDrawingsGalleries
         )
           return false;
       }

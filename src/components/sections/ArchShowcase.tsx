@@ -179,15 +179,16 @@ export default function ArchShowcase() {
   }
 
   if (featuredProjects.length === 0) {
-    return (
-      <section className="py-28 bg-zinc-950 text-white flex items-center justify-center min-h-[400px]">
-        <span className="text-xs font-cairo text-zinc-500 tracking-widest uppercase">
-          {isRTL
-            ? 'لا توجد مشاريع مميزة لعرضها حالياً'
-            : 'NO FEATURED PROJECTS TO DISPLAY YET'}
-        </span>
-      </section>
-    );
+    // return (
+    //   <section className="py-28 bg-zinc-950 text-white flex items-center justify-center min-h-[400px]">
+    //     <span className="text-xs font-cairo text-zinc-500 tracking-widest uppercase">
+    //       {isRTL
+    //         ? 'لا توجد مشاريع مميزة لعرضها حالياً'
+    //         : 'NO FEATURED PROJECTS TO DISPLAY YET'}
+    //     </span>
+    //   </section>
+    // );
+    return null;
   }
 
   const activeImage = featuredProjects[activeIndex];

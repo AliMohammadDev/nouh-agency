@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUpRight, Heart, Images } from 'lucide-react';
+import { ArrowUpRight, Heart, Images, Tag } from 'lucide-react';
 import { Project } from '../types/project';
 import { formatLikes } from '../utils/numberFormatter';
 
@@ -44,12 +44,18 @@ function ProjectCard({ project, isRTL, onClick }: ProjectCardProps) {
     project.main_image ||
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200';
 
+  const allAlbumNames = [
+    ...(project.design_galleries?.map((g) => g.album_name) || []),
+    ...(project.vr_galleries?.map((g) => g.album_name) || []),
+    ...(project.real_galleries?.map((g) => g.album_name) || []),
+    ...(project.drawings_galleries?.map((g) => g.album_name) || []),
+  ].filter(Boolean);
+
   return (
     <div
       onClick={onClick}
       className="group flex flex-col cursor-pointer bg-zinc-900/10 backdrop-blur-sm border border-zinc-900/80 p-4 rounded-xl transition-all duration-500 ease-out hover:border-accent/30 hover:bg-zinc-900/40 hover:shadow-[0_0_25px_rgba(255,255,255,0.02)]"
     >
-      {/* قسم الصورة */}
       <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg bg-zinc-950 border border-zinc-900 group-hover:border-zinc-800 transition-colors duration-500">
         <img
           src={projectImg}
@@ -81,19 +87,35 @@ function ProjectCard({ project, isRTL, onClick }: ProjectCardProps) {
             {project.description}
           </p>
 
-          {project.gallery_names && project.gallery_names.length > 0 && (
+          {allAlbumNames.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-1.5 items-center">
               <Images
                 size={12}
                 className="text-zinc-600 group-hover:text-accent/50 transition-colors duration-300 mr-0.5"
               />
-
-              {project.gallery_names.map((albumName, index) => (
+              {allAlbumNames.map((albumName, index) => (
                 <span
-                  key={index}
+                  key={`album-${index}`}
                   className="font-cairo text-[10px] px-2 py-0.5 rounded bg-zinc-950/40 border border-zinc-900 text-zinc-500 transition-all duration-300 group-hover:border-zinc-800 group-hover:bg-zinc-900/50 group-hover:text-zinc-300"
                 >
                   {albumName}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {project.tags && project.tags.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5 items-center">
+              <Tag
+                size={11}
+                className="text-zinc-600 group-hover:text-zinc-500 transition-colors duration-300 mr-0.5"
+              />
+              {project.tags.map((tag) => (
+                <span
+                  key={`tag-${tag.id}`}
+                  className="font-cairo text-[9px] font-medium px-2 py-0.5 rounded-md bg-zinc-900/30 border border-zinc-900/60 text-zinc-400 group-hover:text-zinc-300 transition-colors duration-300"
+                >
+                  #{tag.name}
                 </span>
               ))}
             </div>
