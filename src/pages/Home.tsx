@@ -4,6 +4,7 @@ import Stats from '../components/sections/Stats';
 import ArchShowcase from '../components/sections/ArchShowcase';
 import WhyChooseUs from '../components/sections/WhyChooseUs';
 import TopLikedProjects from '../components/sections/TopLikedProjects';
+import VideoShowcase from '../components/sections/VideoShowcase';
 
 export default function Home() {
   return (
@@ -11,6 +12,8 @@ export default function Home() {
       <Hero />
       <WhyChooseUs />
       <Features />
+
+      <VideoShowcase />
 
       <TopLikedProjects />
 

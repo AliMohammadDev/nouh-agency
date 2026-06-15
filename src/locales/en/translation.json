@@ -238,5 +238,20 @@
     "subtitle": "The masterpieces that received the highest admiration and praise from our clients and creative community.",
     "defaultDesc": "Click to view details of this exceptional project.",
     "viewProject": "VIEW PROJECT"
+  },
+  "videoShowcase": {
+    "tagline": "OUR CORE SERVICES",
+    "title": "AREAS OF EXPERTISE",
+    "items": {
+      "anim3d": "3D Animation",
+      "exterior": "Exterior Design",
+      "interior": "Interior Design",
+      "landscape": "Landscape Architecture",
+      "graphic": "Graphic Design",
+      "motion": "Motion Graphics",
+      "photo": "Photography & Videography",
+      "shop": "Shop Drawings",
+      "web": "Web Design"
+    }
   }
 }
