@@ -72,7 +72,7 @@ export default function Stats() {
           </div>
           <h2 className="text-3xl font-extrabold uppercase text-white tracking-wider sm:text-4xl mt-1 !leading-tight font-cairo">
             {isRTL
-              ? 'مخطط هندسي وتنفيذي متميز'
+              ? 'مخططات هندسبية وتنفيذية متميزة'
               : 'PRECISE DESIGN & EXECUTION MATRIX'}
           </h2>
           <p className="mt-4 text-sm text-zinc-400 leading-relaxed font-cairo max-w-2xl mx-auto">
