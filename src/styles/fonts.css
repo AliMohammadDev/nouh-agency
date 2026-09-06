@@ -1,1 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap');
+@font-face {
+  font-family: 'GE SS Two';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: local('GE SS Two Light'), local('GE-SS-Two-Light'), local('GESS-Two-Light'), url('../assets/fonts/ge-ss-two/GE-SS-Two-Light.otf') format('opentype'), url('../assets/fonts/ge-ss-two/ge-ss-two-light.woff2') format('woff2'), url('../assets/fonts/ge-ss-two/ge-ss-two-light.woff') format('woff'), url('../assets/fonts/ge-ss-two/ge-ss-two-light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GE SS Two';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('GE SS Two Medium'), local('GE-SS-Two-Medium'), local('GESS-Two-Medium'), url('../assets/fonts/ge-ss-two/GE-SS-Two-Medium.otf') format('opentype'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.woff2') format('woff2'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.woff') format('woff'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GE SS Two';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('GE SS Two Medium'), local('GE-SS-Two-Medium'), local('GESS-Two-Medium'), url('../assets/fonts/ge-ss-two/GE-SS-Two-Medium.otf') format('opentype'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.woff2') format('woff2'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.woff') format('woff'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GE SS Two';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('GE SS Two Medium'), local('GE-SS-Two-Medium'), local('GESS-Two-Medium'), url('../assets/fonts/ge-ss-two/GE-SS-Two-Medium.otf') format('opentype'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.woff2') format('woff2'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.woff') format('woff'), url('../assets/fonts/ge-ss-two/ge-ss-two-medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GE SS Two';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('GE SS Two Bold'), local('GE-SS-Two-Bold'), local('GESS-Two-Bold'), url('../assets/fonts/ge-ss-two/GE-SS-Two-Bold.otf') format('opentype'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.woff2') format('woff2'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.woff') format('woff'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GE SS Two';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: local('GE SS Two Bold'), local('GE-SS-Two-Bold'), local('GESS-Two-Bold'), url('../assets/fonts/ge-ss-two/GE-SS-Two-Bold.otf') format('opentype'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.woff2') format('woff2'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.woff') format('woff'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'GE SS Two';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: local('GE SS Two Bold'), local('GE-SS-Two-Bold'), local('GESS-Two-Bold'), url('../assets/fonts/ge-ss-two/GE-SS-Two-Bold.otf') format('opentype'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.woff2') format('woff2'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.woff') format('woff'), url('../assets/fonts/ge-ss-two/ge-ss-two-bold.ttf') format('truetype');
+}

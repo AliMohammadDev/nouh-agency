@@ -1,141 +1,399 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Shield, Zap, Target, Users } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useDirection } from '../../hooks/useDirection';
-import logoImg from '../../assets/images/png/logo/logo-agency.png';
+import blackBg from '../../assets/images/black2.jpg';
 
 export default function WhyChooseUs() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
 
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   const features = [
     {
-      icon: <Target className="w-5 h-5 text-accent" />,
+      icon: Target,
       titleKey: 'why.features.strategy.title',
-      defaultTitle: 'التخطيط الاستراتيجي',
       descKey: 'why.features.strategy.desc',
-      defaultDesc:
-        'نحلل سوق العمل بدقة لنضع خططاً مدروسة تضمن نجاح مشروعك وتميزه.',
     },
     {
-      icon: <Zap className="w-5 h-5 text-accent" />,
+      icon: Zap,
       titleKey: 'why.features.speed.title',
-      defaultTitle: 'السرعة والكفاءة',
       descKey: 'why.features.speed.desc',
-      defaultDesc:
-        'نلتزم بمواعيد التسليم الصارمة مع الحفاظ على أعلى معايير الإتقان.',
     },
     {
-      icon: <Shield className="w-5 h-5 text-accent" />,
+      icon: Shield,
       titleKey: 'why.features.quality.title',
-      defaultTitle: 'جودة لا تساوم',
       descKey: 'why.features.quality.desc',
-      defaultDesc:
-        'نهتم بأدق التفاصيل البرمجية والتصميمية لتخرج هويتك بأفضل صورة.',
     },
     {
-      icon: <Users className="w-5 h-5 text-accent" />,
+      icon: Users,
       titleKey: 'why.features.support.title',
-      defaultTitle: 'دعم مستمر وشراكة',
       descKey: 'why.features.support.desc',
-      defaultDesc:
-        'لسنا مجرد مقدمي خدمة، بل نحن شركاء نجاح متواجدون معك دائماً.',
     },
   ];
 
   return (
-    <section className="py-24 bg-[#1c1c1c] text-white font-cairo overflow-hidden border-t border-border/20 relative">
-      <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
+    <section
+      className="
+        relative
+        py-24
+        bg-black
+        text-white
+        font-cairo
+        overflow-hidden
+      "
+    >
+      <div className="pointer-events-none absolute inset-0">
+        <img
+          src={blackBg}
+          alt=""
+          className="absolute opacity-60 inset-0 h-full w-full object-cover select-none"
+        />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, rotate: isRTL ? -2 : 2 }}
-            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="flex items-center justify-center relative group order-first lg:order-last"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-transparent rounded-full filter blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-
-            <motion.img
-              src={logoImg}
-              alt="Noah Agency Premium Logo"
-              animate={{ y: [0, -12, 0] }}
+      <div
+        className="
+          relative z-10
+          mx-auto
+          w-full
+          max-w-[1400px]
+          px-6
+          md:px-10
+          lg:px-16
+        "
+      >
+        <div
+          className="
+            mb-12
+            grid
+            gap-8
+            lg:mb-14
+            lg:grid-cols-[1fr_0.65fr]
+            lg:items-end
+          "
+        >
+          <div>
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 15,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{ once: true }}
               transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
+                duration: 0.6,
               }}
-              whileHover={{ scale: 1.04 }}
-              className="w-3/5 sm:w-1/2 md:w-3/4 max-w-[320px] lg:max-w-[420px] h-auto object-contain drop-shadow-[0_25px_25px_rgba(0,0,0,0.6)] cursor-pointer filter brightness-95 hover:brightness-110 transition-all duration-500"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          </motion.div>
-
-          <div className="flex flex-col gap-10">
-            <div>
+              className="mb-4 flex items-center gap-3"
+            >
               <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{
+                  width: 0,
+                }}
+                whileInView={{
+                  width: 36,
+                }}
                 viewport={{ once: true }}
-                className="text-accent text-sm font-bold tracking-wider uppercase block mb-3"
+                transition={{
+                  duration: 0.7,
+                }}
+                className="h-px bg-accent"
+              />
+
+              <span
+                className="
+                  text-xs
+                  font-bold
+                  tracking-[0.16em]
+                  text-accent
+                  md:text-sm
+                "
               >
-                {t('why.tagline', 'تميز معنا')}
-              </motion.span>
+                {t('why.tagline')}
+              </span>
+            </motion.div>
+
+            <div className="overflow-hidden pb-2">
               <motion.h2
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{
+                  y: '110%',
+                }}
+                whileInView={{
+                  y: 0,
+                }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight"
+                transition={{
+                  duration: 0.9,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="
+                  max-w-[760px]
+                  text-[40px]
+                  font-black
+                  leading-[1.15]
+                  tracking-[-0.035em]
+                  sm:text-5xl
+                  lg:text-[62px]
+                "
               >
-                {t('why.title', 'لماذا يختارنا عملاؤنا')}
+                {t('why.title')}
               </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="mt-4 text-base text-muted-foreground leading-relaxed"
-              >
-                {t(
-                  'why.subtitle',
-                  'في وكالة نوح، ندمج الفن بالتكنولوجيا لنصنع تجارب رقمية استثنائية تدفع بأعمالك نحو الصدارة.'
-                )}
-              </motion.p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {features.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="p-5 rounded-xl bg-[#242424] border border-white/[0.03] hover:border-accent/20 transition-all duration-300 group flex flex-row sm:flex-col items-start gap-4 sm:gap-0"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 sm:mb-4 transition-transform duration-300 group-hover:scale-110">
-                    {item.icon}
-                  </div>
-
-                  <div className="flex flex-col">
-                    <h3 className="text-base font-bold mb-2 group-hover:text-accent transition-colors duration-300">
-                      {t(item.titleKey, item.defaultTitle)}
-                    </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {t(item.descKey, item.defaultDesc)}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
             </div>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-5">
+          {features.map((item, index) => {
+            const Icon = item.icon;
+            const active = hoveredIndex === index;
+
+            return (
+              <motion.div
+                key={item.titleKey}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                animate={{
+                  scale: active ? 1 : 0.985,
+                  opacity: 1,
+                  y: active ? -4 : 0,
+                }}
+                transition={{
+                  duration: 0.35,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className={`
+                  group
+                  relative
+                  min-h-[210px]
+                  cursor-default
+                  overflow-hidden
+                  rounded-[22px]
+                  border
+                  p-6
+
+                  transition-colors
+                  duration-500
+
+                  md:min-h-[235px]
+                  md:p-8
+
+                  ${
+                    active
+                      ? `
+                        border-accent/35
+                        bg-[#222222]/80
+                        backdrop-blur-sm
+                        shadow-[0_25px_70px_rgba(0,0,0,0.28)]
+                      `
+                      : `
+                        border-white/[0.06]
+                        bg-[#1d1d1d]/80
+                        backdrop-blur-sm
+                      `
+                  }
+                `}
+              >
+                <motion.div
+                  animate={{
+                    opacity: active ? 1 : 0,
+                    scale: active ? 1 : 0.65,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                  }}
+                  className={`
+                    pointer-events-none
+                    absolute
+
+                    h-[230px]
+                    w-[230px]
+
+                    rounded-full
+                    bg-accent/[0.09]
+                    blur-[90px]
+
+                    ${
+                      isRTL
+                        ? '-left-20 -top-20'
+                        : '-right-20 -top-20'
+                    }
+                  `}
+                />
+
+                <motion.span
+                  animate={{
+                    opacity: active ? 0.075 : 0.03,
+                    scale: active ? 1.08 : 1,
+                    y: active ? 0 : 8,
+                  }}
+                  transition={{
+                    duration: 0.45,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className={`
+                    pointer-events-none
+                    absolute
+                    -bottom-8
+                    select-none
+
+                    text-[150px]
+                    font-black
+                    leading-none
+                    text-white
+
+                    md:text-[180px]
+
+                    ${
+                      isRTL
+                        ? '-left-1'
+                        : '-right-1'
+                    }
+                  `}
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </motion.span>
+
+                <div
+                  className="
+                    relative z-10
+                    flex
+                    items-start
+                    justify-between
+                    gap-4
+                  "
+                >
+                  <motion.div
+                    animate={{
+                      rotate: active
+                        ? isRTL
+                          ? -9
+                          : 9
+                        : 0,
+
+                      scale: active ? 1.12 : 1,
+                    }}
+                    transition={{
+                      duration: 0.4,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className={`
+                      flex
+                      h-11
+                      w-11
+                      shrink-0
+
+                      items-center
+                      justify-center
+
+                      rounded-full
+                      border
+
+                      transition-colors
+                      duration-500
+
+                      ${
+                        active
+                          ? `
+                            border-accent/40
+                            bg-accent/10
+                            text-accent
+                          `
+                          : `
+                            border-white/[0.08]
+                            bg-white/[0.025]
+                            text-[#999999]
+                          `
+                      }
+                    `}
+                  >
+                    <Icon className="h-[19px] w-[19px]" />
+                  </motion.div>
+                </div>
+
+                <div className="relative z-10 mt-8">
+                  <motion.h3
+                    animate={{
+                      y: active ? -2 : 0,
+                    }}
+                    transition={{
+                      duration: 0.4,
+                    }}
+                    className={`
+                      text-xl
+                      font-bold
+
+                      transition-colors
+                      duration-400
+
+                      md:text-2xl
+
+                      ${
+                        active
+                          ? 'text-white'
+                          : 'text-white/85'
+                      }
+                    `}
+                  >
+                    {t(item.titleKey)}
+                  </motion.h3>
+
+                  <motion.p
+                    animate={{
+                      opacity: active ? 1 : 0.65,
+                      y: active ? 0 : 0,
+                    }}
+                    transition={{
+                      duration: 0.4,
+                    }}
+                    className="
+                      mt-3
+                      max-w-[500px]
+
+                      text-xs
+                      leading-7
+                      text-white/60
+
+                      md:text-sm
+                    "
+                  >
+                    {t(item.descKey)}
+                  </motion.p>
+                </div>
+
+                <motion.div
+                  animate={{
+                    scaleX: active ? 1 : 0,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  style={{
+                    transformOrigin: isRTL
+                      ? 'right'
+                      : 'left',
+                  }}
+                  className="
+                    absolute
+                    bottom-0
+                    left-0
+                    right-0
+
+                    h-[2px]
+
+                    bg-gradient-to-r
+                    from-transparent
+                    via-accent
+                    to-transparent
+                  "
+                />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

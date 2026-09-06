@@ -1,8 +1,20 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, useInView, animate } from 'motion/react';
+
+import {
+  animate,
+  motion,
+  useInView,
+} from 'motion/react';
+
+import {
+  Compass,
+  ShieldCheck,
+  Landmark,
+} from 'lucide-react';
+
 import { useDirection } from '../../hooks/useDirection';
-import { Compass, ShieldCheck, Landmark } from 'lucide-react';
+import blackBg from '../../assets/images/black2.jpg';
 
 interface StatItem {
   value: string;
@@ -10,136 +22,778 @@ interface StatItem {
   desc: string;
 }
 
-const STAT_ICONS = [Landmark, Compass, ShieldCheck];
+const STAT_ICONS = [
+  Landmark,
+  Compass,
+  ShieldCheck,
+];
 
-function AnimatedCounter({ value }: { value: string }) {
-  const [current, setCurrent] = useState(0);
-  const ref = useRef(null);
+function AnimatedCounter({
+  value,
+}: {
+  value: string;
+}) {
+  const [current, setCurrent] =
+    useState(0);
 
-  const isInView = useInView(ref, { once: true, margin: '-20px' });
+  const ref =
+    useRef<HTMLSpanElement | null>(
+      null
+    );
 
-  const targetNumber = parseInt(value.replace(/\D/g, ''), 10) || 0;
-  const suffix = value.replace(/[0-9]/g, '');
+  const isInView = useInView(ref, {
+    once: true,
+    margin: '-40px',
+  });
+
+  const targetNumber =
+    parseInt(
+      value.replace(/\D/g, ''),
+      10
+    ) || 0;
+
+  const suffix =
+    value.replace(/[0-9]/g, '');
 
   useEffect(() => {
     if (!isInView) return;
 
-    const controls = animate(0, targetNumber, {
-      duration: 2,
-      ease: 'easeOut',
-      onUpdate: (latest) => {
-        setCurrent(Math.floor(latest));
-      },
-    });
+    const controls = animate(
+      0,
+      targetNumber,
+      {
+        duration: 1.8,
+        ease: [0.22, 1, 0.36, 1],
 
-    return () => controls.stop();
-  }, [targetNumber, isInView]);
+        onUpdate: (latest) => {
+          setCurrent(
+            Math.floor(latest)
+          );
+        },
+      }
+    );
+
+    return () =>
+      controls.stop();
+  }, [
+    targetNumber,
+    isInView,
+  ]);
 
   return (
     <span
       ref={ref}
-      className="font-cairo text-4xl sm:text-5xl font-black text-white tracking-tight flex items-center"
       dir="ltr"
+      className="
+        flex
+        items-baseline
+
+        font-cairo
+        text-[54px]
+        font-black
+        leading-none
+        tracking-[-0.055em]
+
+        text-white
+
+        sm:text-[64px]
+        lg:text-[76px]
+        xl:text-[86px]
+      "
     >
       {current}
-      <span className="text-accent mx-0.5 select-none">{suffix}</span>
+
+      <motion.span
+        initial={{
+          opacity: 0,
+          scale: 0.5,
+          y: 10,
+        }}
+        whileInView={{
+          opacity: 1,
+          scale: 1,
+          y: 0,
+        }}
+        viewport={{
+          once: true,
+        }}
+        transition={{
+          duration: 0.5,
+          delay: 0.55,
+          ease: [
+            0.34,
+            1.56,
+            0.64,
+            1,
+          ],
+        }}
+        className="
+          ms-1
+          text-[0.65em]
+          text-accent
+        "
+      >
+        {suffix}
+      </motion.span>
     </span>
   );
 }
 
 export default function Stats() {
   const { t } = useTranslation();
-  const { isRTL } = useDirection();
 
-  const rawItems = t('stats.items', { returnObjects: true });
-  const items = Array.isArray(rawItems) ? (rawItems as StatItem[]) : [];
+  const { isRTL } =
+    useDirection();
+
+  const rawItems = t(
+    'stats.items',
+    {
+      returnObjects: true,
+    }
+  );
+
+  const items =
+    Array.isArray(rawItems)
+      ? (rawItems as StatItem[])
+      : [];
 
   return (
-    <section className="py-28 bg-zinc-950 text-white relative overflow-hidden border-b border-accent/10 font-cairo">
-      <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
+    <section
+      className="
+        relative
+        overflow-hidden
+
+        border-b
+        border-white/[0.05]
+
+        bg-black
+
+        py-24
+
+        text-white
+        font-cairo
+
+        lg:py-32
+      "
+    >
+      <div className="pointer-events-none absolute inset-0">
+        <img
+          src={blackBg}
+          alt=""
+          className="absolute opacity-60 inset-0 h-full w-full object-cover select-none"
+        />
       </div>
 
-      <div className="absolute top-0 left-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
-      <div className="absolute top-0 right-1/4 h-full w-[1px] bg-accent/[0.02] pointer-events-none" />
+      <div
+        className="
+          relative
+          z-10
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="inline-flex items-center gap-2 mb-3 p-1.5 px-3 bg-accent/5 border border-accent/10">
-            <span className="font-cairo text-[12px] font-bold uppercase tracking-widest text-accent">
-              {t('stats.label', 'مؤشرات النجاح الهندسية والرقمية')}
+          mx-auto
+          w-full
+          max-w-7xl
+
+          px-6
+          lg:px-12
+        "
+      >
+        <div
+          className="
+            mb-16
+            max-w-4xl
+
+            lg:mb-20
+          "
+        >
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 14,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.6,
+            }}
+            className="
+              mb-5
+
+              flex
+              items-center
+              gap-3
+            "
+          >
+            <motion.span
+              initial={{
+                scaleX: 0,
+              }}
+              whileInView={{
+                scaleX: 1,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                duration: 0.75,
+                ease: [
+                  0.22,
+                  1,
+                  0.36,
+                  1,
+                ],
+              }}
+              style={{
+                transformOrigin:
+                  isRTL
+                    ? 'right'
+                    : 'left',
+              }}
+              className="
+                h-[2px]
+                w-8
+                bg-accent
+              "
+            />
+
+            <span
+              className="
+                text-[11px]
+                font-bold
+
+                uppercase
+                tracking-[0.18em]
+
+                text-accent
+              "
+            >
+              {t('stats.label')}
             </span>
+          </motion.div>
+
+          <div className="overflow-hidden pb-2">
+            <motion.h2
+              initial={{
+                y: '110%',
+              }}
+              whileInView={{
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                duration: 0.9,
+                ease: [
+                  0.22,
+                  1,
+                  0.36,
+                  1,
+                ],
+              }}
+              className="
+                max-w-[900px]
+
+                text-[40px]
+                font-black
+
+                leading-[1.08]
+                tracking-[-0.035em]
+
+                text-white
+
+                sm:text-5xl
+                lg:text-[60px]
+              "
+            >
+              {isRTL
+                ? 'مخططات هندسية وتنفيذية متميزة'
+                : 'PRECISE DESIGN & EXECUTION MATRIX'}
+            </motion.h2>
           </div>
-          <h2 className="text-3xl font-extrabold uppercase text-white tracking-wider sm:text-4xl mt-1 !leading-tight font-cairo">
-            {isRTL
-              ? 'مخططات هندسية وتنفيذية متميزة'
-              : 'PRECISE DESIGN & EXECUTION MATRIX'}
-          </h2>
-          <p className="mt-4 text-sm text-zinc-400 leading-relaxed font-cairo max-w-2xl mx-auto">
+
+          <motion.p
+            initial={{
+              opacity: 0,
+              y: 18,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+            }}
+            transition={{
+              duration: 0.65,
+              delay: 0.12,
+            }}
+            className="
+              mt-5
+
+              max-w-3xl
+
+              text-sm
+              leading-8
+
+              text-white/40
+
+              md:text-base
+            "
+          >
             {isRTL
               ? 'تفخر وكالة نوح بصناعة بصمات معاصرة ملهمة تمتد من دراسة الفكرة الإنشائية وحتى تخريج الكفاءات الشابة وتسليم الأبراج الفخمة.'
               : 'Nouh Studio delivers elite parameters, nurturing talent while engineering absolute visual perfection.'}
-          </p>
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-          {items.map((stat, idx) => {
-            const IconComponent = STAT_ICONS[idx % STAT_ICONS.length];
-            const numericValue =
-              parseInt(stat.value.replace(/\D/g, ''), 10) || 0;
+        <div
+          className="
+            grid
+            grid-cols-1
 
-            return (
-              <motion.div
-                key={stat.label || idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.6, delay: idx * 0.15 }}
-                className="relative bg-black/40 border border-accent/10 p-8 sm:p-10 flex flex-col justify-between transition-all duration-500 group hover:bg-black/80"
-              >
-                <div className="absolute top-0 left-0 w-3 h-[1px] bg-accent/20 group-hover:bg-accent transition-colors duration-300" />
-                <div className="absolute top-0 left-0 w-[1px] h-3 bg-accent/20 group-hover:bg-accent transition-colors duration-300" />
-                <div className="absolute bottom-0 right-0 w-3 h-[1px] bg-accent/20 group-hover:bg-accent transition-colors duration-300" />
-                <div className="absolute bottom-0 right-0 w-[1px] h-3 bg-accent/20 group-hover:bg-accent transition-colors duration-300" />
+            border-y
+            border-white/[0.07]
 
-                <div>
-                  <div className="mb-6 h-12 w-12 rounded-none border font-cairo border-accent/10 flex items-center justify-center bg-accent/[0.02] text-accent group-hover:border-accent/40 group-hover:bg-accent/5 transition-all duration-300">
-                    <IconComponent className="h-5 w-5 animate-pulse" />
-                  </div>
+            md:grid-cols-3
+          "
+        >
+          {items.map(
+            (stat, idx) => {
+              const IconComponent =
+                STAT_ICONS[
+                  idx %
+                    STAT_ICONS.length
+                ];
 
-                  <div className="flex items-baseline gap-1">
-                    <AnimatedCounter value={stat.value} />
-                  </div>
+              return (
+                <motion.article
+                  key={
+                    stat.label ||
+                    idx
+                  }
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{
+                    once: true,
+                    amount: 0.35,
+                  }}
+                  variants={{
+                    hidden: {
+                      opacity: 0,
+                      y: 35,
+                    },
 
-                  <h3 className="font-cairo text-base font-bold text-white uppercase mt-5 tracking-wide group-hover:text-accent transition-colors duration-300">
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+
+                      transition: {
+                        duration: 0.7,
+                        delay:
+                          idx *
+                          0.12,
+                        ease: [
+                          0.22,
+                          1,
+                          0.36,
+                          1,
+                        ],
+                      },
+                    },
+                  }}
+                  className={`
+                    group
+                    relative
+
+                    min-h-[330px]
+
+                    overflow-hidden
+
+                    px-2
+                    py-10
+
+                    transition-colors
+                    duration-500
+
+                    md:min-h-[390px]
+                    md:px-8
+                    md:py-12
+
+                    lg:px-10
+
+                    ${
+                      idx !==
+                      items.length -
+                        1
+                        ? `
+                          border-b
+                          border-white/[0.07]
+
+                          md:border-b-0
+
+                          ${
+                            isRTL
+                              ? 'md:border-l'
+                              : 'md:border-r'
+                          }
+
+                          md:border-white/[0.07]
+                        `
+                        : ''
+                    }
+                  `}
+                >
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                    }}
+                    whileHover={{
+                      opacity: 1,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                    }}
+                    className="
+                      pointer-events-none
+
+                      absolute
+                      inset-0
+
+                      bg-white/[0.018]
+                    "
+                  />
+
+                  <motion.span
+                    initial={{
+                      opacity: 0,
+                      y: 45,
+                      scale: 0.85,
+                    }}
+                    whileInView={{
+                      opacity: 0.025,
+                      y: 0,
+                      scale: 1,
+                    }}
+                    viewport={{
+                      once: true,
+                    }}
+                    transition={{
+                      duration: 0.9,
+                      delay:
+                        0.1 +
+                        idx *
+                          0.1,
+                    }}
+                    className={`
+                      pointer-events-none
+
+                      absolute
+                      -bottom-10
+
+                      select-none
+
+                      text-[160px]
+                      font-black
+                      leading-none
+
+                      text-white
+
+                      md:text-[190px]
+
+                      ${
+                        isRTL
+                          ? '-left-2'
+                          : '-right-2'
+                      }
+                    `}
+                  >
+                    {String(
+                      idx + 1
+                    ).padStart(
+                      2,
+                      '0'
+                    )}
+                  </motion.span>
+
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      scale: 0.5,
+                      rotate:
+                        isRTL
+                          ? -25
+                          : 25,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      scale: 1,
+                      rotate: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      delay:
+                        0.18 +
+                        idx *
+                          0.12,
+                      ease: [
+                        0.34,
+                        1.56,
+                        0.64,
+                        1,
+                      ],
+                    }}
+                    whileHover={{
+                      scale: 1.12,
+                      rotate:
+                        isRTL
+                          ? -8
+                          : 8,
+                    }}
+                    className="
+                      relative
+                      z-10
+
+                      mb-10
+
+                      flex
+                      h-12
+                      w-12
+
+                      items-center
+                      justify-center
+
+                      rounded-full
+
+                      border
+                      border-white/[0.08]
+
+                      bg-white/[0.025]
+
+                      text-accent
+
+                      transition-colors
+                      duration-500
+
+                      group-hover:border-accent/35
+                      group-hover:bg-accent/[0.08]
+                    "
+                  >
+                    <IconComponent
+                      className="
+                        h-5
+                        w-5
+                      "
+                      strokeWidth={
+                        1.6
+                      }
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{
+                      y: -7,
+                    }}
+                    transition={{
+                      duration: 0.45,
+                      ease: [
+                        0.22,
+                        1,
+                        0.36,
+                        1,
+                      ],
+                    }}
+                    className="
+                      relative
+                      z-10
+                    "
+                  >
+                    <AnimatedCounter
+                      value={
+                        stat.value
+                      }
+                    />
+                  </motion.div>
+
+                  <motion.h3
+                    initial={{
+                      opacity: 0,
+                      y: 15,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                    }}
+                    transition={{
+                      duration: 0.55,
+                      delay:
+                        0.25 +
+                        idx *
+                          0.12,
+                    }}
+                    className="
+                      relative
+                      z-10
+
+                      mt-6
+
+                      text-base
+                      font-bold
+
+                      leading-relaxed
+
+                      text-white
+
+                      transition-colors
+                      duration-300
+
+                      group-hover:text-accent
+
+                      lg:text-lg
+                    "
+                  >
                     {stat.label}
-                  </h3>
+                  </motion.h3>
 
-                  <p className="text-xs text-zinc-400 mt-3 leading-relaxed font-light font-cairo">
-                    {stat.desc ||
-                      (isRTL
-                        ? 'مواصفات قياسية وتصميمات مخصصة تضمن أعلى معايير الجودة والاستدامة.'
-                        : 'Standard parameters engineered to guarantee maximum quality and visual prestige.')}
-                  </p>
-                </div>
+                  <motion.p
+                    initial={{
+                      opacity: 0,
+                      y: 12,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                    }}
+                    transition={{
+                      duration: 0.55,
+                      delay:
+                        0.32 +
+                        idx *
+                          0.12,
+                    }}
+                    className="
+                      relative
+                      z-10
 
-                <div className="mt-8 pt-4 border-t border-accent/5">
-                  <div className="w-full h-[1.5px] bg-zinc-900 overflow-hidden relative">
+                      mt-3
+
+                      max-w-[320px]
+
+                      text-xs
+                      leading-7
+
+                      text-white/38
+
+                      transition-colors
+                      duration-300
+
+                      group-hover:text-white/55
+
+                      md:text-sm
+                    "
+                  >
+                    {stat.desc}
+                  </motion.p>
+
+                  <div
+                    className="
+                      absolute
+                      bottom-0
+                      left-8
+                      right-8
+
+                      h-[2px]
+
+                      overflow-hidden
+
+                      bg-white/[0.05]
+                    "
+                  >
                     <motion.div
-                      className="absolute top-0 bottom-0 bg-accent/30 group-hover:bg-accent shadow-[0_0_8px_var(--color-accent)] transition-all duration-1000 ease-out"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${Math.min(numericValue, 100)}%` }}
-                      viewport={{ once: true }}
-                      style={{
-                        right: isRTL ? 0 : 'auto',
-                        left: isRTL ? 'auto' : 0,
+                      initial={{
+                        scaleX: 0,
                       }}
+                      whileInView={{
+                        scaleX: 0.35,
+                      }}
+                      whileHover={{
+                        scaleX: 1,
+                      }}
+                      viewport={{
+                        once: true,
+                      }}
+                      transition={{
+                        duration: 0.75,
+                        ease: [
+                          0.22,
+                          1,
+                          0.36,
+                          1,
+                        ],
+                      }}
+                      style={{
+                        transformOrigin:
+                          isRTL
+                            ? 'right'
+                            : 'left',
+                      }}
+                      className="
+                        absolute
+                        inset-0
+
+                        bg-accent
+                      "
                     />
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
+
+                  <div
+                    className={`
+                      pointer-events-none
+
+                      absolute
+
+                      -top-24
+
+                      h-[250px]
+                      w-[250px]
+
+                      rounded-full
+
+                      bg-accent/[0.055]
+
+                      opacity-0
+                      blur-[100px]
+
+                      transition-all
+                      duration-700
+
+                      group-hover:scale-125
+                      group-hover:opacity-100
+
+                      ${
+                        isRTL
+                          ? '-left-24'
+                          : '-right-24'
+                      }
+                    `}
+                  />
+                </motion.article>
+              );
+            }
+          )}
         </div>
       </div>
     </section>

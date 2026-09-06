@@ -5,6 +5,7 @@ import ArchShowcase from '../components/sections/ArchShowcase';
 import WhyChooseUs from '../components/sections/WhyChooseUs';
 import TopLikedProjects from '../components/sections/TopLikedProjects';
 import VideoShowcase from '../components/sections/VideoShowcase';
+import ProcessTimeline from '../components/sections/ProcessTimeline';
 
 export default function Home() {
   return (
@@ -12,11 +13,9 @@ export default function Home() {
       <Hero />
       <WhyChooseUs />
       <Features />
-
+      {/* <ProcessTimeline /> */}
       <VideoShowcase />
-
       <TopLikedProjects />
-
       <ArchShowcase />
       <Stats />
     </>

@@ -23,8 +23,7 @@ export default function I18nProvider({ children }: I18nProviderProps) {
     document.documentElement.setAttribute('dir', dir);
     document.documentElement.setAttribute('lang', cleanLang);
 
-    document.documentElement.style.fontFamily =
-      cleanLang === 'ar' ? "'Cairo', sans-serif" : "'DM Sans', sans-serif";
+    document.documentElement.style.fontFamily = "'GE SS Two', sans-serif";
   }, [i18n.language, i18n]);
 
   return <>{children}</>;

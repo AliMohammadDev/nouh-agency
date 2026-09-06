@@ -1,13 +1,20 @@
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'motion/react';
 import {
-  Compass,
-  PenTool,
-  Layout,
-  CheckCircle2,
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from 'motion/react';
+import {
   ArrowUpRight,
+  Compass,
+  Layout,
+  PenTool,
 } from 'lucide-react';
 import { useDirection } from '../../hooks/useDirection';
+import blackBg from '../../assets/images/black2.jpg';
 
 interface PillarItem {
   number: string;
@@ -20,140 +27,1065 @@ interface PillarItem {
 const ICONS = [Compass, PenTool, Layout];
 
 const PILLAR_IMAGES = [
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=90',
+  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1800&q=90',
+  'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1800&q=90',
 ];
 
 export default function Features() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
 
-  const rawItems = t('features.items', { returnObjects: true });
-  const pillarsData = Array.isArray(rawItems) ? (rawItems as PillarItem[]) : [];
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 },
-    },
-  };
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-        type: 'spring',
-        stiffness: 70,
-      },
-    },
+  const rawItems = t('features.items', {
+    returnObjects: true,
+  });
+
+  const pillarsData = Array.isArray(rawItems)
+    ? (rawItems as PillarItem[])
+    : [];
+
+  const total = pillarsData.length;
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  const progressScale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, 1]
+  );
+
+  useMotionValueEvent(
+    scrollYProgress,
+    'change',
+    (progress) => {
+      if (!total) return;
+
+      const nextIndex = Math.min(
+        total - 1,
+        Math.floor(progress * total)
+      );
+
+      setActiveIndex(nextIndex);
+    }
+  );
+
+  if (!pillarsData.length) {
+    return null;
+  }
+
+  const activeItem = pillarsData[activeIndex];
+
+  const activeImage =
+    PILLAR_IMAGES[
+    activeIndex % PILLAR_IMAGES.length
+    ];
+
+  const ActiveIcon =
+    ICONS[activeIndex % ICONS.length];
+
+  const formattedCurrent = String(
+    activeIndex + 1
+  ).padStart(2, '0');
+
+  const formattedTotal = String(total).padStart(
+    2,
+    '0'
+  );
+
+  const goToService = (index: number) => {
+    if (!sectionRef.current) return;
+
+    const section = sectionRef.current;
+
+    const sectionTop =
+      window.scrollY +
+      section.getBoundingClientRect().top;
+
+    const scrollableDistance =
+      section.offsetHeight - window.innerHeight;
+
+    const targetProgress =
+      (index + 0.15) / total;
+
+    window.scrollTo({
+      top:
+        sectionTop +
+        scrollableDistance * targetProgress,
+
+      behavior: 'smooth',
+    });
   };
 
   return (
-    <section className="py-28 bg-zinc-950 text-white relative overflow-hidden border-b border-accent/10 font-cairo">
-      <div className="absolute inset-0 pointer-events-none opacity-[0.015] z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-accent)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-accent)_1px,transparent_1px)] bg-[size:50px_50px]" />
-      </div>
+    <section
+      ref={sectionRef}
+      className="
+        relative
+        bg-black
+        text-white
+        font-cairo
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
-        <div className="mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div className="max-w-2xl">
-            <div className="mb-3 flex items-center gap-2"></div>
-            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl !leading-tight text-white font-cairo">
-              {t('features.heading')}
-            </h2>
-            <p className="mt-4 text-base leading-relaxed max-w-xl text-zinc-400 font-cairo">
-              {t('features.subheading')}
-            </p>
-          </div>
+        lg:h-[320vh]
+      "
+    >
+      <div
+        className="
+          relative
+          overflow-hidden
+
+          py-16
+
+          lg:sticky
+          lg:top-0
+          lg:flex
+          lg:h-screen
+          lg:items-center
+          lg:py-0
+        "
+      >
+        <div className="pointer-events-none absolute inset-0">
+          <img
+            src={blackBg}
+            alt=""
+            className="absolute inset-0 h-full w-full opacity-60 object-cover select-none"
+          />
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 gap-8 md:grid-cols-3"
+        <div
+          className="
+            relative
+            z-10
+
+            mx-auto
+            w-full
+            max-w-7xl
+            text-white
+            px-6
+            lg:px-12
+          "
         >
-          {pillarsData.map((item, index) => {
-            const IconComponent = ICONS[index % ICONS.length];
-            const bgImage = PILLAR_IMAGES[index % PILLAR_IMAGES.length];
-
-            return (
-              <motion.div
-                key={item.number || index}
-                variants={itemVariants}
-                whileHover={{ y: -6 }}
-                className="group relative flex flex-col justify-between p-6 sm:p-8 border border-accent/10 bg-black/50 transition-all duration-500 hover:border-accent/40 hover:bg-black/80 min-h-[530px] rounded-none cursor-pointer overflow-hidden"
+          <div
+            className="
+              mx-auto
+              flex
+              h-20
+              w-full
+              items-center
+              justify-between
+            "
+          >
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 12,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="
+                flex
+                items-center
+                gap-3
+              "
+            >
+              <h2
+                className="
+                  max-w-[760px]
+                  text-[40px]
+                  font-black
+                  leading-[1.15]
+                  tracking-[-0.035em]
+                  sm:text-5xl
+                  lg:text-[62px]
+                  mb-12
+                "
               >
-                <div
-                  className="absolute inset-0 z-0 bg-cover bg-center opacity-0 group-hover:opacity-[0.14] scale-100 group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none"
-                  style={{ backgroundImage: `url(${bgImage})` }}
+                {t('features.heading')}
+              </h2>
+            </motion.div>
+
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={activeIndex}
+                dir="ltr"
+                initial={{
+                  opacity: 0,
+                  y: -7,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  y: 7,
+                }}
+                transition={{
+                  duration: 0.3,
+                }}
+                className="
+                  text-[10px]
+                  font-bold
+                  tracking-[0.15em]
+                  text-white/65
+                "
+              >
+                {formattedCurrent} / {formattedTotal}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+
+          <div className="relative">
+            <div
+              className="
+                relative
+
+                h-[420px]
+                w-full
+
+                overflow-hidden
+                rounded-[22px]
+
+                bg-black
+
+                md:h-[500px]
+                lg:h-[510px]
+                xl:h-[550px]
+              "
+            >
+              <AnimatePresence mode="sync">
+                <motion.div
+                  key={`image-${activeIndex}`}
+                  initial={{
+                    clipPath: isRTL
+                      ? 'inset(0 100% 0 0)'
+                      : 'inset(0 0 0 100%)',
+                  }}
+                  animate={{
+                    clipPath:
+                      'inset(0 0 0 0)',
+                  }}
+                  exit={{
+                    opacity: 0,
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    ease: [
+                      0.22,
+                      1,
+                      0.36,
+                      1,
+                    ],
+                  }}
+                  className="
+                    absolute
+                    inset-0
+                  "
+                >
+                  <motion.img
+                    src={activeImage}
+                    alt={activeItem.title}
+                    initial={{
+                      scale: 1.12,
+                      filter: 'blur(4px)',
+                    }}
+                    animate={{
+                      scale: 1,
+                      filter: 'blur(0px)',
+                    }}
+                    transition={{
+                      duration: 1.1,
+                      ease: [
+                        0.22,
+                        1,
+                        0.36,
+                        1,
+                      ],
+                    }}
+                    className="
+                      h-full
+                      w-full
+                      object-cover
+                    "
+                  />
+
+                  <div
+                    className="
+                      absolute
+                      inset-0
+
+                      bg-gradient-to-t
+                      from-black/80
+                      via-black/10
+                      to-black/5
+                    "
+                  />
+
+                  <div
+                    className={`
+                      absolute
+                      inset-0
+
+                      ${isRTL
+                        ? 'bg-gradient-to-l'
+                        : 'bg-gradient-to-r'
+                      }
+
+                      from-black/25
+                      via-transparent
+                      to-transparent
+                    `}
+                  />
+                </motion.div>
+              </AnimatePresence>
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`sweep-${activeIndex}`}
+                  initial={{
+                    x: isRTL
+                      ? '160%'
+                      : '-160%',
+                  }}
+                  animate={{
+                    x: isRTL
+                      ? '-190%'
+                      : '190%',
+                  }}
+                  transition={{
+                    duration: 0.9,
+                    ease: [
+                      0.22,
+                      1,
+                      0.36,
+                      1,
+                    ],
+                  }}
+                  className="
+                    pointer-events-none
+
+                    absolute
+                    inset-y-0
+
+                    z-20
+
+                    w-[18%]
+
+                    bg-gradient-to-r
+                    from-transparent
+                    via-accent/25
+                    to-transparent
+
+                    blur-xl
+                  "
                 />
+              </AnimatePresence>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
+              <div
+                className="
+                  absolute
+                  left-5
+                  right-5
+                  top-5
 
-                <div className="pointer-events-none absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-accent/20 opacity-70 group-hover:border-accent group-hover:w-5 group-hover:h-5 transition-all duration-300 z-20" />
-                <div className="pointer-events-none absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-accent/20 opacity-70 group-hover:border-accent group-hover:w-5 group-hover:h-5 transition-all duration-300 z-20" />
-                <div className="pointer-events-none absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-accent/20 opacity-70 group-hover:border-accent group-hover:w-5 group-hover:h-5 transition-all duration-300 z-20" />
-                <div className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-accent/20 opacity-70 group-hover:border-accent group-hover:w-5 group-hover:h-5 transition-all duration-300 z-20" />
+                  z-30
 
-                <div className="relative z-20">
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="flex h-12 w-12 items-center justify-center border border-accent/20 bg-accent/5 text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-black">
-                      <IconComponent size={20} strokeWidth={1.5} />
-                    </div>
-                    <span className="font-cairo text-3xl font-bold text-zinc-800 group-hover:text-accent/30 transition-colors duration-300">
-                      {item.number}
-                    </span>
-                  </div>
+                  flex
+                  items-center
+                  justify-between
 
-                  <h3 className="text-xl font-bold mb-4 tracking-tight text-white group-hover:text-accent transition-colors duration-300 font-cairo">
-                    {item.title}
-                  </h3>
-                  <p className="text-zinc-400 text-sm leading-relaxed mb-6 font-cairo">
-                    {item.body}
-                  </p>
-                </div>
+                  md:left-7
+                  md:right-7
+                  md:top-7
+                "
+              >
+                <motion.div
+                  key={`icon-${activeIndex}`}
+                  initial={{
+                    scale: 0.3,
+                    rotate: 50,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    scale: 1,
+                    rotate: 0,
+                    opacity: 1,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [
+                      0.34,
+                      1.56,
+                      0.64,
+                      1,
+                    ],
+                  }}
+                  className="
+                    flex
+                    h-11
+                    w-11
 
-                <div className="border-t border-accent/10 pt-5 mt-auto relative z-20">
-                  <span className="block font-cairo text-[11px] font-bold uppercase tracking-wider text-accent mb-4">
-                    {t('features.deliverables_label')}
-                  </span>
-                  <ul className="space-y-3">
-                    {item.bullets &&
-                      item.bullets.map((bullet, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start gap-2.5 text-xs text-zinc-300 group-hover:text-white transition-colors font-cairo"
+                    items-center
+                    justify-center
+
+                    rounded-full
+
+                    bg-accent
+                    text-black
+
+                    md:h-12
+                    md:w-12
+                  "
+                >
+                  <ActiveIcon
+                    size={19}
+                    strokeWidth={1.5}
+                  />
+                </motion.div>
+
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={`inside-counter-${activeIndex}`}
+                    dir="ltr"
+                    initial={{
+                      opacity: 0,
+                      y: -8,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      y: 8,
+                    }}
+                    transition={{
+                      duration: 0.3,
+                    }}
+                    className="
+                      text-[10px]
+                      font-bold
+                      tracking-[0.15em]
+                      text-white/85
+                    "
+                  >
+                    {formattedCurrent}/
+                    {formattedTotal}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+
+              <div
+                className="
+                  absolute
+                  bottom-0
+                  left-0
+                  right-0
+
+                  z-30
+
+                  p-6
+                  md:p-8
+                  lg:p-9
+                "
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`bottom-content-${activeIndex}`}
+                    initial={{
+                      opacity: 0,
+                      y: 35,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      y: -25,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: [
+                        0.22,
+                        1,
+                        0.36,
+                        1,
+                      ],
+                    }}
+                    className="
+                      flex
+                      items-end
+                      justify-between
+                      gap-6
+                    "
+                  >
+                    <div className="max-w-[850px]">
+                      <div className="overflow-hidden pb-1">
+                        <motion.h3
+                          initial={{
+                            y: '110%',
+                          }}
+                          animate={{
+                            y: 0,
+                          }}
+                          transition={{
+                            duration: 0.65,
+                            ease: [
+                              0.22,
+                              1,
+                              0.36,
+                              1,
+                            ],
+                          }}
+                          className="
+                            text-2xl
+                            font-black
+                            leading-tight
+                            text-white
+
+                            md:text-3xl
+                            lg:text-[38px]
+                          "
                         >
-                          <CheckCircle2 className="h-3.5 w-3.5 text-accent mt-0.5 shrink-0" />
-                          <span className="leading-normal">{bullet}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
+                          {activeItem.title}
+                        </motion.h3>
+                      </div>
 
-                {/* <div className="mt-8 pt-4 flex items-center justify-between font-cairo text-[9px] text-zinc-600 border-t border-dashed border-zinc-900 group-hover:text-accent/60 transition-colors duration-350 relative z-20">
-                  <div className="text-accent/40 group-hover:text-accent transition-colors duration-300 flex items-center gap-1 font-cairo">
-                    <span className="text-[10px] font-cairo">
-                      {t('features.explore_more')}
+                      <motion.p
+                        initial={{
+                          opacity: 0,
+                          y: 12,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+                        transition={{
+                          delay: 0.12,
+                          duration: 0.45,
+                        }}
+                        className="
+                          mt-3
+
+                          max-w-[750px]
+
+                          text-xs
+                          leading-6
+
+                          text-white/60
+
+                          md:text-sm
+                          md:leading-7
+                        "
+                      >
+                        {activeItem.body}
+                      </motion.p>
+
+                      {activeItem.bullets?.length > 0 && (
+                        <motion.div
+                          initial={{
+                            opacity: 0,
+                            y: 10,
+                          }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                          }}
+                          transition={{
+                            delay: 0.18,
+                          }}
+                          className="
+                            mt-4
+                            hidden
+                            flex-wrap
+                            gap-2
+
+                            md:flex
+                          "
+                        >
+                          {activeItem.bullets
+                            .slice(0, 4)
+                            .map(
+                              (
+                                bullet,
+                                bulletIndex
+                              ) => (
+                                <span
+                                  key={
+                                    bulletIndex
+                                  }
+                                  className="
+                                    rounded-full
+
+                                    border
+                                    border-white/15
+
+                                    bg-black/15
+
+                                    px-3
+                                    py-1.5
+
+                                    text-[9px]
+                                    font-medium
+
+                                    text-white/70
+
+                                    backdrop-blur-sm
+                                  "
+                                >
+                                  {bullet}
+                                </span>
+                              )
+                            )}
+                        </motion.div>
+                      )}
+                    </div>
+
+                    <motion.button
+                      whileHover={{
+                        scale: 1.08,
+                        rotate: isRTL
+                          ? -6
+                          : 6,
+                      }}
+                      whileTap={{
+                        scale: 0.94,
+                      }}
+                      className="
+                        flex
+                        h-13
+                        w-13
+                        shrink-0
+
+                        items-center
+                        justify-center
+
+                        rounded-full
+
+                        border
+                        border-white/25
+
+                        bg-black/20
+
+                        text-white
+
+                        backdrop-blur-md
+
+                        transition-colors
+                        duration-300
+
+                        hover:border-accent
+                        hover:bg-accent
+                        hover:text-black
+
+                        md:h-14
+                        md:w-14
+                      "
+                      type="button"
+                    >
+                      <ArrowUpRight size={20} />
+                    </motion.button>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            <div
+              className={`
+                absolute
+                top-1/2
+
+                hidden
+                -translate-y-1/2
+
+                flex-col
+                items-start
+                gap-4
+
+                xl:flex
+
+                ${isRTL
+                  ? '-right-[70px]'
+                  : '-left-[70px]'
+                }
+              `}
+            >
+              {pillarsData.map(
+                (_, index) => {
+                  const active =
+                    activeIndex === index;
+
+                  return (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() =>
+                        goToService(index)
+                      }
+                      className="
+                        flex
+                        items-center
+                        gap-3
+                      "
+                    >
+                      <motion.span
+                        animate={{
+                          opacity: active
+                            ? 1
+                            : 0.22,
+
+                          scale: active
+                            ? 1.05
+                            : 1,
+                        }}
+                        transition={{
+                          duration: 0.35,
+                        }}
+                        dir="ltr"
+                        className="
+                          min-w-[20px]
+
+                          text-[11px]
+                          font-semibold
+                          tabular-nums
+
+                          text-white
+                        "
+                      >
+                        {String(
+                          index + 1
+                        ).padStart(2, '0')}
+                      </motion.span>
+
+                      <motion.span
+                        animate={{
+                          width: active
+                            ? 20
+                            : 0,
+
+                          opacity: active
+                            ? 1
+                            : 0,
+                        }}
+                        transition={{
+                          duration: 0.4,
+                          ease: [
+                            0.22,
+                            1,
+                            0.36,
+                            1,
+                          ],
+                        }}
+                        className="
+                          h-[2px]
+                          bg-accent
+                        "
+                      />
+                    </button>
+                  );
+                }
+              )}
+            </div>
+
+            <div
+              className={`
+                absolute
+                top-1/2
+
+                hidden
+                -translate-y-1/2
+
+                flex-col
+                gap-3
+
+                xl:flex
+
+                ${isRTL
+                  ? '-left-[90px]'
+                  : '-right-[90px]'
+                }
+              `}
+            >
+              {pillarsData.map(
+                (item, index) => {
+                  const active =
+                    activeIndex === index;
+
+                  return (
+                    <motion.button
+                      key={
+                        item.number ||
+                        index
+                      }
+                      type="button"
+                      onClick={() =>
+                        goToService(index)
+                      }
+                      animate={{
+                        opacity: active
+                          ? 1
+                          : 0.38,
+
+                        scale: active
+                          ? 1.05
+                          : 0.9,
+                      }}
+                      whileHover={{
+                        opacity: 1,
+                        scale: 1.05,
+                      }}
+                      transition={{
+                        duration: 0.35,
+                      }}
+                      className={`
+                        relative
+
+                        h-[56px]
+                        w-[74px]
+
+                        overflow-hidden
+
+                        rounded-[7px]
+
+                        border-2
+
+                        ${active
+                          ? 'border-accent'
+                          : 'border-transparent'
+                        }
+                      `}
+                    >
+                      <img
+                        src={
+                          PILLAR_IMAGES[
+                          index %
+                          PILLAR_IMAGES.length
+                          ]
+                        }
+                        alt={item.title}
+                        className="
+                          h-full
+                          w-full
+                          object-cover
+                        "
+                      />
+
+                      {!active && (
+                        <div
+                          className="
+                            absolute
+                            inset-0
+
+                            bg-black/35
+                          "
+                        />
+                      )}
+
+                      <AnimatePresence>
+                        {active && (
+                          <motion.div
+                            initial={{
+                              scaleX: 0,
+                            }}
+                            animate={{
+                              scaleX: 1,
+                            }}
+                            exit={{
+                              scaleX: 0,
+                            }}
+                            style={{
+                              transformOrigin:
+                                isRTL
+                                  ? 'right'
+                                  : 'left',
+                            }}
+                            className="
+                              absolute
+                              bottom-0
+                              left-0
+                              right-0
+
+                              h-[2px]
+
+                              bg-accent
+                            "
+                          />
+                        )}
+                      </AnimatePresence>
+                    </motion.button>
+                  );
+                }
+              )}
+            </div>
+          </div>
+
+          <div
+            className="
+              mt-5
+
+              hidden
+              items-center
+              gap-4
+
+              lg:flex
+            "
+          >
+            <span
+              dir="ltr"
+              className="
+                text-[10px]
+                font-semibold
+                text-white/30
+              "
+            >
+              01
+            </span>
+
+            <div
+              className="
+                relative
+
+                h-[2px]
+                flex-1
+
+                overflow-hidden
+
+                bg-white/[0.07]
+              "
+            >
+              <motion.div
+                style={{
+                  scaleX: progressScale,
+
+                  transformOrigin: isRTL
+                    ? 'right'
+                    : 'left',
+                }}
+                className="
+                  absolute
+                  inset-0
+
+                  bg-accent
+                "
+              />
+            </div>
+
+            <span
+              dir="ltr"
+              className="
+                text-[10px]
+                font-semibold
+                text-white/30
+              "
+            >
+              {formattedTotal}
+            </span>
+
+            <span
+              className="
+                ms-2
+
+                text-[9px]
+                uppercase
+                tracking-[0.2em]
+
+                text-white/25
+              "
+            >
+              Scroll
+            </span>
+          </div>
+
+          <div
+            className="
+              mt-5
+
+              flex
+              gap-2
+
+              overflow-x-auto
+              pb-2
+
+              lg:hidden
+            "
+          >
+            {pillarsData.map(
+              (item, index) => {
+                const active =
+                  activeIndex === index;
+
+                return (
+                  <button
+                    key={
+                      item.number ||
+                      index
+                    }
+                    type="button"
+                    onClick={() =>
+                      setActiveIndex(index)
+                    }
+                    className={`
+                      shrink-0
+
+                      rounded-full
+
+                      border
+
+                      px-4
+                      py-2
+
+                      text-xs
+                      font-bold
+
+                      transition-all
+                      duration-300
+
+                      ${active
+                        ? `
+                            border-accent
+                            bg-accent
+                            text-black
+                          `
+                        : `
+                            border-white/10
+                            text-white/45
+                          `
+                      }
+                    `}
+                  >
+                    <span dir="ltr">
+                      {String(
+                        index + 1
+                      ).padStart(2, '0')}
                     </span>
-                    <ArrowUpRight
-                      size={10}
-                      className={`transition-transform ${isRTL ? 'group-hover:-translate-x-0.5' : 'group-hover:translate-x-0.5'}`}
-                    />
-                  </div>
-                </div> */}
-              </motion.div>
-            );
-          })}
-        </motion.div>
+
+                    <span className="mx-2 opacity-30">
+                      /
+                    </span>
+
+                    {item.title}
+                  </button>
+                );
+              }
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

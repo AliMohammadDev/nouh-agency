@@ -253,5 +253,42 @@
       "shop": "Shop Drawings",
       "web": "Web Design"
     }
+  },
+  "process": {
+    "tagline": "HOW WE WORK",
+    "title": "From Concept to Reality.",
+    "subtitle": "A clear and well-structured journey starting from understanding your needs and culminating in a project ready for launch.",
+    "steps": {
+      "01": {
+        "step": "STEP 01",
+        "title": "Discover Our Services",
+        "desc": "Explore our comprehensive suite of architecture, interior design, planning, development, and execution services to transform your vision into an integrated project."
+      },
+      "02": {
+        "step": "STEP 02",
+        "title": "Select Your Service",
+        "desc": "Choose the scope that suits your project and help us understand your specific needs, vision, and desired outcome."
+      },
+      "03": {
+        "step": "STEP 03",
+        "title": "Build The Right Strategy",
+        "desc": "We analyze your requirements and formulate a clear roadmap specifying scope, milestones, priorities, and the optimal path for success."
+      },
+      "04": {
+        "step": "STEP 04",
+        "title": "Design & Architecture",
+        "desc": "We translate vision and strategy into meticulous designs combining beauty, functionality, engineering precision, and brand identity."
+      },
+      "05": {
+        "step": "STEP 05",
+        "title": "Build & Development",
+        "desc": "We turn designs into reality through careful execution, engineering development, and strict stage-by-stage supervision while preserving benchmark quality."
+      },
+      "06": {
+        "step": "STEP 06",
+        "title": "Launch",
+        "desc": "We bring the project to its final form, review all details thoroughly, and hand over a seamless experience ready for takeoff."
+      }
+    }
   }
 }
